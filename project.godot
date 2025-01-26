@@ -15,6 +15,10 @@ run/main_scene="res://main.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+SteamManager="*res://Steam/SteamManager.cs"
+
 [dotnet]
 
 project/assembly_name="Godot-Peer-2-Peer-Steam-CSharp"

@@ -33,3 +33,7 @@ Folder.DotSettings.user
 
 .DS_Store
 Thumbs.db
+
+steam_api.dll
+steam_api64.dll
+DDL/Facepunch.Steamworks.Win64.dll
