@@ -9,17 +9,18 @@ public partial class MultiplayerManager : Node
     public override void _Ready()
     {
         Instance = this;
+
         _multiplayerService = new SteamMultiplayerService();
         _multiplayerService.Initialize();
     }
 
-    public void CreateLobby(int maxPlayers)
+    public static void CreateLobby()
     {
-        _multiplayerService.CreateLobby(maxPlayers);
+        Instance._multiplayerService.CreateLobby(4);
     }
 
-    public void JoinLobby(string lobbyId)
+    public static void JoinLobby(string lobbyId)
     {
-        _multiplayerService.JoinLobby(lobbyId);
+        Instance._multiplayerService.JoinLobby(lobbyId);
     }
 }
