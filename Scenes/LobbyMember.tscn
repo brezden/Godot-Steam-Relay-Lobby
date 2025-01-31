@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://s8d6qytpgyqq"]
+
+[node name="VBoxContainer" type="VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+offset_right = 47.0
+offset_bottom = 59.0
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
