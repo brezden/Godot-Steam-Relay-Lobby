@@ -1,8 +1,8 @@
 public interface IMultiplayerService
 {
-    // Initialize the networking service
     void Initialize();
-    
+    void Update();
     void CreateLobby(int maxPlayers);
     void JoinLobby(string lobbyId);
+    void InviteLobbyOverlay();
 }
