@@ -6,15 +6,17 @@ using Steamworks.Data;
 public class SteamMultiplayerService : IMultiplayerService
 {
     private static SteamId _lobbyId;
-    
+
     public void Initialize()
     {
         InitializeSteam();
         SteamMatchmaking.OnLobbyCreated += OnLobbyCreatedCallback;
         SteamMatchmaking.OnLobbyInvite += OnLobbyInviteReceivedCallback;
         SteamMatchmaking.OnLobbyMemberJoined += OnLobbyMemberJoinedCallback;
+        SteamMatchmaking.OnLobbyEntered += OnLobbyEnteredCallback;
+        SteamFriends.OnGameLobbyJoinRequested += OnGameLobbyJoinRequested;
     }
-    
+
     public void Update()
     {
         SteamClient.RunCallbacks();
@@ -67,26 +69,47 @@ public class SteamMultiplayerService : IMultiplayerService
     private void OnLobbyCreatedCallback(Result result, Lobby lobby)
     {
         GD.Print("[DEBUG] Lobby created: " + lobby.Id);
-    } 
-    
-    private void OnLobbyMemberJoinedCallback(Lobby lobby, Friend friend){
+    }
+
+    private void OnLobbyMemberJoinedCallback(Lobby lobby, Friend friend)
+    {
         GD.Print("User has joined the Lobby: " + friend.Name);
     }
-    
+
     private void OnLobbyInviteReceivedCallback(Friend friend, Lobby lobby)
     {
-        GD.Print($"[DEBUG] Received lobby invite from: {friend.Name}. Attempting to join lobby: {lobby.Id}");
-        SteamMatchmaking.JoinLobbyAsync(lobby.Id);
+        GD.Print($"[DEBUG] Received lobby invite from: {friend.Name}. Lobby ID: {lobby.Id}");
+    }
+
+    private void OnLobbyEnteredCallback(Lobby lobby)
+    {
+        GD.Print("[DEBUG] Lobby entered: " + lobby.Id);
+    }
+
+    private void OnGameLobbyJoinRequested(Lobby lobby, SteamId id)
+    {
+        GD.Print($"[DEBUG] User accepted lobby invite through Steam UI. Joining lobby: {lobby.Id}");
+        JoinLobby(lobby.Id.ToString());
     }
 
     public void InviteLobbyOverlay()
     {
-        GD.Print(_lobbyId);
         SteamFriends.OpenGameInviteOverlay(_lobbyId);
     }
 
-    public void JoinLobby(string lobbyId)
+    public async void JoinLobby(string lobbyId)
     {
-        SteamMatchmaking.JoinLobbyAsync(ulong.Parse(lobbyId));
+        try
+        {
+            var result = await SteamMatchmaking.JoinLobbyAsync(ulong.Parse(lobbyId));
+            if (!result.HasValue)
+            {
+                GD.PrintErr($"Failed to join lobby: {lobbyId}");
+            }
+        }
+        catch (Exception ex)
+        {
+            GD.PrintErr($"Error joining lobby: {ex.Message}");
+        }
     }
 }
