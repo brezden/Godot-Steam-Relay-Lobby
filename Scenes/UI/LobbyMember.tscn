@@ -1,18 +1,22 @@
-[gd_scene format=3 uid="uid://s8d6qytpgyqq"]
+[gd_scene load_steps=2 format=3 uid="uid://s8d6qytpgyqq"]
 
-[node name="VBoxContainer" type="VBoxContainer"]
+[ext_resource type="Script" path="res://Scripts/UI/Lobby/LobbyMember.cs" id="1_blfyv"]
+
+[node name="LobbyMember" type="VBoxContainer"]
 custom_minimum_size = Vector2(96, 64)
 offset_right = 47.0
 offset_bottom = 59.0
 size_flags_horizontal = 3
 alignment = 1
+script = ExtResource("1_blfyv")
 
-[node name="Label" type="Label" parent="."]
+[node name="NameLabel" type="Label" parent="."]
 layout_mode = 2
+text = "Unknown"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="ProfilePicture" type="TextureRect" parent="."]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 size_flags_horizontal = 4

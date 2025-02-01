@@ -3,13 +3,35 @@ using System;
 
 public partial class LobbyMemberContainer : Node
 {
-	public override void _Ready()
-	{
-		MultiplayerManager.PlayerJoinedLobby += OnPlayerJoinedLobby;
-	}
+    [Export] private PackedScene _lobbyMemberScene;
 
-	private void OnPlayerJoinedLobby(object sender, MultiplayerManager.PlayerInformationArgs args)
-	{
-		GD.Print("Player joined lobby: " + args.PlayerName);
-	}
+    public override void _Ready()
+    {
+        if (_lobbyMemberScene == null)
+        {
+            GD.PushError("LobbyMember scene is not assigned!");
+            return;
+        }
+
+        MultiplayerManager.PlayerJoinedLobby += OnPlayerJoinedLobby;
+    }
+
+    private void OnPlayerJoinedLobby(object sender, MultiplayerManager.PlayerInformationArgs args)
+    {
+        if (_lobbyMemberScene == null)
+        {
+            GD.PushError("LobbyMember scene is null! Make sure to assign it in the Inspector.");
+            return;
+        }
+
+        var lobbyMemberInstance = _lobbyMemberScene.Instantiate();
+
+        if (lobbyMemberInstance is LobbyMember lobbyMemberScript)
+        {
+            lobbyMemberScript.PlayerName = args.PlayerName;
+            lobbyMemberScript.ProfilePicture = args.PlayerPicture;
+        }
+
+        AddChild(lobbyMemberInstance);
+    }
 }
