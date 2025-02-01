@@ -9,13 +9,10 @@ public class SteamMultiplayerService : IMultiplayerService
     
     public void Initialize()
     {
-        var connectionStatus = InitializeSteam();
-        
-        if (connectionStatus)
-        {
-            GD.Print("YERR");
-            SteamMatchmaking.OnLobbyMemberJoined += OnLobbyMemberJoined;
-        }
+        InitializeSteam();
+        SteamMatchmaking.OnLobbyCreated += OnLobbyCreatedCallback;
+        SteamMatchmaking.OnLobbyInvite += OnLobbyInviteReceivedCallback;
+        SteamMatchmaking.OnLobbyMemberJoined += OnLobbyMemberJoinedCallback;
     }
     
     public void Update()
@@ -55,7 +52,6 @@ public class SteamMultiplayerService : IMultiplayerService
                 _lobbyId = lobbyResult.Value.Id;
                 lobbyResult.Value.SetPublic();
                 lobbyResult.Value.SetJoinable(true);
-                GD.Print($"Steam lobby created: {_lobbyId}");
             }
             else
             {
@@ -68,22 +64,25 @@ public class SteamMultiplayerService : IMultiplayerService
         }
     }
 
-
-    private void OnLobbyMemberJoined(Lobby lobby, Friend member)
+    private void OnLobbyCreatedCallback(Result result, Lobby lobby)
     {
-        GD.Print("Lobby member joined");
-        if (lobby.Id == _lobbyId)
-        {
-            var playerName = member.Name;
-            GD.Print($"Player joined: {playerName}");
-            MultiplayerManager.MemberJoinLobby(playerName);
-        }
+        GD.Print("[DEBUG] Lobby created: " + lobby.Id);
+    } 
+    
+    private void OnLobbyMemberJoinedCallback(Lobby lobby, Friend friend){
+        GD.Print("User has joined the Lobby: " + friend.Name);
+    }
+    
+    private void OnLobbyInviteReceivedCallback(Friend friend, Lobby lobby)
+    {
+        GD.Print($"[DEBUG] Received lobby invite from: {friend.Name}. Attempting to join lobby: {lobby.Id}");
+        SteamMatchmaking.JoinLobbyAsync(lobby.Id);
     }
 
     public void InviteLobbyOverlay()
     {
-        GD.Print(_lobbyId.Value);
-        Steamworks.SteamFriends.OpenGameInviteOverlay(_lobbyId);
+        GD.Print(_lobbyId);
+        SteamFriends.OpenGameInviteOverlay(_lobbyId);
     }
 
     public void JoinLobby(string lobbyId)
