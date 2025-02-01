@@ -1,7 +1,9 @@
 using Godot;
 using Steamworks;
 using System;
+using System.Threading.Tasks;
 using Steamworks.Data;
+using Image = Steamworks.Data.Image;
 
 public class SteamMultiplayerService : IMultiplayerService
 {
@@ -12,9 +14,17 @@ public class SteamMultiplayerService : IMultiplayerService
         InitializeSteam();
         SteamMatchmaking.OnLobbyCreated += OnLobbyCreatedCallback;
         SteamMatchmaking.OnLobbyInvite += OnLobbyInviteReceivedCallback;
-        SteamMatchmaking.OnLobbyMemberJoined += OnLobbyMemberJoinedCallback;
         SteamMatchmaking.OnLobbyEntered += OnLobbyEnteredCallback;
         SteamFriends.OnGameLobbyJoinRequested += OnGameLobbyJoinRequested;
+        
+        SteamMatchmaking.OnLobbyMemberJoined += async (lobby, friend) => {
+            try {
+                await OnLobbyMemberJoinedAsync(lobby, friend);
+            }
+            catch (Exception ex) {
+                GD.PrintErr($"Error handling lobby join: {ex.Message}");
+            }
+        };
     }
 
     public void Update()
@@ -66,30 +76,60 @@ public class SteamMultiplayerService : IMultiplayerService
         }
     }
 
-    private void OnLobbyCreatedCallback(Result result, Lobby lobby)
+    private static void OnLobbyCreatedCallback(Result result, Lobby lobby)
     {
         GD.Print("[DEBUG] Lobby created: " + lobby.Id);
     }
 
-    private void OnLobbyMemberJoinedCallback(Lobby lobby, Friend friend)
-    {
-        GD.Print("User has joined the Lobby: " + friend.Name);
-    }
-
-    private void OnLobbyInviteReceivedCallback(Friend friend, Lobby lobby)
+    private static void OnLobbyInviteReceivedCallback(Friend friend, Lobby lobby)
     {
         GD.Print($"[DEBUG] Received lobby invite from: {friend.Name}. Lobby ID: {lobby.Id}");
     }
 
-    private void OnLobbyEnteredCallback(Lobby lobby)
+    private static void OnLobbyEnteredCallback(Lobby lobby)
     {
         GD.Print("[DEBUG] Lobby entered: " + lobby.Id);
     }
 
+    private static async Task OnLobbyMemberJoinedAsync(Lobby lobby, Friend friend)
+    {
+        GD.Print("User has joined the Lobby: " + friend.Name);
+    
+        ImageTexture? profilePicture = await GetProfilePictureAsync(friend.Id);
+    
+        if (profilePicture != null)
+        {
+            MultiplayerManager.Instance.OnPlayerJoinedLobby(profilePicture, friend.Name, friend.Id);
+        }
+        else
+        {
+            GD.Print("No profile picture available for: " + friend.Name);
+        }
+    }
+    
     private void OnGameLobbyJoinRequested(Lobby lobby, SteamId id)
     {
         GD.Print($"[DEBUG] User accepted lobby invite through Steam UI. Joining lobby: {lobby.Id}");
         JoinLobby(lobby.Id.ToString());
+    }
+    
+    private static async Task<ImageTexture?> GetProfilePictureAsync(SteamId steamId)
+    {
+        var steamImage = await SteamFriends.GetMediumAvatarAsync(steamId);
+        if (steamImage == null) return null;
+    
+        Godot.Image newImage = Godot.Image.CreateFromData(
+            (int)steamImage.Value.Width, 
+            (int)steamImage.Value.Height, 
+            false, 
+            Godot.Image.Format.Rgba8, 
+            steamImage.Value.Data
+        );
+
+        var texture = new ImageTexture();
+        texture.SetImage(newImage);
+
+        return texture;
     }
 
     public void InviteLobbyOverlay()

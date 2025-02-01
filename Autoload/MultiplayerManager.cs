@@ -1,11 +1,22 @@
-﻿using Godot;
+﻿using System;
+using System.Collections.Generic;
+using Godot;
 using Steamworks;
 
 public partial class MultiplayerManager : Node
 {
     public static MultiplayerManager Instance { get; private set; }
-
     private IMultiplayerService _multiplayerService;
+    
+    public static Dictionary<string, GlobalTypes.PlayerInfo> Players = new Dictionary<string, GlobalTypes.PlayerInfo>();
+    
+    public static event EventHandler<PlayerInformationArgs> PlayerJoinedLobby;
+    
+    public class PlayerInformationArgs : EventArgs
+    {
+        public ImageTexture PlayerPicture { get; set; }
+        public string PlayerName { get; set; }
+    }
 
     public override void _Ready()
     {
@@ -30,13 +41,28 @@ public partial class MultiplayerManager : Node
         Instance._multiplayerService.InviteLobbyOverlay();
     }
 
-    public static void MemberJoinLobby(string playerName)
+    public static void MemberJoinLobby(Image playerPicture, string playerName, string playerID)
     {
         GD.Print("Player joined lobby: " + playerName);
     }
-
-    public static void JoinLobby(string lobbyId)
+    
+    public void OnPlayerJoinedLobby(ImageTexture playerPicture, string playerName, SteamId playerId)
     {
-        Instance._multiplayerService.JoinLobby(lobbyId);
+        PlayerInformationArgs args = new PlayerInformationArgs
+        {
+            PlayerPicture = playerPicture,
+            PlayerName = playerName,
+        };
+        
+        Players.Add(playerId.ToString(), new GlobalTypes.PlayerInfo
+        {
+            Index = Players.Count,
+            Name = playerName,
+            ProfilePicture = playerPicture,
+            SteamId = playerId,
+            IsReady = false
+        });
+        
+        PlayerJoinedLobby?.Invoke(this, args);
     }
 }
