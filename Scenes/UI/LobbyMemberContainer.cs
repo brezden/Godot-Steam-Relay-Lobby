@@ -13,10 +13,10 @@ public partial class LobbyMemberContainer : Node
             return;
         }
 
-        MultiplayerManager.PlayerJoinedLobby += OnPlayerJoinedLobby;
+        LobbyManager.PlayerJoinedLobby += OnPlayerJoinedLobby;
     }
 
-    private void OnPlayerJoinedLobby(object sender, MultiplayerManager.PlayerInformationArgs args)
+    private void OnPlayerJoinedLobby(object sender, LobbyManager.PlayerInformationArgs args)
     {
         if (_lobbyMemberScene == null)
         {

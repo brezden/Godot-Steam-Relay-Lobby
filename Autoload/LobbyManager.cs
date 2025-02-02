@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using Godot;
 using Steamworks;
 
-public partial class MultiplayerManager : Node
+public partial class LobbyManager : Node
 {
-    public static MultiplayerManager Instance { get; private set; }
-    private IMultiplayerService _multiplayerService;
+    public static LobbyManager Instance { get; private set; }
+    private ILobbyService _lobbyService;
     
-    public static Dictionary<string, GlobalTypes.PlayerInfo> Players = new Dictionary<string, GlobalTypes.PlayerInfo>();
+    private static Dictionary<string, GlobalTypes.PlayerInfo> Players = new Dictionary<string, GlobalTypes.PlayerInfo>();
     
     public static event EventHandler<PlayerInformationArgs> PlayerJoinedLobby;
     
@@ -22,23 +22,29 @@ public partial class MultiplayerManager : Node
     {
         Instance = this;
 
-        _multiplayerService = new SteamMultiplayerService();
-        _multiplayerService.Initialize();
+        _lobbyService = new SteamLobbyService();
+        _lobbyService.Initialize();
     }
     
     public override void _Process(double delta)
 	{
-        _multiplayerService.Update();
+        _lobbyService.Update();
 	}
 
     public static void CreateLobby()
     {
-        Instance._multiplayerService.CreateLobby(4);
+        Instance._lobbyService.CreateLobby(4);
+    }
+
+    public static void OnLobbyCreation(string lobbyId)
+    {
+        GD.Print("[LobbyManager] Lobby created: " + lobbyId);
+        TransportManager.CreateServer();
     }
 
     public static void InviteLobbyOverlay()
     {
-        Instance._multiplayerService.InviteLobbyOverlay();
+        Instance._lobbyService.InviteLobbyOverlay();
     }
 
     public static void MemberJoinLobby(Image playerPicture, string playerName, string playerID)

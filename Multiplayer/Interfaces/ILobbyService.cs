@@ -1,4 +1,4 @@
-public interface IMultiplayerService
+public interface ILobbyService
 {
     void Initialize();
     void Update();

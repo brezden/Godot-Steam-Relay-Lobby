@@ -19,11 +19,11 @@ public partial class Buttons : Node
 	
 	private void CreateLobby()
 	{
-		MultiplayerManager.CreateLobby();
+		LobbyManager.CreateLobby();
 	}
 
 	private void InviteLobby()
 	{
-		MultiplayerManager.InviteLobbyOverlay();
+		LobbyManager.InviteLobbyOverlay();
 	}
 }

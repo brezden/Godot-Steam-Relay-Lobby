@@ -3,9 +3,8 @@ using Steamworks;
 using System;
 using System.Threading.Tasks;
 using Steamworks.Data;
-using Image = Steamworks.Data.Image;
 
-public class SteamMultiplayerService : IMultiplayerService
+public class SteamLobbyService : ILobbyService
 {
     private static SteamId _lobbyId;
 
@@ -78,7 +77,7 @@ public class SteamMultiplayerService : IMultiplayerService
 
     private static void OnLobbyCreatedCallback(Result result, Lobby lobby)
     {
-        GD.Print("[DEBUG] Lobby created: " + lobby.Id);
+        LobbyManager.OnLobbyCreation(lobby.Id.ToString());
     }
 
     private static void OnLobbyInviteReceivedCallback(Friend friend, Lobby lobby)
@@ -99,7 +98,7 @@ public class SteamMultiplayerService : IMultiplayerService
     
         if (profilePicture != null)
         {
-            MultiplayerManager.Instance.OnPlayerJoinedLobby(profilePicture, friend.Name, friend.Id);
+            LobbyManager.Instance.OnPlayerJoinedLobby(profilePicture, friend.Name, friend.Id);
         }
         else
         {
