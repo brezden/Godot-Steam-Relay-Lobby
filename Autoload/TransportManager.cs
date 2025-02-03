@@ -15,6 +15,11 @@ public partial class TransportManager : Node
         _transportService = new SteamTransportService();
     }
     
+    public override void _Process(double delta)
+    {
+        _transportService.Update();
+    }
+    
     public static void CreateServer()
     {
         Instance._transportService.CreateServer();
@@ -24,5 +29,17 @@ public partial class TransportManager : Node
     {
         GD.Print("[TransportManager] Attempting to connect to server: " + serverId);
         Instance._transportService.ConnectToServer(serverId);
+    }
+
+    public static void SendPacketToServer(PacketTypes.MainType mainType, byte subType, byte[] data)
+    {
+        GD.Print("[TransportManager] Sending packet to server with main type: " + mainType + " and sub type: " + subType);
+        Instance._transportService.SendPacketToServer(mainType, subType, data);
+    }
+    
+    public static void SendPacketToClients(PacketTypes.MainType mainType, byte subType, byte[] data)
+    {
+        GD.Print("[TransportManager] Sending packet to clients with main type: " + mainType + " and sub type: " + subType);
+        Instance._transportService.SendPacketToClients(mainType, subType, data);
     }
 }

@@ -13,11 +13,19 @@ public class SteamTransportService : ITransportService
     {
         serverCallbacks = new ServerCallbacks();
     }
+    
+    public void Update()
+    {
+        if (serverSocket != null)
+            serverSocket.Receive();
+        if (clientConnection != null)
+            clientConnection.Receive();
+    }
 
     public void CreateServer()
     {
         GD.Print("Creating Steam relay server...");
-
+        
         serverSocket = SteamNetworkingSockets.CreateRelaySocket<SocketManager>(0);
         
         if (serverSocket == null)
@@ -25,9 +33,9 @@ public class SteamTransportService : ITransportService
             GD.PrintErr("Failed to create Steam relay server.");
             return;
         }
-
+        
         serverSocket.Interface = serverCallbacks;
-
+        
         GD.Print("Server is now listening for connections...");
     }
 
@@ -37,8 +45,31 @@ public class SteamTransportService : ITransportService
         SteamId hostSteamId = new SteamId { Value = steamIdValue };
         
         GD.Print($"Connecting to server hosted by Steam ID: {hostSteamId}");
-
+        
         clientConnection = SteamNetworkingSockets.ConnectRelay<ClientConnectionManager>(hostSteamId, 0);
+    }
+    
+    public void SendPacketToClients(PacketTypes.MainType mainType, byte subType, byte[] data)
+    {
+        var packet = PacketFactory.CreatePacket(mainType, subType, data);
+
+        if (serverSocket != null)
+        {
+            foreach (var client in serverSocket.Connected)
+            {
+                client.SendMessage(packet, SendType.Unreliable);
+            }
+        }
+    }
+
+    public void SendPacketToServer(PacketTypes.MainType mainType, byte subType, byte[] data)
+    {
+        var packet = PacketFactory.CreatePacket(mainType, subType, data);
+        
+        if (clientConnection != null)
+        {
+            clientConnection.Connection.SendMessage(packet, SendType.Unreliable);
+        }
     }
 }
 
@@ -48,6 +79,13 @@ public class ServerCallbacks : ISocketManager
     {
         connection.Accept();
         GD.Print($"Server: Player {data.Identity} is attempting to connect...");
+        
+        byte[] welcomeData = BitConverter.GetBytes(data.Identity.SteamId.Value);
+        connection.SendMessage(PacketFactory.CreatePacket(
+            PacketTypes.MainType.Lobby,
+            (byte)PacketTypes.LobbyType.PlayerJoin,
+            welcomeData
+        ));
     }
 
     public void OnConnected(Connection connection, ConnectionInfo data)
@@ -60,9 +98,15 @@ public class ServerCallbacks : ISocketManager
         GD.Print($"Server: Player {data.Identity} has disconnected.");
     }
 
-    public void OnMessage(Connection connection, NetIdentity identity, IntPtr data, int size, long messageNum, long recvTime, int channel)
+    public void OnMessage(Connection connection, NetIdentity identity, IntPtr data, int size, long messageNum,
+        long recvTime, int channel)
     {
-        GD.Print($"Server: Received message from {identity}!");
+        GD.Print("Server: Received message from player: " + identity);
+        byte[] packetData = new byte[size];
+        System.Runtime.InteropServices.Marshal.Copy(data, packetData, 0, size);
+
+        var (header, payload) = PacketFactory.ParsePacket(packetData);
+        GD.Print($"Server: Received packet - Main Type: {header.MainType}, Sub Type: {header.SubType} from {identity}");
     }
 }
 
@@ -85,6 +129,11 @@ public class ClientConnectionManager : ConnectionManager
 
     public override void OnMessage(IntPtr data, int size, long messageNum, long recvTime, int channel)
     {
-        GD.Print("Client: Received message from server!");
+        GD.Print("Server: Received message from server.");
+        byte[] packetData = new byte[size];
+        System.Runtime.InteropServices.Marshal.Copy(data, packetData, 0, size);
+
+        var (header, payload) = PacketFactory.ParsePacket(packetData);
+        GD.Print($"Client: Received packet - Main Type: {header.MainType}, Sub Type: {header.SubType}");
     }
 }
