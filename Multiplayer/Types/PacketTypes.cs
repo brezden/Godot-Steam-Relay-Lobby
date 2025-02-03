@@ -24,7 +24,6 @@
     {
         public MainType MainType;
         public byte SubType;
-        public byte SenderId;
-        public double Timestamp;
+        public byte PlayerIndex;
     }
 }

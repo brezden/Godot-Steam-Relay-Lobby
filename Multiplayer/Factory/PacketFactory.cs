@@ -5,13 +5,13 @@ public static class PacketFactory
 {
     private const int HEADER_SIZE = 11; // 1 + 1 + 1 + 8 bytes
 
-    public static byte[] CreatePacket(PacketTypes.MainType mainType, byte subType, byte[] data)
+    public static byte[] CreatePacket(PacketTypes.MainType mainType, byte subType, byte playerIndex, byte[] data)
     {
         byte[] packet = new byte[HEADER_SIZE + (data?.Length ?? 0)];
         
         packet[0] = (byte)mainType;
         packet[1] = subType;
-        packet[2] = (byte)91;
+        packet[2] = playerIndex;
         
         BitConverter.GetBytes(Time.GetTicksMsec()).CopyTo(packet, 3);
         
@@ -34,8 +34,7 @@ public static class PacketFactory
         {
             MainType = (PacketTypes.MainType)packet[0],
             SubType = packet[1],
-            SenderId = packet[2],
-            Timestamp = BitConverter.ToDouble(packet, 3)
+            PlayerIndex = packet[2],
         };
 
         byte[] data = null;
@@ -48,10 +47,10 @@ public static class PacketFactory
         return (header, data);
     }
 
-    public static byte[] CreatePacketWithString(PacketTypes.MainType mainType, byte subType, string message)
+    public static byte[] CreatePacketWithString(PacketTypes.MainType mainType, byte subType, byte playerIndex, string message)
     {
         byte[] data = System.Text.Encoding.UTF8.GetBytes(message);
-        return CreatePacket(mainType, subType, data);
+        return CreatePacket(mainType, subType, playerIndex, data);
     }
 
     public static string GetStringFromPacketData(byte[] data)

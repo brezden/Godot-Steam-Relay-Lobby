@@ -18,7 +18,7 @@ public class SteamTransportService : ITransportService
     {
         if (serverSocket != null)
             serverSocket.Receive();
-        if (clientConnection != null)
+        else if (clientConnection != null)
             clientConnection.Receive();
     }
 
@@ -51,7 +51,7 @@ public class SteamTransportService : ITransportService
     
     public void SendPacketToClients(PacketTypes.MainType mainType, byte subType, byte[] data)
     {
-        var packet = PacketFactory.CreatePacket(mainType, subType, data);
+        var packet = PacketFactory.CreatePacket(mainType, subType, 3, data);
 
         if (serverSocket != null)
         {
@@ -64,7 +64,7 @@ public class SteamTransportService : ITransportService
 
     public void SendPacketToServer(PacketTypes.MainType mainType, byte subType, byte[] data)
     {
-        var packet = PacketFactory.CreatePacket(mainType, subType, data);
+        var packet = PacketFactory.CreatePacket(mainType, subType, 2, data);
         
         if (clientConnection != null)
         {
@@ -84,6 +84,7 @@ public class ServerCallbacks : ISocketManager
         connection.SendMessage(PacketFactory.CreatePacket(
             PacketTypes.MainType.Lobby,
             (byte)PacketTypes.LobbyType.PlayerJoin,
+            3,
             welcomeData
         ));
     }
@@ -106,7 +107,7 @@ public class ServerCallbacks : ISocketManager
         System.Runtime.InteropServices.Marshal.Copy(data, packetData, 0, size);
 
         var (header, payload) = PacketFactory.ParsePacket(packetData);
-        GD.Print($"Server: Received packet - Main Type: {header.MainType}, Sub Type: {header.SubType} from {identity}");
+        GD.Print($"Server: Received packet - Main Type: {header.MainType}, Sub Type: {header.SubType} from Player {header.PlayerIndex}, Data : {PacketFactory.GetStringFromPacketData(payload)}");
     }
 }
 
@@ -134,6 +135,6 @@ public class ClientConnectionManager : ConnectionManager
         System.Runtime.InteropServices.Marshal.Copy(data, packetData, 0, size);
 
         var (header, payload) = PacketFactory.ParsePacket(packetData);
-        GD.Print($"Client: Received packet - Main Type: {header.MainType}, Sub Type: {header.SubType}");
+        GD.Print($"Server: Received packet - Main Type: {header.MainType}, Sub Type: {header.SubType} from Player {header.PlayerIndex}, Data : {PacketFactory.GetStringFromPacketData(payload)}");
     }
 }
