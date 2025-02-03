@@ -8,6 +8,9 @@ public partial class LobbyManager : Node
     public static LobbyManager Instance { get; private set; }
     private ILobbyService _lobbyService;
     
+    private static bool _isHost = false;
+    private static string _lobbyId = string.Empty;
+    
     private static Dictionary<string, GlobalTypes.PlayerInfo> Players = new Dictionary<string, GlobalTypes.PlayerInfo>();
     
     public static event EventHandler<PlayerInformationArgs> PlayerJoinedLobby;
@@ -39,9 +42,19 @@ public partial class LobbyManager : Node
     public static void OnLobbyCreation(string lobbyId)
     {
         GD.Print("[LobbyManager] Lobby created: " + lobbyId);
+        _isHost = true;
+        _lobbyId = lobbyId;
         TransportManager.CreateServer();
     }
-
+    
+    public static void OnLobbyJoin(string lobbyId)
+    {
+        if (!_isHost)
+        {
+            TransportManager.ConnectToServer(lobbyId);
+        }
+    }
+    
     public static void InviteLobbyOverlay()
     {
         Instance._lobbyService.InviteLobbyOverlay();

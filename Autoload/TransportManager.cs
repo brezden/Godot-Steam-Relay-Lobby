@@ -19,4 +19,10 @@ public partial class TransportManager : Node
     {
         Instance._transportService.CreateServer();
     }
+
+    public static void ConnectToServer(string serverId)
+    {
+        GD.Print("[TransportManager] Attempting to connect to server: " + serverId);
+        Instance._transportService.ConnectToServer(serverId);
+    }
 }

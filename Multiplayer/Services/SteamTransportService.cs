@@ -16,12 +16,6 @@ public class SteamTransportService : ITransportService
 
     public void CreateServer()
     {
-        if (!SteamClient.IsValid)
-        {
-            GD.PrintErr("Steam Client is not initialized!");
-            return;
-        }
-
         GD.Print("Creating Steam relay server...");
 
         serverSocket = SteamNetworkingSockets.CreateRelaySocket<SocketManager>(0);
@@ -37,25 +31,14 @@ public class SteamTransportService : ITransportService
         GD.Print("Server is now listening for connections...");
     }
 
-    public void ConnectToServer(SteamId hostSteamId)
+    public void ConnectToServer(string serverId)
     {
-        if (!SteamClient.IsValid)
-        {
-            GD.PrintErr("Steam Client is not initialized!");
-            return;
-        }
-
+        ulong steamIdValue = ulong.Parse(serverId);
+        SteamId hostSteamId = new SteamId { Value = steamIdValue };
+        
         GD.Print($"Connecting to server hosted by Steam ID: {hostSteamId}");
 
         clientConnection = SteamNetworkingSockets.ConnectRelay<ClientConnectionManager>(hostSteamId, 0);
-
-        if (clientConnection == null)
-        {
-            GD.PrintErr("Failed to connect to server.");
-            return;
-        }
-
-        GD.Print("Successfully started client connection.");
     }
 }
 

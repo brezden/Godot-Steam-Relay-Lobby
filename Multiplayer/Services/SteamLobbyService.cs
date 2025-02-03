@@ -88,6 +88,7 @@ public class SteamLobbyService : ILobbyService
     private static void OnLobbyEnteredCallback(Lobby lobby)
     {
         GD.Print("[DEBUG] Lobby entered: " + lobby.Id);
+        LobbyManager.OnLobbyJoin(lobby.Owner.Id.ToString());
     }
 
     private static async Task OnLobbyMemberJoinedAsync(Lobby lobby, Friend friend)
