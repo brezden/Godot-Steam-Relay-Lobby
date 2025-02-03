@@ -55,6 +55,11 @@ public partial class LobbyManager : Node
         }
     }
     
+    public static void SendLobbyMessage(string message)
+    {
+        Instance._lobbyService.SendLobbyMessage(message);
+    }
+    
     public static void InviteLobbyOverlay()
     {
         Instance._lobbyService.InviteLobbyOverlay();

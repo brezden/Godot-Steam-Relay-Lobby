@@ -9,15 +9,13 @@ public partial class Buttons : Node
 		Button inviteLobbyButton = GetNode<Button>("InviteMembers");
 		Button sendServerPacketButton = GetNode<Button>("SendServerPacket");
 		Button sendClientPacketButton = GetNode<Button>("SendClientsPacket");
+		Button sendLobbyMessageButton = GetNode<Button>("SendLobbyMessage");
 
 		createLobbyButton.Pressed += CreateLobby;
 		inviteLobbyButton.Pressed += InviteLobby;
 		sendServerPacketButton.Pressed += SendServerPacket;
 		sendClientPacketButton.Pressed += SendClientPacket;
-	}
-
-	public override void _Process(double delta)
-	{
+		sendLobbyMessageButton.Pressed += SendLobbyMessage;
 	}
 	
 	private void CreateLobby()
@@ -38,5 +36,10 @@ public partial class Buttons : Node
 	private void SendClientPacket()
 	{
 		TransportManager.SendPacketToClients(PacketTypes.MainType.Player, 69, new byte[] { 0, 1, 2, 3 });
+	}
+	
+	private void SendLobbyMessage()
+	{
+		LobbyManager.SendLobbyMessage("Yoooooooooooooooooooooo");
 	}
 }

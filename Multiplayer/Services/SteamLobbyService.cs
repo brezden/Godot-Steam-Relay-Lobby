@@ -7,6 +7,7 @@ using Steamworks.Data;
 public class SteamLobbyService : ILobbyService
 {
     private static SteamId _lobbyId;
+    private static Lobby _lobby;
 
     public void Initialize()
     {
@@ -14,6 +15,7 @@ public class SteamLobbyService : ILobbyService
         SteamMatchmaking.OnLobbyCreated += OnLobbyCreatedCallback;
         SteamMatchmaking.OnLobbyInvite += OnLobbyInviteReceivedCallback;
         SteamMatchmaking.OnLobbyEntered += OnLobbyEnteredCallback;
+        SteamMatchmaking.OnChatMessage += OnLobbyChatMessage;
         SteamFriends.OnGameLobbyJoinRequested += OnGameLobbyJoinRequested;
         
         SteamMatchmaking.OnLobbyMemberJoined += async (lobby, friend) => {
@@ -88,9 +90,20 @@ public class SteamLobbyService : ILobbyService
     private static void OnLobbyEnteredCallback(Lobby lobby)
     {
         GD.Print("[DEBUG] Lobby entered: " + lobby.Id);
+        _lobby = lobby;
         LobbyManager.OnLobbyJoin(lobby.Owner.Id.ToString());
     }
 
+    public void SendLobbyMessage(string message)
+    {
+        _lobby.SendChatString(message);
+    }
+    
+    private static void OnLobbyChatMessage(Lobby lobby, Friend friend, string message)
+    {
+        GD.Print($"[DEBUG] Chat message received from {friend.Name}: {message}");
+    }
+    
     private static async Task OnLobbyMemberJoinedAsync(Lobby lobby, Friend friend)
     {
         GD.Print("User has joined the Lobby: " + friend.Name);

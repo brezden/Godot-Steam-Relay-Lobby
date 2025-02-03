@@ -5,4 +5,5 @@ public interface ILobbyService
     void CreateLobby(int maxPlayers);
     void JoinLobby(string lobbyId);
     void InviteLobbyOverlay();
+    void SendLobbyMessage(string message);
 }
