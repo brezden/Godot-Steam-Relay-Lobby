@@ -21,4 +21,10 @@ public static class GlobalTypes
         public int MaxPlayers;
         public Dictionary<string, PlayerInfo> Players;
     }
+    
+    public class LobbyMessageArgs : EventArgs
+    {
+        public string PlayerName { get; set; }
+        public string Message { get; set; }
+    }
 }

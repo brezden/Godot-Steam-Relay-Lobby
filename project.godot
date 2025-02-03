@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 LobbyManager="*res://Autoload/LobbyManager.cs"
 TransportManager="*res://Autoload/TransportManager.cs"
+EventBus="*res://Autoload/EventBus.cs"
 
 [display]
 

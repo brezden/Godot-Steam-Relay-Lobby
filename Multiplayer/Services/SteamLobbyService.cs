@@ -101,7 +101,7 @@ public class SteamLobbyService : ILobbyService
     
     private static void OnLobbyChatMessage(Lobby lobby, Friend friend, string message)
     {
-        GD.Print($"[DEBUG] Chat message received from {friend.Name}: {message}");
+        LobbyManager.OnLobbyMessageReceived(friend.Name, message);
     }
     
     private static async Task OnLobbyMemberJoinedAsync(Lobby lobby, Friend friend)

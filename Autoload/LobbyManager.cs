@@ -60,6 +60,17 @@ public partial class LobbyManager : Node
         Instance._lobbyService.SendLobbyMessage(message);
     }
     
+    public static void OnLobbyMessageReceived(string sender, string message)
+    {
+        GlobalTypes.LobbyMessageArgs args = new GlobalTypes.LobbyMessageArgs
+        {
+            PlayerName = sender,
+            Message = message
+        };
+        
+        EventBus.OnLobbyMessageReceived(sender, message);
+    }
+    
     public static void InviteLobbyOverlay()
     {
         Instance._lobbyService.InviteLobbyOverlay();

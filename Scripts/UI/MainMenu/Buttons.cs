@@ -9,13 +9,11 @@ public partial class Buttons : Node
 		Button inviteLobbyButton = GetNode<Button>("InviteMembers");
 		Button sendServerPacketButton = GetNode<Button>("SendServerPacket");
 		Button sendClientPacketButton = GetNode<Button>("SendClientsPacket");
-		Button sendLobbyMessageButton = GetNode<Button>("SendLobbyMessage");
 
 		createLobbyButton.Pressed += CreateLobby;
 		inviteLobbyButton.Pressed += InviteLobby;
 		sendServerPacketButton.Pressed += SendServerPacket;
 		sendClientPacketButton.Pressed += SendClientPacket;
-		sendLobbyMessageButton.Pressed += SendLobbyMessage;
 	}
 	
 	private void CreateLobby()

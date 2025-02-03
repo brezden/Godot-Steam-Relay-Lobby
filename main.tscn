@@ -1,5 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://qsoslr654lwv"]
+[gd_scene load_steps=5 format=3 uid="uid://qsoslr654lwv"]
 
+[ext_resource type="Script" path="res://Scripts/UI/Lobby/LobbyChat.cs" id="1_g25av"]
 [ext_resource type="Script" path="res://Scripts/UI/MainMenu/Buttons.cs" id="1_u75qt"]
 [ext_resource type="Script" path="res://Scenes/UI/LobbyMemberContainer.cs" id="2_lvty0"]
 [ext_resource type="PackedScene" uid="uid://s8d6qytpgyqq" path="res://Scenes/UI/LobbyMember.tscn" id="2_xbjpp"]
@@ -11,6 +12,30 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="LobbyChat" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_g25av")
+
+[node name="ChatBox" type="TextEdit" parent="LobbyChat"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+
+[node name="ChatInput" type="LineEdit" parent="LobbyChat"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 25)
+layout_mode = 2
+placeholder_text = "Chat Message"
+clear_button_enabled = true
+
+[node name="SendLobbyMessage" type="Button" parent="LobbyChat"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(125, 25)
+layout_mode = 2
+text = "Send Lobby Message"
 
 [node name="ButtonContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -47,12 +72,6 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(125, 25)
 layout_mode = 2
 text = "Send Client Packet"
-
-[node name="SendLobbyMessage" type="Button" parent="ButtonContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(125, 25)
-layout_mode = 2
-text = "Send Lobby Message"
 
 [node name="LobbyMemberContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
