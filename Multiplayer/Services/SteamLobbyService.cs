@@ -16,15 +16,6 @@ public class SteamLobbyService : ILobbyService
         SteamMatchmaking.OnLobbyEntered += OnLobbyEnteredCallback;
         SteamMatchmaking.OnChatMessage += OnLobbyChatMessage;
         SteamFriends.OnGameLobbyJoinRequested += OnGameLobbyJoinRequested;
-        
-        SteamMatchmaking.OnLobbyMemberJoined += async (lobby, friend) => {
-            try {
-                await OnLobbyMemberJoinedAsync(lobby, friend);
-            }
-            catch (Exception ex) {
-                GD.PrintErr($"Error handling lobby join: {ex.Message}");
-            }
-        };
     }
 
     public void Update()
@@ -79,12 +70,10 @@ public class SteamLobbyService : ILobbyService
     private static void OnLobbyCreatedCallback(Result result, Lobby lobby)
     {
         LobbyManager.OnLobbyCreation(lobby.Id.ToString());
-        AddMemberToLobbyUI(SteamClient.SteamId, SteamClient.Name);
     }
 
     private static void OnLobbyEnteredCallback(Lobby lobby)
     {
-        GD.Print("[DEBUG] Lobby entered: " + lobby.Id);
         _lobby = lobby;
         LobbyManager.OnLobbyJoin(lobby.Owner.Id.ToString());
     }
@@ -98,15 +87,12 @@ public class SteamLobbyService : ILobbyService
     {
         LobbyManager.OnLobbyMessageReceived(friend.Name, message);
     }
-    
-    private static async Task OnLobbyMemberJoinedAsync(Lobby lobby, Friend friend)
+
+    public async Task GatherPlayerInformation()
     {
-        GD.Print("User has joined the Lobby: " + friend.Name);
-        AddMemberToLobbyUI(friend.Id, friend.Name);
-    }
-    
-    private static async Task AddMemberToLobbyUI(SteamId id, string name)
-    {
+        SteamId id = SteamClient.SteamId;
+        string name = SteamClient.Name;
+        
         ImageTexture? profilePicture = await GetProfilePictureAsync(id);
     
         if (profilePicture != null)

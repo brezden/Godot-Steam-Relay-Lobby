@@ -9,7 +9,6 @@ public partial class LobbyManager : Node
     private ILobbyService _lobbyService;
     
     private static bool _isHost = false;
-    private static string _lobbyId = string.Empty;
     
     private static Dictionary<string, GlobalTypes.PlayerInfo> Players = new Dictionary<string, GlobalTypes.PlayerInfo>();
     
@@ -42,9 +41,16 @@ public partial class LobbyManager : Node
     public static void OnLobbyCreation(string lobbyId)
     {
         GD.Print("[LobbyManager] Lobby created: " + lobbyId);
-        _isHost = true;
-        _lobbyId = lobbyId;
         bool result = TransportManager.CreateServer();
+        
+        if (!result)
+        {
+            GD.PrintErr("[LobbyManager] Failed to create server.");
+            return;
+        }
+        
+        _isHost = true;
+        Instance._lobbyService.GatherPlayerInformation();
     }
     
     public static void OnLobbyJoin(string lobbyId)
@@ -59,8 +65,8 @@ public partial class LobbyManager : Node
             return;
         } 
         
-        GD.Print("[LobbyManager] Successfully connected to lobby and socket: " + lobbyId); 
-        _lobbyId = lobbyId;
+        GD.Print("[LobbyManager] Successfully connected to lobby and socket: " + lobbyId);
+        Instance._lobbyService.GatherPlayerInformation();
     }
     
     public static void SendLobbyMessage(string message)
