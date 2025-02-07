@@ -80,6 +80,7 @@ public class SteamLobbyService : ILobbyService
     private static void OnLobbyCreatedCallback(Result result, Lobby lobby)
     {
         LobbyManager.OnLobbyCreation(lobby.Id.ToString());
+        AddMemberToLobbyUI(SteamClient.SteamId, SteamClient.Name);
     }
 
     private static void OnLobbyInviteReceivedCallback(Friend friend, Lobby lobby)
@@ -107,16 +108,20 @@ public class SteamLobbyService : ILobbyService
     private static async Task OnLobbyMemberJoinedAsync(Lobby lobby, Friend friend)
     {
         GD.Print("User has joined the Lobby: " + friend.Name);
+        AddMemberToLobbyUI(friend.Id, friend.Name);
+    }
     
-        ImageTexture? profilePicture = await GetProfilePictureAsync(friend.Id);
+    private static async Task AddMemberToLobbyUI(SteamId id, string name)
+    {
+        ImageTexture? profilePicture = await GetProfilePictureAsync(id);
     
         if (profilePicture != null)
         {
-            LobbyManager.Instance.OnPlayerJoinedLobby(profilePicture, friend.Name, friend.Id);
+            LobbyManager.Instance.OnPlayerJoinedLobby(profilePicture, name, id);
         }
         else
         {
-            GD.Print("No profile picture available for: " + friend.Name);
+            GD.Print("No profile picture available for: " + name);
         }
     }
     

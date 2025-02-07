@@ -75,11 +75,6 @@ public partial class LobbyManager : Node
     {
         Instance._lobbyService.InviteLobbyOverlay();
     }
-
-    public static void MemberJoinLobby(Image playerPicture, string playerName, string playerID)
-    {
-        GD.Print("Player joined lobby: " + playerName);
-    }
     
     public void OnPlayerJoinedLobby(ImageTexture playerPicture, string playerName, SteamId playerId)
     {
