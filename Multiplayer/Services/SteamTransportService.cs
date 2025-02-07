@@ -8,6 +8,8 @@ public class SteamTransportService : ITransportService
     private SocketManager serverSocket;
     private ClientConnectionManager clientConnection;
     private ServerCallbacks serverCallbacks;
+    
+    private Action _updateMethod;
 
     public SteamTransportService()
     {
@@ -16,10 +18,19 @@ public class SteamTransportService : ITransportService
     
     public void Update()
     {
-        if (serverSocket != null)
-            serverSocket.Receive();
-        else if (clientConnection != null)
-            clientConnection.Receive();
+        _updateMethod();
+    }
+
+    private void ServerUpdate()
+    {
+        GD.Print("Server: Receiving data from clients...");
+        serverSocket.Receive();
+    }
+    
+    private void ClientUpdate()
+    {
+        GD.Print("Client: Receiving data from server...");
+        clientConnection.Receive();
     }
 
     public void CreateServer()
@@ -34,6 +45,8 @@ public class SteamTransportService : ITransportService
             return;
         }
         
+        _updateMethod = ServerUpdate;
+        TransportManager.Instance.ExecuteProcessMethodStatus(true);
         serverSocket.Interface = serverCallbacks;
         
         GD.Print("Server is now listening for connections...");
@@ -47,6 +60,15 @@ public class SteamTransportService : ITransportService
         GD.Print($"Connecting to server hosted by Steam ID: {hostSteamId}");
         
         clientConnection = SteamNetworkingSockets.ConnectRelay<ClientConnectionManager>(hostSteamId, 0);
+        
+        if (clientConnection == null)
+        {
+            GD.PrintErr("Failed to connect to server.");
+            return;
+        }
+        
+        _updateMethod = ClientUpdate;
+        TransportManager.Instance.ExecuteProcessMethodStatus(true);
     }
     
     public void SendPacketToClients(PacketTypes.MainType mainType, byte subType, byte[] data)
@@ -126,6 +148,7 @@ public class ClientConnectionManager : ConnectionManager
     public override void OnDisconnected(ConnectionInfo info)
     {
         GD.Print("Client: Disconnected from server.");
+        TransportManager.Instance.ExecuteProcessMethodStatus(false);
     }
 
     public override void OnMessage(IntPtr data, int size, long messageNum, long recvTime, int channel)

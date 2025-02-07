@@ -13,11 +13,17 @@ public partial class TransportManager : Node
         Instance = this;
 
         _transportService = new SteamTransportService();
+        SetProcess(false);
     }
     
     public override void _Process(double delta)
     {
         _transportService.Update();
+    }
+    
+    public void ExecuteProcessMethodStatus(bool status)
+    {
+        SetProcess(status);
     }
     
     public static void CreateServer()
