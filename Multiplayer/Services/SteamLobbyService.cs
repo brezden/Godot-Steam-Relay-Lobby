@@ -13,7 +13,6 @@ public class SteamLobbyService : ILobbyService
     {
         InitializeSteam();
         SteamMatchmaking.OnLobbyCreated += OnLobbyCreatedCallback;
-        SteamMatchmaking.OnLobbyInvite += OnLobbyInviteReceivedCallback;
         SteamMatchmaking.OnLobbyEntered += OnLobbyEnteredCallback;
         SteamMatchmaking.OnChatMessage += OnLobbyChatMessage;
         SteamFriends.OnGameLobbyJoinRequested += OnGameLobbyJoinRequested;
@@ -81,11 +80,6 @@ public class SteamLobbyService : ILobbyService
     {
         LobbyManager.OnLobbyCreation(lobby.Id.ToString());
         AddMemberToLobbyUI(SteamClient.SteamId, SteamClient.Name);
-    }
-
-    private static void OnLobbyInviteReceivedCallback(Friend friend, Lobby lobby)
-    {
-        GD.Print($"[DEBUG] Received lobby invite from: {friend.Name}. Lobby ID: {lobby.Id}");
     }
 
     private static void OnLobbyEnteredCallback(Lobby lobby)

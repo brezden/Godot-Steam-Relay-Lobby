@@ -19,4 +19,7 @@
   <ItemGroup>
     <Folder Include="Scripts\UI\MainMenu\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="TODO.md" />
+  </ItemGroup>
 </Project>

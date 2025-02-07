@@ -23,52 +23,46 @@ public class SteamTransportService : ITransportService
 
     private void ServerUpdate()
     {
-        GD.Print("Server: Receiving data from clients...");
         serverSocket.Receive();
     }
     
     private void ClientUpdate()
     {
-        GD.Print("Client: Receiving data from server...");
         clientConnection.Receive();
     }
 
-    public void CreateServer()
+    public bool CreateServer()
     {
-        GD.Print("Creating Steam relay server...");
-        
         serverSocket = SteamNetworkingSockets.CreateRelaySocket<SocketManager>(0);
         
         if (serverSocket == null)
         {
             GD.PrintErr("Failed to create Steam relay server.");
-            return;
+            return false;
         }
         
         _updateMethod = ServerUpdate;
         TransportManager.Instance.ExecuteProcessMethodStatus(true);
         serverSocket.Interface = serverCallbacks;
-        
-        GD.Print("Server is now listening for connections...");
+        return true;
     }
 
-    public void ConnectToServer(string serverId)
+    public bool ConnectToServer(string serverId)
     {
         ulong steamIdValue = ulong.Parse(serverId);
         SteamId hostSteamId = new SteamId { Value = steamIdValue };
-        
-        GD.Print($"Connecting to server hosted by Steam ID: {hostSteamId}");
         
         clientConnection = SteamNetworkingSockets.ConnectRelay<ClientConnectionManager>(hostSteamId, 0);
         
         if (clientConnection == null)
         {
-            GD.PrintErr("Failed to connect to server.");
-            return;
+            return false;
         }
         
         _updateMethod = ClientUpdate;
         TransportManager.Instance.ExecuteProcessMethodStatus(true);
+
+        return true;
     }
     
     public void SendPacketToClients(PacketTypes.MainType mainType, byte subType, byte[] data)

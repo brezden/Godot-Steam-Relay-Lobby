@@ -26,15 +26,24 @@ public partial class TransportManager : Node
         SetProcess(status);
     }
     
-    public static void CreateServer()
+    public static bool CreateServer()
     {
-        Instance._transportService.CreateServer();
+        bool result = Instance._transportService.CreateServer();
+        
+        if (!result)
+        {
+            GD.PrintErr("[TransportManager] Failed to create server.");
+            return false;
+        }
+        
+        GD.Print("[TransportManager] Server created successfully.");
+        return true;
     }
 
-    public static void ConnectToServer(string serverId)
+    public static bool ConnectToServer(string serverId)
     {
         GD.Print("[TransportManager] Attempting to connect to server: " + serverId);
-        Instance._transportService.ConnectToServer(serverId);
+        return Instance._transportService.ConnectToServer(serverId);
     }
 
     public static void SendPacketToServer(PacketTypes.MainType mainType, byte subType, byte[] data)

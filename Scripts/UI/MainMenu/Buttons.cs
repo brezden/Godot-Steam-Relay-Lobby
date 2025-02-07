@@ -35,9 +35,4 @@ public partial class Buttons : Node
 	{
 		TransportManager.SendPacketToClients(PacketTypes.MainType.Player, 69, new byte[] { 0, 1, 2, 3 });
 	}
-	
-	private void SendLobbyMessage()
-	{
-		LobbyManager.SendLobbyMessage("Yoooooooooooooooooooooo");
-	}
 }

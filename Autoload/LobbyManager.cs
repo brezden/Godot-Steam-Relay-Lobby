@@ -44,15 +44,23 @@ public partial class LobbyManager : Node
         GD.Print("[LobbyManager] Lobby created: " + lobbyId);
         _isHost = true;
         _lobbyId = lobbyId;
-        TransportManager.CreateServer();
+        bool result = TransportManager.CreateServer();
     }
     
     public static void OnLobbyJoin(string lobbyId)
     {
-        if (!_isHost)
+        if (_isHost) return;
+        
+        bool result = TransportManager.ConnectToServer(lobbyId);
+
+        if (!result)
         {
-            TransportManager.ConnectToServer(lobbyId);
-        }
+            GD.PrintErr("[LobbyManager] Failed to connect to lobby and socket successfully: " + lobbyId);
+            return;
+        } 
+        
+        GD.Print("[LobbyManager] Successfully connected to lobby and socket: " + lobbyId); 
+        _lobbyId = lobbyId;
     }
     
     public static void SendLobbyMessage(string message)
