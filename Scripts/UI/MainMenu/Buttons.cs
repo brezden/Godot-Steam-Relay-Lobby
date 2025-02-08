@@ -9,11 +9,13 @@ public partial class Buttons : Node
 		Button inviteLobbyButton = GetNode<Button>("InviteMembers");
 		Button sendServerPacketButton = GetNode<Button>("SendServerPacket");
 		Button sendClientPacketButton = GetNode<Button>("SendClientsPacket");
+		Button leaveLobbyButton = GetNode<Button>("LeaveLobby");
 
 		createLobbyButton.Pressed += CreateLobby;
 		inviteLobbyButton.Pressed += InviteLobby;
 		sendServerPacketButton.Pressed += SendServerPacket;
 		sendClientPacketButton.Pressed += SendClientPacket;
+		leaveLobbyButton.Pressed += LeaveLobby;
 	}
 	
 	private void CreateLobby()
@@ -34,5 +36,11 @@ public partial class Buttons : Node
 	private void SendClientPacket()
 	{
 		TransportManager.SendPacketToClients(PacketTypes.MainType.Player, 69, new byte[] { 0, 1, 2, 3 });
+	}
+	
+	private void LeaveLobby()
+	{
+		LobbyManager.LeaveLobby();
+		TransportManager.Disconnect();
 	}
 }

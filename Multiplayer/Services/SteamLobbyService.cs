@@ -99,6 +99,12 @@ public class SteamLobbyService : ILobbyService
         LobbyManager.AddPlayer(profilePicture, friend.Name, friend.Id);
         EventBus.Lobby.OnLobbyMemberJoined(friend.Id.ToString());
     }
+
+    public void LeaveLobby()
+    {
+        _lobby.Leave();
+        _lobbyId = 0;
+    }
     
     private static void LobbyMemberLeft(Lobby lobby, Friend friend)
     {

@@ -73,6 +73,12 @@ custom_minimum_size = Vector2(125, 25)
 layout_mode = 2
 text = "Send Client Packet"
 
+[node name="LeaveLobby" type="Button" parent="ButtonContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(125, 25)
+layout_mode = 2
+text = "Leave Lobby"
+
 [node name="LobbyMemberContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1

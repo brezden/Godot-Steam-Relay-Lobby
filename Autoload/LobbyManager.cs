@@ -97,4 +97,11 @@ public partial class LobbyManager : Node
         Players.Remove(playerId);
         EventBus.Lobby.OnLobbyMemberLeft(playerId);
     }
+    
+    public static void LeaveLobby()
+    {
+        Instance._lobbyService.LeaveLobby();
+        _isHost = false;
+        Players.Clear();
+    }
 }

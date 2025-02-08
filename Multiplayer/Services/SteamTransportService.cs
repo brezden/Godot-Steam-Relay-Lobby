@@ -65,6 +65,21 @@ public class SteamTransportService : ITransportService
         return true;
     }
     
+    public void Disconnect()
+    {
+        if (serverSocket != null)
+        {
+            serverSocket.Close();
+            serverSocket = null;
+        }
+        
+        if (clientConnection != null)
+        {
+            clientConnection.Close();
+            clientConnection = null;
+        }
+    }
+    
     public void SendPacketToClients(PacketTypes.MainType mainType, byte subType, byte[] data)
     {
         var packet = PacketFactory.CreatePacket(mainType, subType, 3, data);

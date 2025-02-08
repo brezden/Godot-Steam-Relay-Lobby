@@ -45,6 +45,12 @@ public partial class TransportManager : Node
         GD.Print("[TransportManager] Attempting to connect to server: " + serverId);
         return Instance._transportService.ConnectToServer(serverId);
     }
+    
+    public static void Disconnect()
+    {
+        Instance._transportService.Disconnect();
+        GD.Print("[TransportManager] Disconnected from server.");
+    }
 
     public static void SendPacketToServer(PacketTypes.MainType mainType, byte subType, byte[] data)
     {
