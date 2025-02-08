@@ -15,6 +15,9 @@ public class SteamLobbyService : ILobbyService
         SteamMatchmaking.OnLobbyCreated += OnLobbyCreatedCallback;
         SteamMatchmaking.OnLobbyEntered += OnLobbyEnteredCallback;
         SteamMatchmaking.OnChatMessage += OnLobbyChatMessage;
+        SteamMatchmaking.OnLobbyMemberJoined += LobbyMemberJoined;
+        SteamMatchmaking.OnLobbyMemberDisconnected += LobbyMemberLeft;
+        SteamMatchmaking.OnLobbyMemberLeave += LobbyMemberLeft;
         SteamFriends.OnGameLobbyJoinRequested += OnGameLobbyJoinRequested;
     }
 
@@ -75,6 +78,8 @@ public class SteamLobbyService : ILobbyService
     private static void OnLobbyEnteredCallback(Lobby lobby)
     {
         _lobby = lobby;
+        ImageTexture profilePicture = GetProfilePictureAsync(SteamClient.SteamId).Result;
+        LobbyManager.AddPlayer(profilePicture, SteamClient.Name, SteamClient.SteamId);
         LobbyManager.OnLobbyJoin(lobby.Owner.Id.ToString());
     }
 
@@ -87,22 +92,18 @@ public class SteamLobbyService : ILobbyService
     {
         LobbyManager.OnLobbyMessageReceived(friend.Name, message);
     }
-
-    public async Task GatherPlayerInformation()
-    {
-        SteamId id = SteamClient.SteamId;
-        string name = SteamClient.Name;
-        
-        ImageTexture? profilePicture = await GetProfilePictureAsync(id);
     
-        if (profilePicture != null)
-        {
-            LobbyManager.Instance.OnPlayerJoinedLobby(profilePicture, name, id);
-        }
-        else
-        {
-            GD.Print("No profile picture available for: " + name);
-        }
+    private static void LobbyMemberJoined(Lobby lobby, Friend friend)
+    {
+        ImageTexture profilePicture = GetProfilePictureAsync(friend.Id).Result;
+        LobbyManager.AddPlayer(profilePicture, friend.Name, friend.Id);
+        EventBus.Lobby.OnLobbyMemberJoined(friend.Id.ToString());
+    }
+    
+    private static void LobbyMemberLeft(Lobby lobby, Friend friend)
+    {
+        LobbyManager.RemovePlayer(friend.Id.ToString());
+        EventBus.Lobby.OnLobbyMemberLeft(friend.Id.ToString());
     }
     
     private void OnGameLobbyJoinRequested(Lobby lobby, SteamId id)

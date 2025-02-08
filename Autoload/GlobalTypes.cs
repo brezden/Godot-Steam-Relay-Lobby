@@ -7,10 +7,9 @@ public static class GlobalTypes
 {
     public struct PlayerInfo
     {
-        public int Index;
+        public string PlayerId;
         public string Name;
         public ImageTexture ProfilePicture;
-        public SteamId SteamId;
         public bool IsReady;
     }
 

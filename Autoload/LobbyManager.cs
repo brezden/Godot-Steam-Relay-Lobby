@@ -8,17 +8,8 @@ public partial class LobbyManager : Node
     public static LobbyManager Instance { get; private set; }
     private ILobbyService _lobbyService;
     
+    public static Dictionary<string, GlobalTypes.PlayerInfo> Players = new Dictionary<string, GlobalTypes.PlayerInfo>();
     private static bool _isHost = false;
-    
-    private static Dictionary<string, GlobalTypes.PlayerInfo> Players = new Dictionary<string, GlobalTypes.PlayerInfo>();
-    
-    public static event EventHandler<PlayerInformationArgs> PlayerJoinedLobby;
-    
-    public class PlayerInformationArgs : EventArgs
-    {
-        public ImageTexture PlayerPicture { get; set; }
-        public string PlayerName { get; set; }
-    }
 
     public override void _Ready()
     {
@@ -50,7 +41,6 @@ public partial class LobbyManager : Node
         }
         
         _isHost = true;
-        Instance._lobbyService.GatherPlayerInformation();
     }
     
     public static void OnLobbyJoin(string lobbyId)
@@ -66,7 +56,6 @@ public partial class LobbyManager : Node
         } 
         
         GD.Print("[LobbyManager] Successfully connected to lobby and socket: " + lobbyId);
-        Instance._lobbyService.GatherPlayerInformation();
     }
     
     public static void SendLobbyMessage(string message)
@@ -82,7 +71,7 @@ public partial class LobbyManager : Node
             Message = message
         };
         
-        EventBus.OnLobbyMessageReceived(sender, message);
+        EventBus.Lobby.OnLobbyMessageReceived(sender, message);
     }
     
     public static void InviteLobbyOverlay()
@@ -90,23 +79,22 @@ public partial class LobbyManager : Node
         Instance._lobbyService.InviteLobbyOverlay();
     }
     
-    public void OnPlayerJoinedLobby(ImageTexture playerPicture, string playerName, SteamId playerId)
+    public static void AddPlayer(ImageTexture playerPicture, string playerName, SteamId playerId)
     {
-        PlayerInformationArgs args = new PlayerInformationArgs
-        {
-            PlayerPicture = playerPicture,
-            PlayerName = playerName,
-        };
-        
         Players.Add(playerId.ToString(), new GlobalTypes.PlayerInfo
         {
-            Index = Players.Count,
+            PlayerId = playerId.ToString(),
             Name = playerName,
             ProfilePicture = playerPicture,
-            SteamId = playerId,
             IsReady = false
         });
         
-        PlayerJoinedLobby?.Invoke(this, args);
+        EventBus.Lobby.OnLobbyMemberJoined(playerId.ToString());
+    }
+
+    public static void RemovePlayer(string playerId)
+    {
+        Players.Remove(playerId);
+        EventBus.Lobby.OnLobbyMemberLeft(playerId);
     }
 }

@@ -11,7 +11,7 @@ public partial class LobbyChat : Node
         chatBox = GetNode<TextEdit>("ChatBox");
         chatInput = GetNode<LineEdit>("ChatInput");
 
-        EventBus.LobbyMessageReceived += OnLobbyMessageReceived;
+        EventBus.Lobby.LobbyMessageReceived += OnLobbyMessageReceived;
 
         Button sendLobbyMessageButton = GetNode<Button>("SendLobbyMessage");
         sendLobbyMessageButton.Pressed += OnSendLobbyMessage;
