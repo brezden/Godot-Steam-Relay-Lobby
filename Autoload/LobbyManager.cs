@@ -101,6 +101,8 @@ public partial class LobbyManager : Node
     public static void LeaveLobby()
     {
         Instance._lobbyService.LeaveLobby();
+        TransportManager.Instance.ExecuteProcessMethodStatus(false);
+        TransportManager.Disconnect();
         _isHost = false;
         Players.Clear();
     }

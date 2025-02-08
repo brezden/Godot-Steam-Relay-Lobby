@@ -41,6 +41,5 @@ public partial class Buttons : Node
 	private void LeaveLobby()
 	{
 		LobbyManager.LeaveLobby();
-		TransportManager.Disconnect();
 	}
 }

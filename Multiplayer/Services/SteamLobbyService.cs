@@ -97,7 +97,6 @@ public class SteamLobbyService : ILobbyService
     {
         ImageTexture profilePicture = GetProfilePictureAsync(friend.Id).Result;
         LobbyManager.AddPlayer(profilePicture, friend.Name, friend.Id);
-        EventBus.Lobby.OnLobbyMemberJoined(friend.Id.ToString());
     }
 
     public void LeaveLobby()
@@ -109,7 +108,6 @@ public class SteamLobbyService : ILobbyService
     private static void LobbyMemberLeft(Lobby lobby, Friend friend)
     {
         LobbyManager.RemovePlayer(friend.Id.ToString());
-        EventBus.Lobby.OnLobbyMemberLeft(friend.Id.ToString());
     }
     
     private void OnGameLobbyJoinRequested(Lobby lobby, SteamId id)
