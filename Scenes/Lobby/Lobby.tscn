@@ -1,0 +1,95 @@
+[gd_scene load_steps=5 format=3 uid="uid://qsoslr654lwv"]
+
+[ext_resource type="Script" path="res://Scripts/UI/Lobby/LobbyChat.cs" id="1_uhqm1"]
+[ext_resource type="Script" path="res://Scripts/UI/Lobby/LobbyButtons.cs" id="2_ld7vs"]
+[ext_resource type="Script" path="res://Scenes/Lobby/LobbyMemberContainer.cs" id="3_gklqx"]
+[ext_resource type="PackedScene" uid="uid://s8d6qytpgyqq" path="res://Scenes/Lobby/LobbyMember.tscn" id="4_8mcj3"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LobbyChat" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_uhqm1")
+
+[node name="ChatBox" type="TextEdit" parent="LobbyChat"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+
+[node name="ChatInput" type="LineEdit" parent="LobbyChat"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 25)
+layout_mode = 2
+placeholder_text = "Chat Message"
+clear_button_enabled = true
+
+[node name="SendLobbyMessage" type="Button" parent="LobbyChat"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(125, 25)
+layout_mode = 2
+text = "Send Lobby Message"
+
+[node name="ButtonContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -150.0
+offset_top = 25.0
+offset_right = -25.0
+offset_bottom = 56.0
+grow_horizontal = 0
+script = ExtResource("2_ld7vs")
+
+[node name="HostLobby" type="Button" parent="ButtonContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(125, 25)
+layout_mode = 2
+text = "Host"
+
+[node name="InviteMembers" type="Button" parent="ButtonContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(125, 25)
+layout_mode = 2
+text = "Invite"
+
+[node name="SendServerPacket" type="Button" parent="ButtonContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(125, 25)
+layout_mode = 2
+text = "Send Server Packet"
+
+[node name="SendClientsPacket" type="Button" parent="ButtonContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(125, 25)
+layout_mode = 2
+text = "Send Client Packet"
+
+[node name="LeaveLobby" type="Button" parent="ButtonContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(125, 25)
+layout_mode = 2
+text = "Leave Lobby"
+
+[node name="LobbyMemberContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -64.0
+offset_bottom = -32.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+alignment = 1
+script = ExtResource("3_gklqx")
+_lobbyMemberScene = ExtResource("4_8mcj3")

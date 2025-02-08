@@ -105,5 +105,6 @@ public partial class LobbyManager : Node
         TransportManager.Disconnect();
         _isHost = false;
         Players.Clear();
+        SceneManager.Instance.ChangeScene("res://main.tscn");
     }
 }
