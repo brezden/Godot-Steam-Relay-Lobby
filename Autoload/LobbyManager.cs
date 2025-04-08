@@ -31,12 +31,12 @@ public partial class LobbyManager : Node
 
     public static void OnLobbyCreation(string lobbyId)
     {
-        GD.Print("[LobbyManager] Lobby created: " + lobbyId);
+        Logger.Network($"Lobby created: {lobbyId}");
         bool result = TransportManager.CreateServer();
         
         if (!result)
         {
-            GD.PrintErr("[LobbyManager] Failed to create server.");
+            Logger.Error("Failed to create server.");
             return;
         }
         
@@ -51,16 +51,17 @@ public partial class LobbyManager : Node
 
         if (!result)
         {
-            GD.PrintErr("[LobbyManager] Failed to connect to lobby and socket successfully: " + lobbyId);
+            Logger.Error($"Failed to connect to lobby and socket successfully: {lobbyId}");
             return;
         } 
         
-        GD.Print("[LobbyManager] Successfully connected to lobby and socket: " + lobbyId);
+        Logger.Network($"Successfully connected to lobby and socket: {lobbyId}");
     }
     
     public static void SendLobbyMessage(string message)
     {
         Instance._lobbyService.SendLobbyMessage(message);
+        Logger.Network($"Lobby message sent: {message}");
     }
     
     public static void OnLobbyMessageReceived(string sender, string message)
@@ -70,6 +71,8 @@ public partial class LobbyManager : Node
             PlayerName = sender,
             Message = message
         };
+        
+        Logger.Network($"Lobby message received from {sender}: {message}");
         
         EventBus.Lobby.OnLobbyMessageReceived(sender, message);
     }
@@ -90,12 +93,14 @@ public partial class LobbyManager : Node
         });
         
         EventBus.Lobby.OnLobbyMemberJoined(playerId.ToString());
+        Logger.Network($"Player added: {playerName}");
     }
 
     public static void RemovePlayer(string playerId)
     {
         Players.Remove(playerId);
         EventBus.Lobby.OnLobbyMemberLeft(playerId);
+        Logger.Network($"Player removed: {playerId}");
     }
     
     public static void LeaveLobby()
@@ -106,5 +111,6 @@ public partial class LobbyManager : Node
         _isHost = false;
         Players.Clear();
         SceneManager.Instance.ChangeScene("res://main.tscn");
+        Logger.Network("Left lobby and cleared player list.");
     }
 }

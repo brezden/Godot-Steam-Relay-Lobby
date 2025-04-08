@@ -17,9 +17,10 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+Logger="*res://Autoload/Logger.cs"
+EventBus="*res://Autoload/EventBus.cs"
 LobbyManager="*res://Autoload/LobbyManager.cs"
 TransportManager="*res://Autoload/TransportManager.cs"
-EventBus="*res://Autoload/EventBus.cs"
 SceneManager="*res://Autoload/SceneManager.cs"
 
 [display]

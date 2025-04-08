@@ -15,13 +15,13 @@ public partial class LobbyMember : Control
 
         if (_nameLabel == null)
         {
-            GD.PrintErr("NameLabel node not found in LobbyMember scene!");
+            Logger.Error("NameLabel node not found in LobbyMember scene!");
             return;
         }
 
         if (_profilePicture == null)
         {
-            GD.PrintErr("ProfilePicture node not found in LobbyMember scene!");
+            Logger.Error("ProfilePicture node not found in LobbyMember scene!");
             return;
         }
         

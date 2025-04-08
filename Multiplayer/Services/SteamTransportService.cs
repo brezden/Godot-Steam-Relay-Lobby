@@ -37,7 +37,7 @@ public class SteamTransportService : ITransportService
         
         if (serverSocket == null)
         {
-            GD.PrintErr("Failed to create Steam relay server.");
+            Logger.Error("Failed to create Steam relay server.");
             return false;
         }
         
@@ -109,7 +109,7 @@ public class ServerCallbacks : ISocketManager
     public void OnConnecting(Connection connection, ConnectionInfo data)
     {
         connection.Accept();
-        GD.Print($"Server: Player {data.Identity} is attempting to connect...");
+        Logger.Network($"Server: Player {data.Identity} is attempting to connect...");
         
         byte[] welcomeData = BitConverter.GetBytes(data.Identity.SteamId.Value);
         connection.SendMessage(PacketFactory.CreatePacket(
@@ -122,23 +122,23 @@ public class ServerCallbacks : ISocketManager
 
     public void OnConnected(Connection connection, ConnectionInfo data)
     {
-        GD.Print($"Server: Player {data.Identity} has successfully connected!");
+        Logger.Network($"Server: Player {data.Identity} has successfully connected!");
     }
 
     public void OnDisconnected(Connection connection, ConnectionInfo data)
     {
-        GD.Print($"Server: Player {data.Identity} has disconnected.");
+        Logger.Network($"Server: Player {data.Identity} has disconnected.");
     }
 
     public void OnMessage(Connection connection, NetIdentity identity, IntPtr data, int size, long messageNum,
         long recvTime, int channel)
     {
-        GD.Print("Server: Received message from player: " + identity);
+        Logger.Network($"Server: Received message from player: {identity}");
         byte[] packetData = new byte[size];
         System.Runtime.InteropServices.Marshal.Copy(data, packetData, 0, size);
 
         var (header, payload) = PacketFactory.ParsePacket(packetData);
-        GD.Print($"Server: Received packet - Main Type: {header.MainType}, Sub Type: {header.SubType} from Player {header.PlayerIndex}, Data : {PacketFactory.GetStringFromPacketData(payload)}");
+        Logger.Network($"Server: Received packet - Main Type: {header.MainType}, Sub Type: {header.SubType} from Player {header.PlayerIndex}, Data : {PacketFactory.GetStringFromPacketData(payload)}");
     }
 }
 
@@ -146,27 +146,27 @@ public class ClientConnectionManager : ConnectionManager
 {
     public override void OnConnecting(ConnectionInfo info)
     {
-        GD.Print("Client: Attempting to connect to server...");
+        Logger.Network("Client: Attempting to connect to server...");
     }
 
     public override void OnConnected(ConnectionInfo info)
     {
-        GD.Print("Client: Successfully connected to server!");
+        Logger.Network("Client: Successfully connected to server!");
     }
 
     public override void OnDisconnected(ConnectionInfo info)
     {
-        GD.Print("Client: Disconnected from server.");
+        Logger.Network("Client: Disconnected from server.");
         TransportManager.Instance.ExecuteProcessMethodStatus(false);
     }
 
     public override void OnMessage(IntPtr data, int size, long messageNum, long recvTime, int channel)
     {
-        GD.Print("Server: Received message from server.");
+        Logger.Network("Server: Received message from server.");
         byte[] packetData = new byte[size];
         System.Runtime.InteropServices.Marshal.Copy(data, packetData, 0, size);
 
         var (header, payload) = PacketFactory.ParsePacket(packetData);
-        GD.Print($"Server: Received packet - Main Type: {header.MainType}, Sub Type: {header.SubType} from Player {header.PlayerIndex}, Data : {PacketFactory.GetStringFromPacketData(payload)}");
+        Logger.Network($"Server: Received packet - Main Type: {header.MainType}, Sub Type: {header.SubType} from Player {header.PlayerIndex}, Data : {PacketFactory.GetStringFromPacketData(payload)}");
     }
 }

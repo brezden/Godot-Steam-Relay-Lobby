@@ -34,16 +34,16 @@ public class SteamLobbyService : ILobbyService
 
             if (SteamClient.IsValid)
             {
-                GD.Print($"Steam initialized successfully! User: {SteamClient.Name}");
+                Logger.Network($"Steam initialized successfully! User: {SteamClient.Name}");
                 return true;
             }
             
-            GD.PrintErr("Steam initialization failed.");
+            Logger.Error("Steam initialization failed.");
             return false;
         }
         catch (Exception ex)
         {
-            GD.PrintErr($"Steam initialization error: {ex.Message}");
+            Logger.Error($"Steam initialization error: {ex.Message}");
             return false;
         }
     }
@@ -61,12 +61,12 @@ public class SteamLobbyService : ILobbyService
             }
             else
             {
-                GD.PrintErr("Failed to create Steam lobby.");
+                Logger.Error("Failed to create Steam lobby.");
             }
         }
         catch (Exception ex)
         {
-            GD.PrintErr($"Error creating lobby: {ex.Message}");
+            Logger.Error($"Error creating lobby: {ex.Message}");
         }
     }
 
@@ -112,7 +112,7 @@ public class SteamLobbyService : ILobbyService
     
     private void OnGameLobbyJoinRequested(Lobby lobby, SteamId id)
     {
-        GD.Print($"[DEBUG] User accepted lobby invite through Steam UI. Joining lobby: {lobby.Id}");
+        Logger.Network($"User accepted lobby invite through Steam UI. Joining lobby: {lobby.Id}");
         JoinLobby(lobby.Id.ToString());
     }
     
@@ -147,12 +147,12 @@ public class SteamLobbyService : ILobbyService
             var result = await SteamMatchmaking.JoinLobbyAsync(ulong.Parse(lobbyId));
             if (!result.HasValue)
             {
-                GD.PrintErr($"Failed to join lobby: {lobbyId}");
+                Logger.Error($"Failed to join lobby: {lobbyId}");
             }
         }
         catch (Exception ex)
         {
-            GD.PrintErr($"Error joining lobby: {ex.Message}");
+            Logger.Error($"Error joining lobby: {ex.Message}");
         }
     }
 }

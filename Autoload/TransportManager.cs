@@ -32,35 +32,35 @@ public partial class TransportManager : Node
         
         if (!result)
         {
-            GD.PrintErr("[TransportManager] Failed to create server.");
+            Logger.Error("Failed to create server.");
             return false;
         }
         
-        GD.Print("[TransportManager] Server created successfully.");
+        Logger.Network("Server created successfully.");
         return true;
     }
 
     public static bool ConnectToServer(string serverId)
     {
-        GD.Print("[TransportManager] Attempting to connect to server: " + serverId);
+        Logger.Network($"Attempting to connect to server: {serverId}");
         return Instance._transportService.ConnectToServer(serverId);
     }
     
     public static void Disconnect()
     {
         Instance._transportService.Disconnect();
-        GD.Print("[TransportManager] Disconnected from server.");
+        Logger.Network("Disconnected from server.");
     }
 
     public static void SendPacketToServer(PacketTypes.MainType mainType, byte subType, byte[] data)
     {
-        GD.Print("[TransportManager] Sending packet to server with main type: " + mainType + " and sub type: " + subType);
+        Logger.Network($"Sending packet to server with main type: {mainType} and sub type: {subType}");
         Instance._transportService.SendPacketToServer(mainType, subType, data);
     }
     
     public static void SendPacketToClients(PacketTypes.MainType mainType, byte subType, byte[] data)
     {
-        GD.Print("[TransportManager] Sending packet to clients with main type: " + mainType + " and sub type: " + subType);
+        Logger.Network($"Sending packet to clients with main type: {mainType} and sub type: {subType}");
         Instance._transportService.SendPacketToClients(mainType, subType, data);
     }
 }
