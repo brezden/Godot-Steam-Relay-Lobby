@@ -1,7 +1,16 @@
-# Godot Peer-2-Peer Networking using Steamworks SDK
+# Godot Steam Lobby & Relay Server Multiplayer (C#)
 
-This is supposed to be a simple example of how to use the Steamworks 
-SDK to create a peer-2-peer connection between two Godot games.
+This is a lightweight demo of a **Steam-integrated multiplayer lobby and relay-hosted server system**, built in **Godot 4 (C#)** using the **Steamworks SDK** and **Facepunch.Steamworks** wrapper.
+
+Players can:
+- Create or join a Steam lobby
+- See who’s connected
+- Send messages between players
+- Transition into a synced mini-game using SteamNetworkingSockets
+
+> ⚠️ This is a **work-in-progress** example project. Not production-ready, but useful for learning and prototyping.
+
+---
 
 ## How to use
 1. Download the Steamworks SDK from [here](https://partner.steamgames.com/)

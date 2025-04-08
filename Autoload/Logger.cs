@@ -32,7 +32,7 @@ public partial class Logger : Node
         #if DEBUG
                 logDir = Path.Combine(ProjectSettings.GlobalizePath("res://"), "Logs");
         #else
-            logDir = ProjectSettings.GlobalizePath("user://Logs");
+            logDir = Path.Combine(ProjectSettings.GlobalizePath("user://"), "Logs");
         #endif
 
         gameLogPath = Path.Combine(logDir, "game_log.txt");
