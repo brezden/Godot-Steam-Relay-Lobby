@@ -52,15 +52,21 @@ public partial class TransportManager : Node
         Logger.Network("Disconnected from server.");
     }
 
-    public static void SendPacketToServer(PacketTypes.MainType mainType, byte subType, byte[] data)
-    {
-        Logger.Network($"Sending packet to server with main type: {mainType} and sub type: {subType}");
+    public static void SendPacketToServer(PacketTypes.MainType mainType, byte subType, byte[] data) {
         Instance._transportService.SendPacketToServer(mainType, subType, data);
+
+        Logger.Network(
+            $"Sent packet to server with main type: {Enum.GetName(typeof(PacketTypes.MainType), mainType)} " +
+            $"and sub type: {Enum.GetName(Type.GetType($"PacketTypes+{mainType}"), subType) ?? subType.ToString()}"
+        );
     }
-    
-    public static void SendPacketToClients(PacketTypes.MainType mainType, byte subType, byte[] data)
-    {
-        Logger.Network($"Sending packet to clients with main type: {mainType} and sub type: {subType}");
+
+    public static void SendPacketToClients(PacketTypes.MainType mainType, byte subType, byte[] data) {
         Instance._transportService.SendPacketToClients(mainType, subType, data);
+
+        Logger.Network(
+            $"Sent packet to clients with main type: {Enum.GetName(typeof(PacketTypes.MainType), mainType)} " +
+            $"and sub type: {Enum.GetName(Type.GetType($"PacketTypes+{mainType}"), subType) ?? subType.ToString()}"
+        );
     }
 }

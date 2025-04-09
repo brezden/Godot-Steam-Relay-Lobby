@@ -30,7 +30,7 @@ public partial class Logger : Node
     private static void InitLogPaths()
     {
         #if DEBUG
-                logDir = Path.Combine(ProjectSettings.GlobalizePath("res://"), "Logs");
+            logDir = Path.Combine(ProjectSettings.GlobalizePath("res://"), "Logs");
         #else
             logDir = Path.Combine(ProjectSettings.GlobalizePath("user://"), "Logs");
         #endif

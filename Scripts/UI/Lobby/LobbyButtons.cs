@@ -30,12 +30,12 @@ public partial class LobbyButtons : Node
 	
 	private void SendServerPacket()
 	{
-		TransportManager.SendPacketToServer(PacketTypes.MainType.Player, 69, new byte[] { 0, 1, 2, 3 });
+		TransportManager.SendPacketToServer(PacketTypes.MainType.Player, 2, new byte[] { 0, 1, 2, 3 });
 	}
 
 	private void SendClientPacket()
 	{
-		TransportManager.SendPacketToClients(PacketTypes.MainType.Player, 69, new byte[] { 0, 1, 2, 3 });
+		TransportManager.SendPacketToClients(PacketTypes.MainType.Player, 3, new byte[] { 0, 1, 2, 3 });
 	}
 	
 	private void LeaveLobby()

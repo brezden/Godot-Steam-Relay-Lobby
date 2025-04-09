@@ -114,7 +114,7 @@ public class ServerCallbacks : ISocketManager
         byte[] welcomeData = BitConverter.GetBytes(data.Identity.SteamId.Value);
         connection.SendMessage(PacketFactory.CreatePacket(
             PacketTypes.MainType.Lobby,
-            (byte)PacketTypes.LobbyType.PlayerJoin,
+            (byte)PacketTypes.Lobby.PlayerJoin,
             3,
             welcomeData
         ));
@@ -133,7 +133,6 @@ public class ServerCallbacks : ISocketManager
     public void OnMessage(Connection connection, NetIdentity identity, IntPtr data, int size, long messageNum,
         long recvTime, int channel)
     {
-        Logger.Network($"Server: Received message from player: {identity}");
         byte[] packetData = new byte[size];
         System.Runtime.InteropServices.Marshal.Copy(data, packetData, 0, size);
 
@@ -165,8 +164,6 @@ public class ClientConnectionManager : ConnectionManager
         Logger.Network("Server: Received message from server.");
         byte[] packetData = new byte[size];
         System.Runtime.InteropServices.Marshal.Copy(data, packetData, 0, size);
-
         var (header, payload) = PacketFactory.ParsePacket(packetData);
-        Logger.Network($"Server: Received packet - Main Type: {header.MainType}, Sub Type: {header.SubType} from Player {header.PlayerIndex}, Data : {PacketFactory.GetStringFromPacketData(payload)}");
     }
 }
