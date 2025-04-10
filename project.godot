@@ -22,6 +22,8 @@ EventBus="*res://Autoload/EventBus.cs"
 LobbyManager="*res://Autoload/LobbyManager.cs"
 TransportManager="*res://Autoload/TransportManager.cs"
 SceneManager="*res://Autoload/SceneManager.cs"
+StateManager="*res://Autoload/StateManager.cs"
+InputManager="*res://Autoload/InputManager.cs"
 
 [display]
 
