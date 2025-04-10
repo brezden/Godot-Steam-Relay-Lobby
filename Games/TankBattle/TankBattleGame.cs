@@ -3,5 +3,5 @@
 public class TankBattleGame : IGame
 {
     public string GameName => "Tank Battle";
-    public int MaxPlayerCount => 2;
+    public GlobalTypes.GameType GameType => GlobalTypes.GameType.FreeForAll;
 }

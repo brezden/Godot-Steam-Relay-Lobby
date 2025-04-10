@@ -20,6 +20,14 @@ public static class GlobalTypes
         public int MaxPlayers;
         public Dictionary<string, PlayerInfo> Players;
     }
+
+    public enum GameType
+    {
+       Duel,
+       TeamDuel, 
+       OneVersusMany,
+       FreeForAll
+    }
     
     public class LobbyMessageArgs : EventArgs
     {

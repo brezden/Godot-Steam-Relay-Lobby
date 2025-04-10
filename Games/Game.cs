@@ -3,5 +3,5 @@
 public interface IGame
 {
     string GameName { get; }
-    int MaxPlayerCount { get; }
+    GlobalTypes.GameType GameType { get; }
 }
