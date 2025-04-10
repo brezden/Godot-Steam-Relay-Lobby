@@ -110,7 +110,7 @@ public partial class LobbyManager : Node
         TransportManager.Disconnect();
         _isHost = false;
         Players.Clear();
-        SceneManager.Instance.ChangeScene("res://main.tscn");
+        SceneManager.Instance.GotoScene("res://main.tscn");
         Logger.Network("Left lobby and cleared player list.");
     }
 }

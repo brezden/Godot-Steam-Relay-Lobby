@@ -20,7 +20,7 @@ public partial class MainMenuButtons : Node
 	
 	private void HostOnline()
 	{
-		GetTree().ChangeSceneToPacked(lobbyScene);
+		SceneManager.Instance.GotoScene("res://Scenes/Lobby/Lobby.tscn");
 	}
 	
 	private void LocalPlay()
