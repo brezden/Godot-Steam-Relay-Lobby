@@ -80,9 +80,9 @@ public class SteamTransportService : ITransportService
         }
     }
     
-    public void SendPacketToClients(PacketTypes.MainType mainType, byte subType, byte[] data)
+    public void SendReliablePacketToClients(PacketTypes.MainType mainType, byte subType, byte playerIndex, byte[] data)
     {
-        var packet = PacketFactory.CreatePacket(mainType, subType, 3, data);
+        var packet = PacketFactory.CreateReliablePacket((byte) mainType, subType, playerIndex, data);
 
         if (serverSocket != null)
         {
@@ -93,15 +93,15 @@ public class SteamTransportService : ITransportService
         }
     }
 
-    public void SendPacketToServer(PacketTypes.MainType mainType, byte subType, byte[] data)
-    {
-        var packet = PacketFactory.CreatePacket(mainType, subType, 2, data);
-        
-        if (clientConnection != null)
-        {
-            clientConnection.Connection.SendMessage(packet, SendType.Unreliable);
-        }
-    }
+    // public void SendPacketToServer(PacketTypes.MainType mainType, byte subType, byte[] data)
+    // {
+    //     var packet = PacketFactory.CreatePacket(mainType, subType, 2, data);
+    //     
+    //     if (clientConnection != null)
+    //     {
+    //         clientConnection.Connection.SendMessage(packet, SendType.Unreliable);
+    //     }
+    // }
 }
 
 public class ServerCallbacks : ISocketManager
@@ -110,14 +110,6 @@ public class ServerCallbacks : ISocketManager
     {
         connection.Accept();
         Logger.Network($"Server: Player {data.Identity} is attempting to connect...");
-        
-        byte[] welcomeData = BitConverter.GetBytes(data.Identity.SteamId.Value);
-        connection.SendMessage(PacketFactory.CreatePacket(
-            PacketTypes.MainType.Lobby,
-            (byte)PacketTypes.Lobby.PlayerJoin,
-            3,
-            welcomeData
-        ));
     }
 
     public void OnConnected(Connection connection, ConnectionInfo data)
@@ -136,8 +128,8 @@ public class ServerCallbacks : ISocketManager
         byte[] packetData = new byte[size];
         System.Runtime.InteropServices.Marshal.Copy(data, packetData, 0, size);
 
-        var (header, payload) = PacketFactory.ParsePacket(packetData);
-        Logger.Network($"Server: Received packet - Main Type: {header.MainType}, Sub Type: {header.SubType} from Player {header.PlayerIndex}, Data : {PacketFactory.GetStringFromPacketData(payload)}");
+        // var (header, payload) = PacketFactory.ParsePacket(packetData);
+        //Logger.Network($"Server: Received packet - Main Type: {header.MainType}, Sub Type: {header.SubType} from Player {header.PlayerIndex}");
     }
 }
 
@@ -164,6 +156,6 @@ public class ClientConnectionManager : ConnectionManager
         Logger.Network("Server: Received message from server.");
         byte[] packetData = new byte[size];
         System.Runtime.InteropServices.Marshal.Copy(data, packetData, 0, size);
-        var (header, payload) = PacketFactory.ParsePacket(packetData);
+        // var (header, payload) = PacketFactory.ParsePacket(packetData);
     }
 }
