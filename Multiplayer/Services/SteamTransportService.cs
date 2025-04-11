@@ -71,18 +71,45 @@ public class SteamTransportService : ITransportService
         {
             serverSocket.Close();
             serverSocket = null;
+            return;
         }
         
-        if (clientConnection != null)
-        {
-            clientConnection.Close();
-            clientConnection = null;
-        }
+        clientConnection?.Close();
+        clientConnection = null;
+    }
+    
+    public void SendReliablePacketToServer(PacketTypes.MainType mainType, byte subType, byte playerIndex, byte[] data)
+    {
+        byte[] packet = PacketFactory.CreateReliablePacket((byte) mainType, subType, playerIndex, data);
+        clientConnection?.Connection.SendMessage(packet);
+        PacketFactory.ReturnPacket(packet);
+    }
+    
+    public void SendUnreliablePacketToServer(PacketTypes.MainType mainType, byte subType, byte playerIndex, ushort tick, byte[] data)
+    {
+        byte[] packet = PacketFactory.CreateUnreliablePacket((byte) mainType, subType, playerIndex, tick, data);
+        clientConnection?.Connection.SendMessage(packet, SendType.Unreliable);
+        PacketFactory.ReturnPacket(packet);
     }
     
     public void SendReliablePacketToClients(PacketTypes.MainType mainType, byte subType, byte playerIndex, byte[] data)
     {
-        var packet = PacketFactory.CreateReliablePacket((byte) mainType, subType, playerIndex, data);
+        byte[] packet = PacketFactory.CreateReliablePacket((byte) mainType, subType, playerIndex, data);
+
+        if (serverSocket != null)
+        {
+            foreach (var client in serverSocket.Connected)
+            {
+                client.SendMessage(packet);
+            }
+        }
+        
+        PacketFactory.ReturnPacket(packet);
+    }
+
+    public void SendUnreliablePacketToClients(PacketTypes.MainType mainType, byte subType, byte playerIndex, ushort tick, byte[] data)
+    {
+        byte[] packet = PacketFactory.CreateUnreliablePacket((byte)mainType, subType, playerIndex, tick, data);
 
         if (serverSocket != null)
         {
@@ -91,17 +118,9 @@ public class SteamTransportService : ITransportService
                 client.SendMessage(packet, SendType.Unreliable);
             }
         }
-    }
 
-    // public void SendPacketToServer(PacketTypes.MainType mainType, byte subType, byte[] data)
-    // {
-    //     var packet = PacketFactory.CreatePacket(mainType, subType, 2, data);
-    //     
-    //     if (clientConnection != null)
-    //     {
-    //         clientConnection.Connection.SendMessage(packet, SendType.Unreliable);
-    //     }
-    // }
+        PacketFactory.ReturnPacket(packet);
+    }
 }
 
 public class ServerCallbacks : ISocketManager
