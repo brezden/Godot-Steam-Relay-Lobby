@@ -78,23 +78,23 @@ public class SteamTransportService : ITransportService
         clientConnection = null;
     }
     
-    public void SendReliablePacketToServer(PacketTypes.MainType mainType, byte subType, byte playerIndex, byte[] data)
+    public void SendReliablePacketToServer(byte mainType, byte subType, byte playerIndex, byte[] data)
     {
-        byte[] packet = PacketFactory.CreateReliablePacket((byte) mainType, subType, playerIndex, data);
+        byte[] packet = PacketFactory.CreateReliablePacket(mainType, subType, playerIndex, data);
         clientConnection?.Connection.SendMessage(packet);
         PacketFactory.ReturnPacket(packet);
     }
     
-    public void SendUnreliablePacketToServer(PacketTypes.MainType mainType, byte subType, byte playerIndex, ushort tick, byte[] data)
+    public void SendUnreliablePacketToServer(byte mainType, byte subType, byte playerIndex, ushort tick, byte[] data)
     {
-        byte[] packet = PacketFactory.CreateUnreliablePacket((byte) mainType, subType, playerIndex, tick, data);
+        byte[] packet = PacketFactory.CreateUnreliablePacket(mainType, subType, playerIndex, tick, data);
         clientConnection?.Connection.SendMessage(packet, SendType.Unreliable);
         PacketFactory.ReturnPacket(packet);
     }
     
-    public void SendReliablePacketToClients(PacketTypes.MainType mainType, byte subType, byte playerIndex, byte[] data)
+    public void SendReliablePacketToClients(byte mainType, byte subType, byte playerIndex, byte[] data)
     {
-        byte[] packet = PacketFactory.CreateReliablePacket((byte) mainType, subType, playerIndex, data);
+        byte[] packet = PacketFactory.CreateReliablePacket(mainType, subType, playerIndex, data);
 
         if (serverSocket != null)
         {
@@ -107,9 +107,9 @@ public class SteamTransportService : ITransportService
         PacketFactory.ReturnPacket(packet);
     }
 
-    public void SendUnreliablePacketToClients(PacketTypes.MainType mainType, byte subType, byte playerIndex, ushort tick, byte[] data)
+    public void SendUnreliablePacketToClients(byte mainType, byte subType, byte playerIndex, ushort tick, byte[] data)
     {
-        byte[] packet = PacketFactory.CreateUnreliablePacket((byte)mainType, subType, playerIndex, tick, data);
+        byte[] packet = PacketFactory.CreateUnreliablePacket(mainType, subType, playerIndex, tick, data);
 
         if (serverSocket != null)
         {

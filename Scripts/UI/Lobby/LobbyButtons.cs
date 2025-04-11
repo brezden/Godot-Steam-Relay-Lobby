@@ -13,8 +13,8 @@ public partial class LobbyButtons : Node
 
 		createLobbyButton.Pressed += CreateLobby;
 		inviteLobbyButton.Pressed += InviteLobby;
-		sendServerPacketButton.Pressed += SendServerPacket;
-		sendClientPacketButton.Pressed += SendClientPacket;
+		sendServerPacketButton.Pressed += SendUnreliableServerPacket;
+		sendClientPacketButton.Pressed += SendUnreliableClientPacket;
 		leaveLobbyButton.Pressed += LeaveLobby;
 	}
 	
@@ -28,14 +28,14 @@ public partial class LobbyButtons : Node
 		LobbyManager.InviteLobbyOverlay();
 	}
 	
-	private void SendServerPacket()
+	private void SendUnreliableServerPacket()
 	{
-		TransportManager.SendPacketToServer(PacketTypes.MainType.Player, 2, new byte[] { 0, 1, 2, 3 });
+		TransportManager.SendUnreliablePacketToServer(PacketTypes.MainType.Input, 2, 1, 812);
 	}
 
-	private void SendClientPacket()
+	private void SendUnreliableClientPacket()
 	{
-		TransportManager.SendPacketToClients(PacketTypes.MainType.Player, 3, new byte[] { 0, 1, 2, 3 });
+		TransportManager.SendUnreliablePacketToClients(PacketTypes.MainType.Input, 1, 2, 1948);
 	}
 	
 	private void LeaveLobby()

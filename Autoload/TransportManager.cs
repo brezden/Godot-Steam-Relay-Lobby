@@ -51,22 +51,26 @@ public partial class TransportManager : Node
         Instance._transportService.Disconnect();
         Logger.Network("Disconnected from server.");
     }
-
-    public static void SendPacketToServer(PacketTypes.MainType mainType, byte subType, byte[] data) {
-        Instance._transportService.SendPacketToServer(mainType, subType, data);
-
-        Logger.Network(
-            $"Sent packet to server with main type: {Enum.GetName(typeof(PacketTypes.MainType), mainType)} " +
-            $"and sub type: {Enum.GetName(Type.GetType($"PacketTypes+{mainType}"), subType) ?? subType.ToString()}"
-        );
+    
+    public static void SendReliablePacketToServer(PacketTypes.MainType mainType, byte subType, byte playerIndex, byte[] data = null) 
+    {
+        Instance._transportService.SendReliablePacketToServer((byte) mainType, subType, playerIndex, data);
+        Logger.Network($"Sent reliable packet to server. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}");
+    }
+    
+    public static void SendUnreliablePacketToServer(PacketTypes.MainType mainType, byte subType, byte playerIndex, ushort tick, byte[] data = null) 
+    {
+        Instance._transportService.SendUnreliablePacketToServer((byte)mainType, subType, playerIndex, tick, data);
+        Logger.Network($"Sent unreliable packet to server. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}, Tick: {tick}");
     }
 
-    public static void SendPacketToClients(PacketTypes.MainType mainType, byte subType, byte[] data) {
-        Instance._transportService.SendPacketToClients(mainType, subType, data);
-
-        Logger.Network(
-            $"Sent packet to clients with main type: {Enum.GetName(typeof(PacketTypes.MainType), mainType)} " +
-            $"and sub type: {Enum.GetName(Type.GetType($"PacketTypes+{mainType}"), subType) ?? subType.ToString()}"
-        );
+    public static void SendReliablePacketToClients(PacketTypes.MainType mainType, byte subType, byte playerIndex, byte[] data = null) {
+        Instance._transportService.SendReliablePacketToClients((byte) mainType, subType, playerIndex, data);
+        Logger.Network($"Sent reliable packet to clients. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}");
+    }
+    
+    public static void SendUnreliablePacketToClients(PacketTypes.MainType mainType, byte subType, byte playerIndex, ushort tick, byte[] data = null) {
+        Instance._transportService.SendUnreliablePacketToClients((byte) mainType, subType, playerIndex, tick, data);
+        Logger.Network($"Sent unreliable packet to clients. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}, Tick: {tick}");
     }
 }
