@@ -45,11 +45,11 @@ public static class PacketFactory
             buffer[2] = playerIndex;
             buffer[3] = 1;
             
-            *(ushort*)(buffer + HeaderSizeReliable) = tick;
+            *(ushort*)(buffer + HeaderSizeUnreliable) = tick;
 
             if (data?.Length > 0)
             {
-                Marshal.Copy(data, 0, IntPtr.Add(ptr, HeaderSizeReliable), data.Length);
+                Marshal.Copy(data, 0, IntPtr.Add(ptr, HeaderSizeUnreliable), data.Length);
             }
         }
 

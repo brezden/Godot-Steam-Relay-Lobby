@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 
 public class SteamTransportService : ITransportService
 {
-    private SocketManager serverSocket;
-    private ClientConnectionManager clientConnection;
-    private ServerCallbacks serverCallbacks;
+    private static SocketManager serverSocket;
+    private static ClientConnectionManager clientConnection;
+    private static ServerCallbacks serverCallbacks;
     
     private Action _updateMethod;
 
@@ -100,7 +100,7 @@ public class SteamTransportService : ITransportService
         SendReliablePacketToClients(packetPtr, totalSize);
     }
     
-    private void SendReliablePacketToClients(IntPtr packetPtr, int totalSize)
+    private static void SendReliablePacketToClients(IntPtr packetPtr, int totalSize)
     {
         if (serverSocket == null) return;
 
@@ -118,7 +118,7 @@ public class SteamTransportService : ITransportService
         SendUnreliablePacketToClients(packet, totalSize);
     }
     
-    private void SendUnreliablePacketToClients(IntPtr packetPtr, int totalSize)
+    private static void SendUnreliablePacketToClients(IntPtr packetPtr, int totalSize)
     {
         if (serverSocket == null) return;
 
@@ -128,6 +128,19 @@ public class SteamTransportService : ITransportService
         }
         
         Marshal.FreeHGlobal(packetPtr);
+    }
+
+    public static void RelayPacketToClients(Connection originConnection, IntPtr packetPtr, int totalSize, SendType sendType)
+    {
+        if (serverSocket == null) return;
+
+        foreach (var client in serverSocket.Connected)
+        {
+            if (client != originConnection)
+            {
+                client.SendMessage(packetPtr, totalSize, sendType);
+            }
+        }
     }
 }
 
@@ -161,6 +174,7 @@ public class ServerCallbacks : ISocketManager
         // Reliable
         if (sendType == 0) 
         {
+            SteamTransportService.RelayPacketToClients(connection, data, size, SendType.Reliable);
             Span<byte> payload = span.Slice(PacketFactory.HeaderSizeReliable, size - PacketFactory.HeaderSizeReliable);
             TransportManager.Server.OnReliablePacketReceived(mainType, subType, playerIndex, payload);
         } 
@@ -168,6 +182,7 @@ public class ServerCallbacks : ISocketManager
         // Unreliable
         else
         { 
+            SteamTransportService.RelayPacketToClients(connection, data, size, SendType.Unreliable);
             ushort tick = BitConverter.ToUInt16(span.Slice(PacketFactory.HeaderSizeReliable, 2));
             Span<byte> payload = span.Slice(PacketFactory.HeaderSizeUnreliable, size - PacketFactory.HeaderSizeUnreliable);
             TransportManager.Server.OnUnreliablePacketReceived(mainType, subType, playerIndex, tick, payload);
