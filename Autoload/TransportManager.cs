@@ -26,51 +26,72 @@ public partial class TransportManager : Node
         SetProcess(status);
     }
     
-    public static bool CreateServer()
+    public class Server
     {
-        bool result = Instance._transportService.CreateServer();
-        
-        if (!result)
+        public static bool CreateServer()
         {
-            Logger.Error("Failed to create server.");
-            return false;
+            bool result = Instance._transportService.CreateServer();
+            
+            if (!result)
+            {
+                Logger.Error("Failed to create server.");
+                return false;
+            }
+            
+            Logger.Network("Server created successfully.");
+            return true;
         }
         
-        Logger.Network("Server created successfully.");
-        return true;
+        public static void SendReliablePacket(PacketTypes.MainType mainType, byte subType, byte playerIndex, byte[] data = null) {
+            Instance._transportService.CreateAndSendReliablePacketToClients((byte) mainType, subType, playerIndex, data);
+            Logger.Network($"Sent reliable packet to clients. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}");
+        }
+        
+        public static void SendUnreliablePacket(PacketTypes.MainType mainType, byte subType, byte playerIndex, ushort tick, byte[] data = null) {
+            Instance._transportService.CreateAndSendUnreliablePacketToClients((byte) mainType, subType, playerIndex, tick, data);
+            Logger.Network($"Sent unreliable packet to clients. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}, Tick: {tick}");
+        }
+        
+        public void OnPacketReceived(byte[] packet)
+        {
+            Logger.Network($"Received server packet. Length: {packet.Length}");
+        }
     }
 
-    public static bool ConnectToServer(string serverId)
+    public class Client
     {
-        Logger.Network($"Attempting to connect to server: {serverId}");
-        return Instance._transportService.ConnectToServer(serverId);
-    }
-    
-    public static void Disconnect()
-    {
-        Instance._transportService.Disconnect();
-        Logger.Network("Disconnected from server.");
-    }
-    
-    public static void SendReliablePacketToServer(PacketTypes.MainType mainType, byte subType, byte playerIndex, byte[] data = null) 
-    {
-        Instance._transportService.SendReliablePacketToServer((byte) mainType, subType, playerIndex, data);
-        Logger.Network($"Sent reliable packet to server. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}");
-    }
-    
-    public static void SendUnreliablePacketToServer(PacketTypes.MainType mainType, byte subType, byte playerIndex, ushort tick, byte[] data = null) 
-    {
-        Instance._transportService.SendUnreliablePacketToServer((byte)mainType, subType, playerIndex, tick, data);
-        Logger.Network($"Sent unreliable packet to server. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}, Tick: {tick}");
-    }
+        public static bool ConnectToServer(string serverId)
+        {
+            Logger.Network($"Attempting to connect to server: {serverId}");
+            return Instance._transportService.ConnectToServer(serverId);
+        }
+        
+        public static void Disconnect()
+        {
+            Instance._transportService.Disconnect();
+            Logger.Network("Disconnected from server.");
+        }
+        
+        public static void SendReliablePacket(PacketTypes.MainType mainType, byte subType, byte playerIndex, byte[] data = null) 
+        {
+            Instance._transportService.CreateAndSendReliablePacketToServer((byte) mainType, subType, playerIndex, data);
+            Logger.Network($"Sent reliable packet to server. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}");
+        }
+        
+        public static void SendUnreliablePacket(PacketTypes.MainType mainType, byte subType, byte playerIndex, ushort tick, byte[] data = null) 
+        {
+            Instance._transportService.CreateAndSendUnreliablePacketToServer((byte)mainType, subType, playerIndex, tick, data);
+            Logger.Network($"Sent unreliable packet to server. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}, Tick: {tick}");
+        }
+        
+        public void OnReliablePacketReceived(byte mainType, byte subType, byte playerIndex, byte[] data = null)
+        {
+            Logger.Network($"Received packet. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}");
+        }
 
-    public static void SendReliablePacketToClients(PacketTypes.MainType mainType, byte subType, byte playerIndex, byte[] data = null) {
-        Instance._transportService.SendReliablePacketToClients((byte) mainType, subType, playerIndex, data);
-        Logger.Network($"Sent reliable packet to clients. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}");
-    }
-    
-    public static void SendUnreliablePacketToClients(PacketTypes.MainType mainType, byte subType, byte playerIndex, ushort tick, byte[] data = null) {
-        Instance._transportService.SendUnreliablePacketToClients((byte) mainType, subType, playerIndex, tick, data);
-        Logger.Network($"Sent unreliable packet to clients. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}, Tick: {tick}");
+        public void OnUnreliablePacketReceived(byte mainType, byte subType, byte playerIndex, ushort tick, byte[] data = null)
+        {
+            Logger.Network($"Received packet. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}, Tick: {tick}");
+        }
     }
 }

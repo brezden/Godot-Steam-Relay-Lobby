@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Buffers;
+using System.Runtime.InteropServices;
 using Godot;
 
 public static class PacketFactory
@@ -7,42 +8,49 @@ public static class PacketFactory
     private const byte HeaderSizeReliable = 3; // MainType, SubType, PlayerIndex
     private const byte HeaderSizeUnreliable = 5; // MainType, SubType, PlayerIndex, Tick
 
-    public static byte[] CreateReliablePacket(byte mainType, byte subType, byte playerIndex, byte[] data)
+    public static IntPtr CreateReliablePacket(byte mainType, byte subType, byte playerIndex, byte[] data, out int totalSize)
     {
-        byte[] packet = ArrayPool<byte>.Shared.Rent(HeaderSizeReliable + (data?.Length ?? 0));
-        
-        packet[0] = mainType;
-        packet[1] = subType;
-        packet[2] = playerIndex;
-        
-        if (data?.Length > 0)
+        totalSize = HeaderSizeReliable + (data?.Length ?? 0);
+        IntPtr ptr = Marshal.AllocHGlobal(totalSize);
+
+        unsafe
         {
-            Buffer.BlockCopy(data, 0, packet, HeaderSizeReliable, data.Length);
+            byte* buffer = (byte*)ptr;
+
+            buffer[0] = mainType;
+            buffer[1] = subType;
+            buffer[2] = playerIndex;
+
+            if (data?.Length > 0)
+            {
+                Marshal.Copy(data, 0, IntPtr.Add(ptr, HeaderSizeReliable), data.Length);
+            }
         }
 
-        return packet;
+        return ptr;
     }
 
-    public static byte[] CreateUnreliablePacket(byte mainType, byte subType, byte playerIndex, ushort tick, byte[] data)
+    public static IntPtr CreateUnreliablePacket(byte mainType, byte subType, byte playerIndex, ushort tick, byte[] data, out int totalSize)
     {
-        byte[] packet = ArrayPool<byte>.Shared.Rent(HeaderSizeUnreliable + (data?.Length ?? 0));
+        totalSize = HeaderSizeUnreliable + (data?.Length ?? 0);
+        IntPtr ptr = Marshal.AllocHGlobal(totalSize);
         
-        packet[0] = mainType;
-        packet[1] = subType;
-        packet[2] = playerIndex;
-        
-        BitConverter.GetBytes(tick).CopyTo(packet, HeaderSizeReliable);
-        
-        if (data?.Length > 0)
+        unsafe
         {
-            Buffer.BlockCopy(data, 0, packet, HeaderSizeUnreliable, data.Length);
+            byte* buffer = (byte*)ptr;
+
+            buffer[0] = mainType;
+            buffer[1] = subType;
+            buffer[2] = playerIndex;
+            
+            *(ushort*)(buffer + 3) = tick;
+
+            if (data?.Length > 0)
+            {
+                Marshal.Copy(data, 0, IntPtr.Add(ptr, HeaderSizeReliable), data.Length);
+            }
         }
 
-        return packet;
-    }
-    
-    public static void ReturnPacket(byte[] packet)
-    {
-        ArrayPool<byte>.Shared.Return(packet);
+        return ptr;
     }
 }

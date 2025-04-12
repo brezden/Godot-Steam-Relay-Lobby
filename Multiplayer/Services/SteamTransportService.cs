@@ -2,6 +2,8 @@
 using Godot;
 using Steamworks;
 using Steamworks.Data;
+using System.Buffers;
+using System.Runtime.InteropServices;
 
 public class SteamTransportService : ITransportService
 {
@@ -78,48 +80,54 @@ public class SteamTransportService : ITransportService
         clientConnection = null;
     }
     
-    public void SendReliablePacketToServer(byte mainType, byte subType, byte playerIndex, byte[] data)
+    public void CreateAndSendReliablePacketToServer(byte mainType, byte subType, byte playerIndex, byte[] data)
     {
-        byte[] packet = PacketFactory.CreateReliablePacket(mainType, subType, playerIndex, data);
-        clientConnection?.Connection.SendMessage(packet);
-        PacketFactory.ReturnPacket(packet);
+        IntPtr packet = PacketFactory.CreateReliablePacket(mainType, subType, playerIndex, data, out int totalSize);
+        clientConnection?.Connection.SendMessage(packet, totalSize);
+        Marshal.FreeHGlobal(packet);
     }
     
-    public void SendUnreliablePacketToServer(byte mainType, byte subType, byte playerIndex, ushort tick, byte[] data)
+    public void CreateAndSendUnreliablePacketToServer(byte mainType, byte subType, byte playerIndex, ushort tick, byte[] data)
     {
         byte[] packet = PacketFactory.CreateUnreliablePacket(mainType, subType, playerIndex, tick, data);
-        clientConnection?.Connection.SendMessage(packet, SendType.Unreliable);
+        clientConnection?.Connection.SendMessage(packet, SendType.Unreliable, 1);
         PacketFactory.ReturnPacket(packet);
     }
-    
-    public void SendReliablePacketToClients(byte mainType, byte subType, byte playerIndex, byte[] data)
-    {
-        byte[] packet = PacketFactory.CreateReliablePacket(mainType, subType, playerIndex, data);
 
-        if (serverSocket != null)
+    public void CreateAndSendReliablePacketToClients(byte mainType, byte subType, byte playerIndex, byte[] data)
+    {
+        IntPtr packetPtr = PacketFactory.CreateReliablePacket(mainType, subType, playerIndex, data, out int totalSize);
+        SendReliablePacketToClients(packetPtr, totalSize);
+    }
+    
+    private void SendReliablePacketToClients(IntPtr packetPtr, int totalSize)
+    {
+        if (serverSocket == null) return;
+
+        foreach (var client in serverSocket.Connected)
         {
-            foreach (var client in serverSocket.Connected)
-            {
-                client.SendMessage(packet);
-            }
+            client.SendMessage(packetPtr, totalSize);
         }
         
-        PacketFactory.ReturnPacket(packet);
+        Marshal.FreeHGlobal(packetPtr);
     }
 
-    public void SendUnreliablePacketToClients(byte mainType, byte subType, byte playerIndex, ushort tick, byte[] data)
+    public void CreateAndSendUnreliablePacketToClients(byte mainType, byte subType, byte playerIndex, ushort tick, byte[] data)
     {
-        byte[] packet = PacketFactory.CreateUnreliablePacket(mainType, subType, playerIndex, tick, data);
+        IntPtr packet = PacketFactory.CreateUnreliablePacket(mainType, subType, playerIndex, tick, data, out int totalSize);
+        SendUnreliablePacketToClients(packet, totalSize);
+    }
+    
+    private void SendUnreliablePacketToClients(IntPtr packetPtr, int totalSize)
+    {
+        if (serverSocket == null) return;
 
-        if (serverSocket != null)
+        foreach (var client in serverSocket.Connected)
         {
-            foreach (var client in serverSocket.Connected)
-            {
-                client.SendMessage(packet, SendType.Unreliable);
-            }
+            client.SendMessage(packetPtr, totalSize, SendType.Unreliable, 1);
         }
-
-        PacketFactory.ReturnPacket(packet);
+        
+        Marshal.FreeHGlobal(packetPtr);
     }
 }
 
@@ -173,8 +181,16 @@ public class ClientConnectionManager : ConnectionManager
     public override void OnMessage(IntPtr data, int size, long messageNum, long recvTime, int channel)
     {
         Logger.Network("Server: Received message from server.");
-        byte[] packetData = new byte[size];
-        System.Runtime.InteropServices.Marshal.Copy(data, packetData, 0, size);
-        // var (header, payload) = PacketFactory.ParsePacket(packetData);
+        byte[] packetData = ArrayPool<byte>.Shared.Rent(size);
+
+        try
+        {
+            Marshal.Copy(data, packetData, 0, size);
+            TransportManager.Instance.OnClientPacketRecieved(packetData);
+        }
+        finally
+        {
+            ArrayPool<byte>.Shared.Return(packetData);
+        }
     }
 }

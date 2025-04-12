@@ -32,7 +32,7 @@ public partial class LobbyManager : Node
     public static void OnLobbyCreation(string lobbyId)
     {
         Logger.Network($"Lobby created: {lobbyId}");
-        bool result = TransportManager.CreateServer();
+        bool result = TransportManager.Server.CreateServer();
         
         if (!result)
         {
@@ -47,7 +47,7 @@ public partial class LobbyManager : Node
     {
         if (_isHost) return;
         
-        bool result = TransportManager.ConnectToServer(lobbyId);
+        bool result = TransportManager.Client.ConnectToServer(lobbyId);
 
         if (!result)
         {
@@ -107,7 +107,7 @@ public partial class LobbyManager : Node
     {
         Instance._lobbyService.LeaveLobby();
         TransportManager.Instance.ExecuteProcessMethodStatus(false);
-        TransportManager.Disconnect();
+        TransportManager.Client.Disconnect();
         _isHost = false;
         Players.Clear();
         SceneManager.Instance.GotoScene("res://main.tscn");

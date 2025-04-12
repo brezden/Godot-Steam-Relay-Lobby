@@ -30,12 +30,12 @@ public partial class LobbyButtons : Node
 	
 	private void SendUnreliableServerPacket()
 	{
-		TransportManager.SendUnreliablePacketToServer(PacketTypes.MainType.Input, 2, 1, 812);
+		TransportManager.Server.SendUnreliablePacket(PacketTypes.MainType.Input, 2, 1, 812);
 	}
 
 	private void SendUnreliableClientPacket()
 	{
-		TransportManager.SendUnreliablePacketToClients(PacketTypes.MainType.Input, 1, 2, 1948);
+		TransportManager.Client.SendUnreliablePacket(PacketTypes.MainType.Input, 1, 2, 1948);
 	}
 	
 	private void LeaveLobby()
