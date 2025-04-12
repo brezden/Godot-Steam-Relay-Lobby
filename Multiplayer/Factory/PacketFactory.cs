@@ -5,8 +5,8 @@ using Godot;
 
 public static class PacketFactory
 {
-    private const byte HeaderSizeReliable = 3; // MainType, SubType, PlayerIndex
-    private const byte HeaderSizeUnreliable = 5; // MainType, SubType, PlayerIndex, Tick
+    public const byte HeaderSizeReliable = 4; // MainType, SubType, PlayerIndex, SendType
+    public const byte HeaderSizeUnreliable = 6; // MainType, SubType, PlayerIndex, SendType, Tick
 
     public static IntPtr CreateReliablePacket(byte mainType, byte subType, byte playerIndex, byte[] data, out int totalSize)
     {
@@ -20,6 +20,7 @@ public static class PacketFactory
             buffer[0] = mainType;
             buffer[1] = subType;
             buffer[2] = playerIndex;
+            buffer[3] = 0;
 
             if (data?.Length > 0)
             {
@@ -42,8 +43,9 @@ public static class PacketFactory
             buffer[0] = mainType;
             buffer[1] = subType;
             buffer[2] = playerIndex;
+            buffer[3] = 1;
             
-            *(ushort*)(buffer + 3) = tick;
+            *(ushort*)(buffer + HeaderSizeReliable) = tick;
 
             if (data?.Length > 0)
             {
