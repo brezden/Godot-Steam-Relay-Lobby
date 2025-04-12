@@ -83,14 +83,14 @@ public class SteamTransportService : ITransportService
     public void CreateAndSendReliablePacketToServer(byte mainType, byte subType, byte playerIndex, byte[] data)
     {
         IntPtr packet = PacketFactory.CreateReliablePacket(mainType, subType, playerIndex, data, out int totalSize);
-        clientConnection?.Connection.SendMessage(packet, totalSize);
+        clientConnection?.Connection.SendMessage(packet, totalSize, SendType.Reliable, 81);
         Marshal.FreeHGlobal(packet);
     }
     
     public void CreateAndSendUnreliablePacketToServer(byte mainType, byte subType, byte playerIndex, ushort tick, byte[] data)
     {
         IntPtr packetPtr = PacketFactory.CreateUnreliablePacket(mainType, subType, playerIndex, tick, data, out int totalSize);
-        clientConnection?.Connection.SendMessage(packetPtr, totalSize, SendType.Unreliable);
+        clientConnection?.Connection.SendMessage(packetPtr, totalSize, SendType.Unreliable, 1);
         Marshal.FreeHGlobal(packetPtr);
     }
 
@@ -106,7 +106,7 @@ public class SteamTransportService : ITransportService
 
         foreach (var client in serverSocket.Connected)
         {
-            client.SendMessage(packetPtr, totalSize);
+            client.SendMessage(packetPtr, totalSize, SendType.Reliable, 81);
         }
         
         Marshal.FreeHGlobal(packetPtr);
@@ -124,7 +124,7 @@ public class SteamTransportService : ITransportService
 
         foreach (var client in serverSocket.Connected)
         {
-            client.SendMessage(packetPtr, totalSize, SendType.Unreliable);
+            client.SendMessage(packetPtr, totalSize, SendType.Unreliable , 1);
         }
         
         Marshal.FreeHGlobal(packetPtr);
