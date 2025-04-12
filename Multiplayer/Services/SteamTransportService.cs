@@ -35,7 +35,7 @@ public class SteamTransportService : ITransportService
 
     public bool CreateServer()
     {
-        serverSocket = SteamNetworkingSockets.CreateRelaySocket<SocketManager>(0);
+        serverSocket = SteamNetworkingSockets.CreateRelaySocket<SocketManager>();
         
         if (serverSocket == null)
         {
@@ -83,14 +83,14 @@ public class SteamTransportService : ITransportService
     public void CreateAndSendReliablePacketToServer(byte mainType, byte subType, byte playerIndex, byte[] data)
     {
         IntPtr packet = PacketFactory.CreateReliablePacket(mainType, subType, playerIndex, data, out int totalSize);
-        clientConnection?.Connection.SendMessage(packet, totalSize, SendType.Reliable, 81);
+        clientConnection?.Connection.SendMessage(packet, totalSize);
         Marshal.FreeHGlobal(packet);
     }
     
     public void CreateAndSendUnreliablePacketToServer(byte mainType, byte subType, byte playerIndex, ushort tick, byte[] data)
     {
         IntPtr packetPtr = PacketFactory.CreateUnreliablePacket(mainType, subType, playerIndex, tick, data, out int totalSize);
-        clientConnection?.Connection.SendMessage(packetPtr, totalSize, SendType.Unreliable, 1);
+        clientConnection?.Connection.SendMessage(packetPtr, totalSize, SendType.Unreliable);
         Marshal.FreeHGlobal(packetPtr);
     }
 
@@ -106,7 +106,7 @@ public class SteamTransportService : ITransportService
 
         foreach (var client in serverSocket.Connected)
         {
-            client.SendMessage(packetPtr, totalSize, SendType.Reliable, 81);
+            client.SendMessage(packetPtr, totalSize);
         }
         
         Marshal.FreeHGlobal(packetPtr);
@@ -124,7 +124,7 @@ public class SteamTransportService : ITransportService
 
         foreach (var client in serverSocket.Connected)
         {
-            client.SendMessage(packetPtr, totalSize, SendType.Unreliable , 1);
+            client.SendMessage(packetPtr, totalSize, SendType.Unreliable);
         }
         
         Marshal.FreeHGlobal(packetPtr);
@@ -156,16 +156,20 @@ public class ServerCallbacks : ISocketManager
         byte mainType = span[0];
         byte subType = span[1];
         byte playerIndex = span[2];
+        byte sendType = span[3];
 
-        if (channel == 0) // Reliable: 3-byte header
+        // Reliable
+        if (sendType == 0) 
         {
-            Span<byte> payload = span.Slice(3, size - 3);
+            Span<byte> payload = span.Slice(PacketFactory.HeaderSizeReliable, size - PacketFactory.HeaderSizeReliable);
             TransportManager.Server.OnReliablePacketReceived(mainType, subType, playerIndex, payload);
-        }
-        if (channel == 1) // Unreliable: 5-byte header
-        {
-            ushort tick = BitConverter.ToUInt16(span.Slice(3, 2));
-            Span<byte> payload = span.Slice(5, size - 5);
+        } 
+        
+        // Unreliable
+        else
+        { 
+            ushort tick = BitConverter.ToUInt16(span.Slice(PacketFactory.HeaderSizeReliable, 2));
+            Span<byte> payload = span.Slice(PacketFactory.HeaderSizeUnreliable, size - PacketFactory.HeaderSizeUnreliable);
             TransportManager.Server.OnUnreliablePacketReceived(mainType, subType, playerIndex, tick, payload);
         }
     }
@@ -196,16 +200,20 @@ public class ClientConnectionManager : ConnectionManager
         byte mainType = span[0];
         byte subType = span[1];
         byte playerIndex = span[2];
+        byte sendType = span[3];
 
-        if (channel == 0) // Reliable: 3-byte header
+        // Reliable
+        if (sendType == 0) 
         {
-            Span<byte> payload = span.Slice(3, size - 3);
+            Span<byte> payload = span.Slice(PacketFactory.HeaderSizeReliable, size - PacketFactory.HeaderSizeReliable);
             TransportManager.Client.OnReliablePacketReceived(mainType, subType, playerIndex, payload);
-        }
-        if (channel == 1) // Unreliable: 5-byte header
-        {
-            ushort tick = BitConverter.ToUInt16(span.Slice(3, 2));
-            Span<byte> payload = span.Slice(5, size - 5);
+        } 
+        
+        // Unreliable
+        else
+        { 
+            ushort tick = BitConverter.ToUInt16(span.Slice(PacketFactory.HeaderSizeReliable, 2));
+            Span<byte> payload = span.Slice(PacketFactory.HeaderSizeUnreliable, size - PacketFactory.HeaderSizeUnreliable);
             TransportManager.Client.OnUnreliablePacketReceived(mainType, subType, playerIndex, tick, payload);
         }
     }
