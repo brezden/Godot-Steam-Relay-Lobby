@@ -89,9 +89,9 @@ public class SteamTransportService : ITransportService
     
     public void CreateAndSendUnreliablePacketToServer(byte mainType, byte subType, byte playerIndex, ushort tick, byte[] data)
     {
-        byte[] packet = PacketFactory.CreateUnreliablePacket(mainType, subType, playerIndex, tick, data);
-        clientConnection?.Connection.SendMessage(packet, SendType.Unreliable, 1);
-        PacketFactory.ReturnPacket(packet);
+        IntPtr packetPtr = PacketFactory.CreateUnreliablePacket(mainType, subType, playerIndex, tick, data, out int totalSize);
+        clientConnection?.Connection.SendMessage(packetPtr, totalSize, SendType.Unreliable);
+        Marshal.FreeHGlobal(packetPtr);
     }
 
     public void CreateAndSendReliablePacketToClients(byte mainType, byte subType, byte playerIndex, byte[] data)
@@ -124,7 +124,7 @@ public class SteamTransportService : ITransportService
 
         foreach (var client in serverSocket.Connected)
         {
-            client.SendMessage(packetPtr, totalSize, SendType.Unreliable, 1);
+            client.SendMessage(packetPtr, totalSize, SendType.Unreliable);
         }
         
         Marshal.FreeHGlobal(packetPtr);
@@ -149,14 +149,25 @@ public class ServerCallbacks : ISocketManager
         Logger.Network($"Server: Player {data.Identity} has disconnected.");
     }
 
-    public void OnMessage(Connection connection, NetIdentity identity, IntPtr data, int size, long messageNum,
-        long recvTime, int channel)
+    public unsafe void OnMessage(Connection connection, NetIdentity identity, IntPtr data, int size, long messageNum, long recvTime, int channel)
     {
-        byte[] packetData = new byte[size];
-        System.Runtime.InteropServices.Marshal.Copy(data, packetData, 0, size);
+        var span = new Span<byte>((void*)data, size);
 
-        // var (header, payload) = PacketFactory.ParsePacket(packetData);
-        //Logger.Network($"Server: Received packet - Main Type: {header.MainType}, Sub Type: {header.SubType} from Player {header.PlayerIndex}");
+        byte mainType = span[0];
+        byte subType = span[1];
+        byte playerIndex = span[2];
+
+        if (channel == 0) // Reliable: 3-byte header
+        {
+            Span<byte> payload = span.Slice(3, size - 3);
+            TransportManager.Server.OnReliablePacketReceived(mainType, subType, playerIndex, payload);
+        }
+        if (channel == 1) // Unreliable: 5-byte header
+        {
+            ushort tick = BitConverter.ToUInt16(span.Slice(3, 2));
+            Span<byte> payload = span.Slice(5, size - 5);
+            TransportManager.Server.OnUnreliablePacketReceived(mainType, subType, playerIndex, tick, payload);
+        }
     }
 }
 
@@ -178,19 +189,24 @@ public class ClientConnectionManager : ConnectionManager
         TransportManager.Instance.ExecuteProcessMethodStatus(false);
     }
 
-    public override void OnMessage(IntPtr data, int size, long messageNum, long recvTime, int channel)
+    public override unsafe void OnMessage(IntPtr data, int size, long messageNum, long recvTime, int channel)
     {
-        Logger.Network("Server: Received message from server.");
-        byte[] packetData = ArrayPool<byte>.Shared.Rent(size);
+        var span = new Span<byte>((void*)data, size);
 
-        try
+        byte mainType = span[0];
+        byte subType = span[1];
+        byte playerIndex = span[2];
+
+        if (channel == 0) // Reliable: 3-byte header
         {
-            Marshal.Copy(data, packetData, 0, size);
-            TransportManager.Instance.OnClientPacketRecieved(packetData);
+            Span<byte> payload = span.Slice(3, size - 3);
+            TransportManager.Client.OnReliablePacketReceived(mainType, subType, playerIndex, payload);
         }
-        finally
+        if (channel == 1) // Unreliable: 5-byte header
         {
-            ArrayPool<byte>.Shared.Return(packetData);
+            ushort tick = BitConverter.ToUInt16(span.Slice(3, 2));
+            Span<byte> payload = span.Slice(5, size - 5);
+            TransportManager.Client.OnUnreliablePacketReceived(mainType, subType, playerIndex, tick, payload);
         }
     }
 }

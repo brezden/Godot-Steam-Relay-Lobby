@@ -7,14 +7,18 @@ public partial class LobbyButtons : Node
 	{
 		Button createLobbyButton = GetNode<Button>("HostLobby");
 		Button inviteLobbyButton = GetNode<Button>("InviteMembers");
-		Button sendServerPacketButton = GetNode<Button>("SendServerPacket");
-		Button sendClientPacketButton = GetNode<Button>("SendClientsPacket");
+		Button sendReliableServerButton = GetNode<Button>("SendReliableServerPacket");
+		Button sendUnreliableServerButton = GetNode<Button>("SendUnreliableServerPacket");
+		Button sendReliableClientButton = GetNode<Button>("SendReliableClientPacket");
+		Button sendUnreliableClientButton = GetNode<Button>("SendUnreliableClientPacket");
 		Button leaveLobbyButton = GetNode<Button>("LeaveLobby");
 
 		createLobbyButton.Pressed += CreateLobby;
 		inviteLobbyButton.Pressed += InviteLobby;
-		sendServerPacketButton.Pressed += SendUnreliableServerPacket;
-		sendClientPacketButton.Pressed += SendUnreliableClientPacket;
+		sendReliableServerButton.Pressed += SendReliableServerPacket;
+		sendUnreliableServerButton.Pressed += SendUnreliableServerPacket;
+		sendReliableClientButton.Pressed += SendReliableClientPacket;
+		sendUnreliableClientButton.Pressed += SendUnreliableClientPacket;
 		leaveLobbyButton.Pressed += LeaveLobby;
 	}
 	
@@ -28,9 +32,19 @@ public partial class LobbyButtons : Node
 		LobbyManager.InviteLobbyOverlay();
 	}
 	
+	private void SendReliableServerPacket()
+	{
+		TransportManager.Server.SendReliablePacket(PacketTypes.MainType.Input, 2, 1);
+	}
+	
 	private void SendUnreliableServerPacket()
 	{
 		TransportManager.Server.SendUnreliablePacket(PacketTypes.MainType.Input, 2, 1, 812);
+	}
+	
+	private void SendReliableClientPacket()
+	{
+		TransportManager.Client.SendReliablePacket(PacketTypes.MainType.Input, 1, 2);
 	}
 
 	private void SendUnreliableClientPacket()

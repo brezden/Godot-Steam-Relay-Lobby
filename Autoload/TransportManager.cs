@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using Godot;
-using Steamworks;
 
 public partial class TransportManager : Node
 {
@@ -52,9 +50,14 @@ public partial class TransportManager : Node
             Logger.Network($"Sent unreliable packet to clients. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}, Tick: {tick}");
         }
         
-        public void OnPacketReceived(byte[] packet)
+        public static void OnReliablePacketReceived(byte mainType, byte subType, byte playerIndex, Span<byte> data = default)
         {
-            Logger.Network($"Received server packet. Length: {packet.Length}");
+            Logger.Network($"Received packet. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}");
+        }
+        
+        public static void OnUnreliablePacketReceived(byte mainType, byte subType, byte playerIndex, ushort tick, Span<byte> data = default) 
+        {
+            Logger.Network($"Received packet. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}, Tick: {tick}");
         }
     }
 
@@ -84,12 +87,12 @@ public partial class TransportManager : Node
             Logger.Network($"Sent unreliable packet to server. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}, Tick: {tick}");
         }
         
-        public void OnReliablePacketReceived(byte mainType, byte subType, byte playerIndex, byte[] data = null)
+        public static void OnReliablePacketReceived(byte mainType, byte subType, byte playerIndex, Span<byte> data = default)
         {
             Logger.Network($"Received packet. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}");
         }
 
-        public void OnUnreliablePacketReceived(byte mainType, byte subType, byte playerIndex, ushort tick, byte[] data = null)
+        public static void OnUnreliablePacketReceived(byte mainType, byte subType, byte playerIndex, ushort tick, Span<byte> data = default)
         {
             Logger.Network($"Received packet. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}, Tick: {tick}");
         }
