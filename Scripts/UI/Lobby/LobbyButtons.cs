@@ -39,7 +39,7 @@ public partial class LobbyButtons : Node
 	
 	private void SendUnreliableServerPacket()
 	{
-		TransportManager.Server.SendUnreliablePacket(PacketTypes.MainType.Input, 2, 1, 812);
+		TransportManager.Server.SendUnreliablePacket(PacketTypes.MainType.Input, 2, 1, 812, new byte[] { 42, 100, 7 });
 	}
 	
 	private void SendReliableClientPacket()
@@ -49,7 +49,7 @@ public partial class LobbyButtons : Node
 
 	private void SendUnreliableClientPacket()
 	{
-		TransportManager.Client.SendUnreliablePacket(PacketTypes.MainType.Input, 1, 2, 1948);
+		TransportManager.Client.SendUnreliablePacket(PacketTypes.MainType.Input, 1, 2, 1948, new byte[] { 42, 100, 7 });
 	}
 	
 	private void LeaveLobby()
