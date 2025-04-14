@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Buffers.Binary;
 
 public partial class LobbyButtons : Node
 {
@@ -11,6 +12,7 @@ public partial class LobbyButtons : Node
 		Button sendUnreliableServerButton = GetNode<Button>("SendUnreliableServerPacket");
 		Button sendReliableClientButton = GetNode<Button>("SendReliableClientPacket");
 		Button sendUnreliableClientButton = GetNode<Button>("SendUnreliableClientPacket");
+		Button sendSceneChangeButton = GetNode<Button>("SendChangeScenePacket");
 		Button leaveLobbyButton = GetNode<Button>("LeaveLobby");
 
 		createLobbyButton.Pressed += CreateLobby;
@@ -19,6 +21,7 @@ public partial class LobbyButtons : Node
 		sendUnreliableServerButton.Pressed += SendUnreliableServerPacket;
 		sendReliableClientButton.Pressed += SendReliableClientPacket;
 		sendUnreliableClientButton.Pressed += SendUnreliableClientPacket;
+		sendSceneChangeButton.Pressed += SendSceneChangePacket; 
 		leaveLobbyButton.Pressed += LeaveLobby;
 	}
 	
@@ -39,7 +42,7 @@ public partial class LobbyButtons : Node
 	
 	private void SendUnreliableServerPacket()
 	{
-		TransportManager.Server.SendUnreliablePacket(PacketTypes.MainType.Input, 2, 1, 101, new byte[] { 42, 100, 7 });
+		TransportManager.Server.SendUnreliablePacket(PacketTypes.MainType.Input, 2, 1, 101);
 	}
 	
 	private void SendReliableClientPacket()
@@ -49,7 +52,14 @@ public partial class LobbyButtons : Node
 
 	private void SendUnreliableClientPacket()
 	{
-		TransportManager.Client.SendUnreliablePacket(PacketTypes.MainType.Input, 1, 2, 1948, new byte[] { 42, 100, 7 });
+		TransportManager.Client.SendUnreliablePacket(PacketTypes.MainType.Input, 1, 2, 1948);
+	}
+	
+	private void SendSceneChangePacket()
+	{
+		Span<byte> buffer = stackalloc byte[2];
+		BinaryPrimitives.WriteUInt16LittleEndian(buffer, 100);
+		TransportManager.Server.SendReliablePacket(PacketTypes.MainType.Scene, 1, 1, buffer);
 	}
 	
 	private void LeaveLobby()

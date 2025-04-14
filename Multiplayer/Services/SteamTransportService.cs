@@ -80,21 +80,21 @@ public class SteamTransportService : ITransportService
         clientConnection = null;
     }
     
-    public void CreateAndSendReliablePacketToServer(byte mainType, byte subType, byte playerIndex, byte[] data)
+    public void CreateAndSendReliablePacketToServer(byte mainType, byte subType, byte playerIndex, Span<byte> data)
     {
         IntPtr packet = PacketFactory.CreateReliablePacket(mainType, subType, playerIndex, data, out int totalSize);
         clientConnection?.Connection.SendMessage(packet, totalSize);
         Marshal.FreeHGlobal(packet);
     }
     
-    public void CreateAndSendUnreliablePacketToServer(byte mainType, byte subType, byte playerIndex, ushort tick, byte[] data)
+    public void CreateAndSendUnreliablePacketToServer(byte mainType, byte subType, byte playerIndex, ushort tick, Span<byte> data)
     {
         IntPtr packetPtr = PacketFactory.CreateUnreliablePacket(mainType, subType, playerIndex, tick, data, out int totalSize);
         clientConnection?.Connection.SendMessage(packetPtr, totalSize, SendType.Unreliable);
         Marshal.FreeHGlobal(packetPtr);
     }
 
-    public void CreateAndSendReliablePacketToClients(byte mainType, byte subType, byte playerIndex, byte[] data)
+    public void CreateAndSendReliablePacketToClients(byte mainType, byte subType, byte playerIndex, Span<byte> data)
     {
         IntPtr packetPtr = PacketFactory.CreateReliablePacket(mainType, subType, playerIndex, data, out int totalSize);
         SendReliablePacketToClients(packetPtr, totalSize);
@@ -112,7 +112,7 @@ public class SteamTransportService : ITransportService
         Marshal.FreeHGlobal(packetPtr);
     }
 
-    public void CreateAndSendUnreliablePacketToClients(byte mainType, byte subType, byte playerIndex, ushort tick, byte[] data)
+    public void CreateAndSendUnreliablePacketToClients(byte mainType, byte subType, byte playerIndex, ushort tick, Span<byte> data)
     {
         IntPtr packet = PacketFactory.CreateUnreliablePacket(mainType, subType, playerIndex, tick, data, out int totalSize);
         SendUnreliablePacketToClients(packet, totalSize);
