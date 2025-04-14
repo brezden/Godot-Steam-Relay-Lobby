@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Godot;
+using GodotPeer2PeerSteamCSharp.Multiplayer.Types;
 using Steamworks;
 
 public partial class LobbyManager : Node
@@ -110,7 +111,7 @@ public partial class LobbyManager : Node
         TransportManager.Client.Disconnect();
         _isHost = false;
         Players.Clear();
-        SceneManager.Instance.GotoScene("res://main.tscn");
+        SceneManager.Instance.GotoScene(SceneRegistry.MainMenu.Home);
         Logger.Network("Left lobby and cleared player list.");
     }
 }

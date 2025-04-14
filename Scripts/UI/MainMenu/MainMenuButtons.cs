@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using GodotPeer2PeerSteamCSharp.Multiplayer.Types;
 
 public partial class MainMenuButtons : Node
 {
@@ -16,11 +17,9 @@ public partial class MainMenuButtons : Node
 		exitButton.Pressed += ExitGame;
 	}
 	
-	PackedScene lobbyScene = (PackedScene)ResourceLoader.Load("res://Scenes/Lobby/Lobby.tscn");
-	
 	private void HostOnline()
 	{
-		SceneManager.Instance.GotoScene("res://Scenes/Lobby/Lobby.tscn");
+		SceneManager.Instance.GotoScene(SceneRegistry.Lobby.OnlineLobby);
 	}
 	
 	private void LocalPlay()
