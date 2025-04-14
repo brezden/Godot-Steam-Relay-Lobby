@@ -39,7 +39,7 @@ public partial class LobbyButtons : Node
 	
 	private void SendUnreliableServerPacket()
 	{
-		TransportManager.Server.SendUnreliablePacket(PacketTypes.MainType.Input, 2, 1, 812, new byte[] { 42, 100, 7 });
+		TransportManager.Server.SendUnreliablePacket(PacketTypes.MainType.Input, 2, 1, 101, new byte[] { 42, 100, 7 });
 	}
 	
 	private void SendReliableClientPacket()

@@ -1,4 +1,5 @@
 ﻿using Godot;
+using GodotPeer2PeerSteamCSharp.Multiplayer.Types;
 
 public partial class SceneManager : Node
 {
@@ -20,8 +21,10 @@ public partial class SceneManager : Node
         _currentScene = root.GetChild(root.GetChildCount() - 1);
     }
 
-    public void GotoScene(string path)
+    public void GotoScene(int sceneId)
     {
+        string path = SceneRegistry.GetScenePath(sceneId);
+        Logger.Game($"Loading scene: {path}");
         CallDeferred(MethodName.DeferredGotoScene, path);
     }
 
