@@ -8,9 +8,9 @@ public static class PacketFactory
     public const byte HeaderSizeReliable = 4; // MainType, SubType, PlayerIndex, SendType
     public const byte HeaderSizeUnreliable = 6; // MainType, SubType, PlayerIndex, SendType, Tick
 
-    public static IntPtr CreateReliablePacket(byte mainType, byte subType, byte playerIndex, byte[] data, out int totalSize)
+    public static IntPtr CreateReliablePacket(byte mainType, byte subType, byte playerIndex, Span<byte> data, out int totalSize)
     {
-        totalSize = HeaderSizeReliable + (data?.Length ?? 0);
+        totalSize = HeaderSizeReliable + data.Length;
         IntPtr ptr = Marshal.AllocHGlobal(totalSize);
 
         unsafe
@@ -22,18 +22,21 @@ public static class PacketFactory
             buffer[2] = playerIndex;
             buffer[3] = 0;
 
-            if (data?.Length > 0)
+            if (data.Length > 0)
             {
-                Marshal.Copy(data, 0, IntPtr.Add(ptr, HeaderSizeReliable), data.Length);
+                for (int i = 0; i < data.Length; i++)
+                {
+                    buffer[HeaderSizeReliable + i] = data[i];
+                }
             }
         }
 
         return ptr;
     }
 
-    public static IntPtr CreateUnreliablePacket(byte mainType, byte subType, byte playerIndex, ushort tick, byte[] data, out int totalSize)
+    public static IntPtr CreateUnreliablePacket(byte mainType, byte subType, byte playerIndex, ushort tick, Span<byte> data, out int totalSize)
     {
-        totalSize = HeaderSizeUnreliable + (data?.Length ?? 0);
+        totalSize = HeaderSizeUnreliable + data.Length;
         IntPtr ptr = Marshal.AllocHGlobal(totalSize);
         
         unsafe
@@ -47,9 +50,12 @@ public static class PacketFactory
             
             *(ushort*)(buffer + HeaderSizeUnreliable) = tick;
 
-            if (data?.Length > 0)
+            if (data.Length > 0)
             {
-                Marshal.Copy(data, 0, IntPtr.Add(ptr, HeaderSizeUnreliable), data.Length);
+                for (int i = 0; i < data.Length; i++)
+                {
+                    buffer[HeaderSizeUnreliable + i] = data[i];
+                }
             }
         }
 

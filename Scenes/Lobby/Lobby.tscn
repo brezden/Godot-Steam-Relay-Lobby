@@ -78,6 +78,12 @@ custom_minimum_size = Vector2(125, 25)
 layout_mode = 2
 text = "Unreliable Packet"
 
+[node name="SendChangeScenePacket" type="Button" parent="ButtonContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(125, 25)
+layout_mode = 2
+text = "Change Scene"
+
 [node name="Client" type="Label" parent="ButtonContainer"]
 layout_mode = 2
 text = "Client"

@@ -1,5 +1,6 @@
 ﻿using System;
 using Godot;
+using GodotPeer2PeerSteamCSharp.Routers;
 
 public partial class TransportManager : Node
 {
@@ -40,12 +41,12 @@ public partial class TransportManager : Node
             return true;
         }
         
-        public static void SendReliablePacket(PacketTypes.MainType mainType, byte subType, byte playerIndex, byte[] data = null) {
+        public static void SendReliablePacket(PacketTypes.MainType mainType, byte subType, byte playerIndex, Span<byte> data = default) {
             Instance._transportService.CreateAndSendReliablePacketToClients((byte) mainType, subType, playerIndex, data);
             Logger.Network($"Sent reliable packet to clients. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}");
         }
         
-        public static void SendUnreliablePacket(PacketTypes.MainType mainType, byte subType, byte playerIndex, ushort tick, byte[] data = null) {
+        public static void SendUnreliablePacket(PacketTypes.MainType mainType, byte subType, byte playerIndex, ushort tick, Span<byte> data = default) {
             Instance._transportService.CreateAndSendUnreliablePacketToClients((byte) mainType, subType, playerIndex, tick, data);
             Logger.Network($"Sent unreliable packet to clients. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}, Tick: {tick}");
         }
@@ -75,13 +76,13 @@ public partial class TransportManager : Node
             Logger.Network("Disconnected from server.");
         }
         
-        public static void SendReliablePacket(PacketTypes.MainType mainType, byte subType, byte playerIndex, byte[] data = null) 
+        public static void SendReliablePacket(PacketTypes.MainType mainType, byte subType, byte playerIndex, Span<byte> data = default) 
         {
             Instance._transportService.CreateAndSendReliablePacketToServer((byte) mainType, subType, playerIndex, data);
             Logger.Network($"Sent reliable packet to server. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}");
         }
         
-        public static void SendUnreliablePacket(PacketTypes.MainType mainType, byte subType, byte playerIndex, ushort tick, byte[] data = null) 
+        public static void SendUnreliablePacket(PacketTypes.MainType mainType, byte subType, byte playerIndex, ushort tick, Span<byte> data = default) 
         {
             Instance._transportService.CreateAndSendUnreliablePacketToServer((byte)mainType, subType, playerIndex, tick, data);
             Logger.Network($"Sent unreliable packet to server. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}, Tick: {tick}");
@@ -89,12 +90,29 @@ public partial class TransportManager : Node
         
         public static void OnReliablePacketReceived(byte mainType, byte subType, byte playerIndex, Span<byte> data = default)
         {
+            Dispatcher.ReliablePacketRouter(mainType, subType, playerIndex, data);
             Logger.Network($"Received packet. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}");
         }
 
         public static void OnUnreliablePacketReceived(byte mainType, byte subType, byte playerIndex, ushort tick, Span<byte> data = default)
         {
             Logger.Network($"Received packet. MainType: {mainType}, SubType: {subType}, PlayerIndex: {playerIndex}, Tick: {tick}");
+        }
+    }
+
+    public class Dispatcher
+    {
+        public static void ReliablePacketRouter(byte mainType, byte subType, byte playerIndex, Span<byte> data = default)
+        {
+            switch ((PacketTypes.MainType)mainType)
+            {
+                case PacketTypes.MainType.Scene:
+                    SceneRouter.Route(subType, playerIndex, data);
+                    break;
+                default:
+                    Logger.Error($"Unknown main type: {mainType}");
+                    break;
+            }
         }
     }
 }
