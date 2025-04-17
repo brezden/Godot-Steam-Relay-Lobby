@@ -8,12 +8,10 @@ public partial class MainMenuButtons : Node
 	{
 		Button hostOnlineButton = GetNode<Button>("HostOnline");
 		Button localPlayButton = GetNode<Button>("LocalPlay");
-		Button settingsButton = GetNode<Button>("Settings");
 		Button exitButton = GetNode<Button>("ExitGame");
 		
 		hostOnlineButton.Pressed += HostOnline;
 		localPlayButton.Pressed += LocalPlay;
-		settingsButton.Pressed += Settings;
 		exitButton.Pressed += ExitGame;
 	}
 	
@@ -23,10 +21,6 @@ public partial class MainMenuButtons : Node
 	}
 	
 	private void LocalPlay()
-	{
-	}
-	
-	private void Settings()
 	{
 	}
 	
