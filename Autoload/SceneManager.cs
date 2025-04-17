@@ -6,6 +6,10 @@ public partial class SceneManager : Node
     private static SceneManager _instance;
     public static SceneManager Instance => _instance;
     private Node _currentScene;
+    
+    private Node _transitionScene;
+    private AnimationPlayer _transitionAnimPlayer;
+    private string _pendingScenePath;
 
     public override void _Ready()
     {
@@ -21,11 +25,36 @@ public partial class SceneManager : Node
         _currentScene = root.GetChild(root.GetChildCount() - 1);
     }
 
-    public void GotoScene(int sceneId)
+    public void GotoScene(int sceneId, SceneRegistry.SceneAnimation animationName = SceneRegistry.SceneAnimation.FadeInOut)
     {
         string path = SceneRegistry.GetScenePath(sceneId);
-        Logger.Game($"Loading scene: {path}");
-        CallDeferred(MethodName.DeferredGotoScene, path);
+        _pendingScenePath = path;
+
+        PackedScene animationScene = GD.Load<PackedScene>(SceneRegistry.SceneAnimationMapping.GetScene(animationName));
+        Node animationSceneInstance = animationScene.Instantiate();
+        _transitionScene = animationSceneInstance;
+        
+        GetTree().Root.AddChild(animationSceneInstance);
+        
+        AnimationPlayer animPlayer = animationSceneInstance.GetNode<AnimationPlayer>("AnimationPlayer");
+        _transitionAnimPlayer = animPlayer;
+        
+        animPlayer.Play("start");
+        animPlayer.AnimationFinished += OnAnimationFinished;
+    }
+    private void OnAnimationFinished(StringName animationName)
+    {
+        if (animationName == "start")
+        {
+            DeferredGotoScene(_pendingScenePath);
+            _transitionAnimPlayer?.Play("end");
+        }
+        else if (animationName == "end")
+        {
+            _transitionScene?.QueueFree();
+            _transitionScene = null;
+            _transitionAnimPlayer = null;
+        }
     }
 
     private void DeferredGotoScene(string path)

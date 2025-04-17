@@ -60,6 +60,7 @@ public partial class LobbyButtons : Node
 		Span<byte> buffer = stackalloc byte[2];
 		BinaryPrimitives.WriteUInt16LittleEndian(buffer, 100);
 		TransportManager.Server.SendReliablePacket(PacketTypes.MainType.Scene, 1, 1, buffer);
+		SceneManager.Instance.GotoScene(100);
 	}
 	
 	private void LeaveLobby()

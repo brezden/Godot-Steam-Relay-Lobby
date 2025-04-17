@@ -5,6 +5,25 @@ namespace GodotPeer2PeerSteamCSharp.Multiplayer.Types;
 
 public static class SceneRegistry
 {
+    public enum SceneAnimation
+    {
+        FadeInOut,
+        SlideLeft,
+        SlideRight
+    }
+
+    public static class SceneAnimationMapping
+    {
+        public static readonly Dictionary<SceneAnimation, string> Map = new()
+        {
+            { SceneAnimation.FadeInOut, "res://Scenes/Transitions/FadeOutAndIn.tscn" },
+            { SceneAnimation.SlideLeft, "res://Scenes/Transitions/SlideLeft.tscn" },
+            { SceneAnimation.SlideRight, "res://Scenes/Transitions/SlideRight.tscn" }
+        };
+
+        public static string GetScene(SceneAnimation animation) => Map[animation];
+    }
+    
     public static class MainMenu
     {
         public const int Home = 0;
