@@ -61,7 +61,7 @@ tracks/4/keys = {
 
 [sub_resource type="Animation" id="Animation_mqbdq"]
 resource_name = "fade_in"
-length = 0.25
+length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true

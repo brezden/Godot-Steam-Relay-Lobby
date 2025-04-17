@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://bnsdhe30786fb"]
+[gd_scene load_steps=3 format=3 uid="uid://bnsdhe30786fb"]
 
 [ext_resource type="Script" path="res://Scripts/UI/MainMenu/MainMenuButtons.cs" id="1_l18al"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_p81fg"]
+font_size = 32
 
 [node name="Main2" type="Control"]
 layout_mode = 3
@@ -10,18 +13,35 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Logo" type="ColorRect" parent="."]
-custom_minimum_size = Vector2(500, 100)
+[node name="Logo Container" type="CenterContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -250.0
-offset_top = 50.0
-offset_right = 250.0
-offset_bottom = 100.0
+offset_left = -180.0
+offset_top = 95.0
+offset_right = 181.0
+offset_bottom = 82.0
 grow_horizontal = 2
-color = Color(0, 0.439216, 1, 1)
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Logo Container"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Logo Container/VBoxContainer"]
+layout_mode = 2
+text = "Godot Steam Lobby & Relay Server Multiplayer"
+label_settings = SubResource("LabelSettings_p81fg")
+horizontal_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="Logo Container/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="LinkButton" parent="Logo Container/VBoxContainer/CenterContainer"]
+layout_mode = 2
+text = "https://github.com/brezden/Godot-Steam-Relay-Lobby"
+uri = "https://github.com/brezden/Godot-Steam-Relay-Lobby"
+text_direction = 3
 
 [node name="ButtonContainer" type="HBoxContainer" parent="."]
 custom_minimum_size = Vector2(0, 50)
@@ -41,20 +61,13 @@ script = ExtResource("1_l18al")
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 20)
 layout_mode = 2
-text = "Host Online"
+text = "Create Online Lobby"
 
 [node name="LocalPlay" type="Button" parent="ButtonContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 20)
 layout_mode = 2
-text = "Local Play"
-
-[node name="Settings" type="Button" parent="ButtonContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 20)
-layout_mode = 2
-disabled = true
-text = "Settings"
+text = "Create Local Lobby"
 
 [node name="ExitGame" type="Button" parent="ButtonContainer"]
 unique_name_in_owner = true

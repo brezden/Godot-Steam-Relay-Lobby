@@ -21,10 +21,6 @@ public partial class Logger : Node
     {
         InitLogPaths();
         EnsureLogsExist();
-
-        WriteHeader(gameLogPath, "Game Log Started");
-        WriteHeader(netLogPath, "Network Log Started");
-        WriteHeader(errLogPath, "Error Log Started");
     }
 
     private static void InitLogPaths()
@@ -106,9 +102,4 @@ public partial class Logger : Node
     public static void Error(string msg,
         [CallerFilePath] string file = "", [CallerLineNumber] int line = 0, [CallerMemberName] string member = "") =>
         LogInternal(LogType.Error, msg, file, line, member);
-    
-    private static void WriteHeader(string path, string title)
-    {
-        File.AppendAllText(path, $"\n=== {title} ===\n");
-    }
 }
