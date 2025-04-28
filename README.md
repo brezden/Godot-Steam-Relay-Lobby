@@ -12,6 +12,10 @@ Players can:
 
 ---
 
+## Versions Used
+- Facepunch Steamworks C#: 2.4.1
+- Steamworks SDK: 1.60
+
 ## How to use
 1. Download the Steamworks SDK from [here](https://partner.steamgames.com/)
 2. Extract the `steam_api.dll` and `steam_api64.dll` files to the root of the project
