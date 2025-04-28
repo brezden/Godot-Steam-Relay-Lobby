@@ -8,15 +8,25 @@
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Facepunch.Steamworks.Win64">
-      <HintPath>DLL\Facepunch.Steamworks.Win64.dll</HintPath>
+    <None Include="DLL/Facepunch.Steamworks.Posix.dll" />
+    <None Include="DLL/Facepunch.Steamworks.Win64.dll" />
+    <None Include="steam_api.dll" />
+    <None Include="steam_api64.dll" />
+    <None Include="libsteam_api.so" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Facepunch.Steamworks.Win64" Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+      <HintPath>./DLL/Facepunch.Steamworks.Win64.dll</HintPath>
+    </Reference>
+    <Reference Include="Facepunch.Steamworks.Win64" Condition="$([MSBuild]::IsOSPlatform('Linux'))">
+      <HintPath>./DLL/Facepunch.Steamworks.Posix.dll</HintPath>
+    </Reference>
+    <Reference Include="Facepunch.Steamworks.Win64" Condition="$([MSBuild]::IsOSPlatform('OSX'))">
+      <HintPath>./DLL/Facepunch.Steamworks.Posix.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="steam_api64.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+
   <ItemGroup>
     <Folder Include="Scenes\Transitions\" />
     <Folder Include="Scripts\UI\MainMenu\" />
