@@ -17,6 +17,10 @@ Players can:
 - [Steamworks SDK](https://partner.steamgames.com): 1.61 
 
 ---
+## General Setup
+
+Make sure to modify the `app_id` inside of the `steam_appid.txt` file to whatever ID you are using for development.
+You will also want to modify this value inside the `SteamLobbyService.cs` file which initializes steam.
 
 ## Linux Setup
 
@@ -34,6 +38,8 @@ Getting it working on Linux can be tricky, but following these instructions shou
    sudo apt update
    sudo apt install steam
    ```
+   
+   > You can also install it through steams website via a `.deb` file. 
 
 2. **Fix `libsteam_api.so` Location**
 
@@ -45,6 +51,8 @@ Getting it working on Linux can be tricky, but following these instructions shou
    ```
 
    > Replace `$(pwd)/libsteam_api.so` with the absolute path if running this from a different directory.
+   
+   > Make sure you modified the version in the path. You might not have 9.0.4
 
 3. **Fix `steamclient.so` Location**
 
@@ -54,5 +62,7 @@ Getting it working on Linux can be tricky, but following these instructions shou
    ```bash
    ln -s ~/.steam/sdk64/linux64/steamclient.so ~/.steam/sdk64/steamclient.so
    ```
+   
+   > You might already have this in the correct place. If so, don't worry about this step.
 
 Following these steps should allow Steam API initialization to succeed without missing libraries or entry point errors.

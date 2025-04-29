@@ -6,6 +6,7 @@ export_presets.cfg
 
 *.translation
 
+Logs/
 .mono/
 data_*/
 mono_crash.*.json
@@ -27,5 +28,3 @@ Folder.DotSettings.user
 Thumbs.db
 
 TODO.md
-
-*.txt
