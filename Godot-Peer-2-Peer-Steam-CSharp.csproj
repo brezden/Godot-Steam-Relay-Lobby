@@ -33,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="DLL\" />
     <Folder Include="Scenes\Transitions\" />
     <Folder Include="Scripts\UI\MainMenu\" />
   </ItemGroup>

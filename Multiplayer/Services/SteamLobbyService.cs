@@ -30,7 +30,6 @@ public class SteamLobbyService : ILobbyService
     {
         try
         {
-            SteamNativeLibraryLoader.LoadSteamLibrary();
             SteamClient.Init(3485870, true);
 
             if (SteamClient.IsValid)
