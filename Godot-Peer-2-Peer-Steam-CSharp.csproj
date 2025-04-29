@@ -5,33 +5,40 @@
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'ios' ">net8.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RootNamespace>GodotPeer2PeerSteamCSharp</RootNamespace>
-	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  <ItemGroup>
-    <None Include="DLL/Facepunch.Steamworks.Posix.dll" />
-    <None Include="DLL/Facepunch.Steamworks.Win64.dll" />
-    <None Include="steam_api.dll" />
-    <None Include="steam_api64.dll" />
-    <None Include="libsteam_api.so" />
-  </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Facepunch.Steamworks.Win64" Condition="$([MSBuild]::IsOSPlatform('Windows'))">
       <HintPath>./DLL/Facepunch.Steamworks.Win64.dll</HintPath>
     </Reference>
-    <Reference Include="Facepunch.Steamworks.Win64" Condition="$([MSBuild]::IsOSPlatform('Linux'))">
+    <Reference Include="Facepunch.Steamworks.Posix" Condition="$([MSBuild]::IsOSPlatform('Linux'))">
       <HintPath>./DLL/Facepunch.Steamworks.Posix.dll</HintPath>
     </Reference>
-    <Reference Include="Facepunch.Steamworks.Win64" Condition="$([MSBuild]::IsOSPlatform('OSX'))">
+    <Reference Include="Facepunch.Steamworks.Posix" Condition="$([MSBuild]::IsOSPlatform('OSX'))">
       <HintPath>./DLL/Facepunch.Steamworks.Posix.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="steam_api.dll" Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="steam_api64.dll" Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="libsteam_api.so" Condition="$([MSBuild]::IsOSPlatform('Linux'))">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Scenes\Transitions\" />
     <Folder Include="Scripts\UI\MainMenu\" />
   </ItemGroup>
+
   <ItemGroup>
+    <Content Include="steam_appid.txt" />
     <Content Include="TODO.md" />
   </ItemGroup>
 </Project>
