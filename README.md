@@ -13,11 +13,46 @@ Players can:
 ---
 
 ## Versions Used
-- Facepunch Steamworks C#: 2.4.1
-- Steamworks SDK: 1.60
+- [Facepunch Steamworks C#](https://github.com/Facepunch/Facepunch.Steamworks) : 2.4.1
+- [Steamworks SDK](https://partner.steamgames.com): 1.61 
 
-## How to use
-1. Download the Steamworks SDK from [here](https://partner.steamgames.com/)
-2. Extract the `steam_api.dll` and `steam_api64.dll` files to the root of the project
-3. Download the Facepunch Steamworks module from the releases page [here](https://github.com/Facepunch/Facepunch.Steamworks/releases)
-4. Extract the `Facepunch.Steamworks.Win64.dll` into the `DLL` folder.
+---
+
+## Linux Setup
+
+This project has been developed and tested on both Windows and Linux.  
+Getting it working on Linux can be tricky, but following these instructions should save you a lot of time.
+
+### Requirements for Linux
+
+1. **Install Steam via APT (not Flatpak)**
+
+   Installing Steam through Flatpak causes issues with Facepunch.Steamworks locating Steam libraries correctly.  
+   Install the native Steam package instead:
+
+   ```bash
+   sudo apt update
+   sudo apt install steam
+   ```
+
+2. **Fix `libsteam_api.so` Location**
+
+   .NET expects `libsteam_api.so` to be found in a specific location.  
+   You can create a symbolic link to point to the correct version:
+
+   ```bash
+   sudo ln -sf $(pwd)/libsteam_api.so /usr/lib/dotnet/shared/Microsoft.NETCore.App/9.0.4/libsteam_api.so
+   ```
+
+   > Replace `$(pwd)/libsteam_api.so` with the absolute path if running this from a different directory.
+
+3. **Fix `steamclient.so` Location**
+
+   Facepunch.Steamworks expects `steamclient.so` to be directly under `~/.steam/sdk64/`.  
+   Create a symlink to ensure it's in the right place:
+
+   ```bash
+   ln -s ~/.steam/sdk64/linux64/steamclient.so ~/.steam/sdk64/steamclient.so
+   ```
+
+Following these steps should allow Steam API initialization to succeed without missing libraries or entry point errors.
