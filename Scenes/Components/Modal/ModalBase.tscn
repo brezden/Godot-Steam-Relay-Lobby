@@ -1,14 +1,17 @@
 [gd_scene load_steps=4 format=3 uid="uid://b6o6t8mwntibi"]
 
-[ext_resource type="Script" path="res://Scenes/Components/Modal/Modal.cs" id="1_og150"]
-[ext_resource type="Shader" path="res://Shaders/blur.gdshader" id="3_krr4y"]
+[ext_resource type="Script" path="res://Scenes/Components/Modal/ModalBase.cs" id="1_xm572"]
+[ext_resource type="Shader" path="res://Shaders/blur.gdshader" id="2_mcmvp"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fgkc4"]
-shader = ExtResource("3_krr4y")
+shader = ExtResource("2_mcmvp")
 shader_parameter/lod = 1.785
 
 [node name="Modal" type="Node2D"]
-script = ExtResource("1_og150")
+script = ExtResource("1_xm572")
+blurAmount = 2.375
+blurInDuration = 1.0
+blurOutDuration = 0.75
 
 [node name="Blur" type="CanvasLayer" parent="."]
 

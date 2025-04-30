@@ -42,6 +42,14 @@ public partial class SceneManager : Node
         animPlayer.Play("start");
         animPlayer.AnimationFinished += OnAnimationFinished;
     }
+
+    public void OpenModal(int modalId = 0)
+    {
+        PackedScene modalBaseScene = GD.Load<PackedScene>("res://Scenes/Components/Modal/ModalBase.tscn");
+        Node modelBaseSceneInstance = modalBaseScene.Instantiate();
+        GetTree().Root.AddChild(modelBaseSceneInstance);
+    }
+    
     private void OnAnimationFinished(StringName animationName)
     {
         if (animationName == "start")

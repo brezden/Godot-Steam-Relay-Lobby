@@ -32,7 +32,7 @@ public partial class LobbyButtons : Node
 
 	private void InviteLobby()
 	{
-		LobbyManager.InviteLobbyOverlay();
+		SceneManager.Instance.OpenModal(0);
 	}
 	
 	private void SendReliableServerPacket()
