@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://b6o6t8mwntibi"]
+
+[ext_resource type="Script" path="res://Scenes/Components/Modal/Modal.cs" id="1_og150"]
+[ext_resource type="Shader" path="res://Shaders/blur.gdshader" id="3_krr4y"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fgkc4"]
+shader = ExtResource("3_krr4y")
+shader_parameter/lod = 1.785
+
+[node name="Modal" type="Node2D"]
+script = ExtResource("1_og150")
+
+[node name="Blur" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Blur"]
+material = SubResource("ShaderMaterial_fgkc4")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
