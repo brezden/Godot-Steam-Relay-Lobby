@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://dqxus7qgt7eiq"]
+
+[node name="Background" type="Panel"]
+custom_minimum_size = Vector2(400, 600)
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+
+[node name="Panel" type="Panel" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Panel"]
+layout_mode = 1
+offset_right = 121.0
+offset_bottom = 23.0
+
+[node name="Label" type="Label" parent="VBoxContainer/Panel/HBoxContainer"]
+layout_mode = 2
+text = "Invite Members"
+horizontal_alignment = 1
+
+[node name="Panel2" type="Panel" parent="VBoxContainer"]
+layout_mode = 2
