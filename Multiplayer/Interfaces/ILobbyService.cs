@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
 public interface ILobbyService
 {
     void Initialize();
@@ -7,4 +10,6 @@ public interface ILobbyService
     void LeaveLobby();
     void InviteLobbyOverlay();
     void SendLobbyMessage(string message);
+    
+    Task<List<GlobalTypes.PlayerInvite>> GetInGameFriends();
 }

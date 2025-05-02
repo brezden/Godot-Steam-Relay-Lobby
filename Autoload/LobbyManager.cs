@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Godot;
 using GodotPeer2PeerSteamCSharp.Multiplayer.Types;
 using Steamworks;
@@ -113,5 +114,18 @@ public partial class LobbyManager : Node
         Players.Clear();
         SceneManager.Instance.GotoScene(SceneRegistry.MainMenu.Home);
         Logger.Network("Left lobby and cleared player list.");
+    }
+    
+    public static Task<List<GlobalTypes.PlayerInvite>> GetInGameFriends()
+    {
+        try
+        {
+            return Instance._lobbyService.GetInGameFriends();
+        }
+        catch (Exception e)
+        {
+            Logger.Error($"Failed to get online friends. {e.Message}");
+            return Task.FromResult(new List<GlobalTypes.PlayerInvite>());
+        }
     }
 }

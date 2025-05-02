@@ -12,6 +12,14 @@ public static class GlobalTypes
         public ImageTexture ProfilePicture;
         public bool IsReady;
     }
+    
+    public struct PlayerInvite
+    {
+        public string PlayerId;
+        public string PlayerName;
+        public string PlayerStatus;
+        public ImageTexture PlayerPicture;
+    }
 
     public struct LobbyInfo
     {
