@@ -1,6 +1,7 @@
 using Godot;
 using Steamworks;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Steamworks.Data;
 
@@ -134,7 +135,7 @@ public class SteamLobbyService : ILobbyService
 
         return texture;
     }
-
+    
     public void InviteLobbyOverlay()
     {
         SteamFriends.OpenGameInviteOverlay(_lobbyId);
@@ -154,5 +155,28 @@ public class SteamLobbyService : ILobbyService
         {
             Logger.Error($"Error joining lobby: {ex.Message}");
         }
+    }
+
+    public async Task<List<GlobalTypes.PlayerInvite>> GetInGameFriends()
+    {
+        List<GlobalTypes.PlayerInvite> inGameFriends = new List<GlobalTypes.PlayerInvite>();
+        var friends = SteamFriends.GetFriends();
+        
+        foreach (var friend in friends)
+        {
+            if (friend.IsPlayingThisGame)
+            {
+                var profilePicture = await GetProfilePictureAsync(friend.Id);
+                inGameFriends.Add(new GlobalTypes.PlayerInvite
+                {
+                    PlayerId = friend.Id.ToString(),
+                    PlayerName = friend.Name,
+                    PlayerStatus = friend.State.ToString(),
+                    PlayerPicture = profilePicture
+                });
+            }
+        }
+
+        return inGameFriends;
     }
 }
