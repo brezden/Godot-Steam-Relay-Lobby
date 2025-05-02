@@ -47,11 +47,13 @@ text_direction = 3
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -20.0
-offset_bottom = -25.0
+anchor_left = 0.5
+anchor_top = 0.95
+anchor_right = 0.5
+anchor_bottom = 0.95
+offset_left = -304.0
+offset_top = -50.0
+offset_right = 304.0
 grow_horizontal = 2
 grow_vertical = 0
 alignment = 1
@@ -59,18 +61,21 @@ script = ExtResource("1_l18al")
 
 [node name="HostOnline" type="Button" parent="ButtonContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 20)
+custom_minimum_size = Vector2(50, 20)
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Create Online Lobby"
 
 [node name="LocalPlay" type="Button" parent="ButtonContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 20)
+custom_minimum_size = Vector2(50, 20)
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Create Local Lobby"
 
 [node name="ExitGame" type="Button" parent="ButtonContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 20)
+custom_minimum_size = Vector2(50, 20)
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Exit Game"

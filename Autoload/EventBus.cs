@@ -3,6 +3,16 @@ using System;
 
 public partial class EventBus: Node
 {
+    public static class UI
+    {
+        public static event EventHandler HideModal;
+
+        public static void OnHideModal()
+        {
+            HideModal?.Invoke(null, EventArgs.Empty);
+        }
+    }
+    
     public static class Lobby
     {
         public static event EventHandler<GlobalTypes.LobbyMessageArgs> LobbyMessageReceived;

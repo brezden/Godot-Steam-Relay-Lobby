@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://dqxus7qgt7eiq"]
+[gd_scene load_steps=2 format=3 uid="uid://dqxus7qgt7eiq"]
+
+[ext_resource type="PackedScene" uid="uid://beck30d51ft" path="res://Scenes/Components/Modal/InviteMembers/Member.tscn" id="1_qytbj"]
 
 [node name="Modal" type="Panel"]
 custom_minimum_size = Vector2(400, 600)
@@ -56,3 +58,15 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Panel" parent="VBoxContainer/Panel2/VBoxContainer" instance=ExtResource("1_qytbj")]
+layout_mode = 2
+
+[node name="Panel2" parent="VBoxContainer/Panel2/VBoxContainer" instance=ExtResource("1_qytbj")]
+layout_mode = 2
+
+[node name="Panel3" parent="VBoxContainer/Panel2/VBoxContainer" instance=ExtResource("1_qytbj")]
+layout_mode = 2
+
+[node name="Panel4" parent="VBoxContainer/Panel2/VBoxContainer" instance=ExtResource("1_qytbj")]
+layout_mode = 2
