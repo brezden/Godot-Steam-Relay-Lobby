@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://dqxus7qgt7eiq"]
+[gd_scene load_steps=2 format=3 uid="uid://dqxus7qgt7eiq"]
 
 [ext_resource type="Script" path="res://Scenes/Components/Modal/InviteMembers/InviteMemberModal.cs" id="1_7l4cy"]
-[ext_resource type="PackedScene" uid="uid://beck30d51ft" path="res://Scenes/Components/Modal/InviteMembers/Member.tscn" id="1_qytbj"]
 
 [node name="Modal" type="Panel"]
 custom_minimum_size = Vector2(400, 600)
@@ -53,22 +52,11 @@ color = Color(1, 0.42, 0.42, 1)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Panel2"]
+[node name="FriendContainer" type="VBoxContainer" parent="VBoxContainer/Panel2"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="Panel" parent="VBoxContainer/Panel2/VBoxContainer" instance=ExtResource("1_qytbj")]
-layout_mode = 2
-
-[node name="Panel2" parent="VBoxContainer/Panel2/VBoxContainer" instance=ExtResource("1_qytbj")]
-layout_mode = 2
-
-[node name="Panel3" parent="VBoxContainer/Panel2/VBoxContainer" instance=ExtResource("1_qytbj")]
-layout_mode = 2
-
-[node name="Panel4" parent="VBoxContainer/Panel2/VBoxContainer" instance=ExtResource("1_qytbj")]
-layout_mode = 2
