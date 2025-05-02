@@ -5,12 +5,23 @@ using System.Threading.Tasks;
 
 public partial class InviteMemberModal : Panel
 {
-	public override void _Ready()
+	public override async void _Ready()
 	{
-		Task<List<GlobalTypes.PlayerInvite>> inGameFriends = LobbyManager.GetInGameFriends();
-		foreach (GlobalTypes.PlayerInvite playerInvite in inGameFriends.Result)
+		var inGameFriends = await LobbyManager.GetInGameFriends();
+
+		var friendListContainer = GetNode<VBoxContainer>("%FriendContainer");
+		var memberPanelScene = GD.Load<PackedScene>("res://Scenes/Components/Modal/InviteMembers/Member.tscn");
+
+		foreach (var playerInvite in inGameFriends)
 		{
-			Logger.Game($"Player invite: {playerInvite.PlayerName}");
+			var memberPanel = memberPanelScene.Instantiate<MemberPanel>();
+			memberPanel.Setup(
+				playerInvite.PlayerId,
+				playerInvite.PlayerName,
+				playerInvite.PlayerPicture,
+				playerInvite.PlayerStatus
+			);
+			friendListContainer.AddChild(memberPanel);
 		}
 	}
 }
