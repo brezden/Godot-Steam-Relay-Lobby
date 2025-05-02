@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://cia5cmlhsmh4k"]
+
+[ext_resource type="Script" path="res://Scenes/Components/Modal/CloseModalButton.cs" id="1_voapi"]
+
+[node name="CloseModalButton" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_voapi")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 1
+offset_right = 25.0
+offset_bottom = 25.0
+color = Color(1, 0.42, 0.42, 1)
