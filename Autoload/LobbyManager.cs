@@ -116,6 +116,12 @@ public partial class LobbyManager : Node
         Logger.Network("Left lobby and cleared player list.");
     }
     
+    public static void InvitePlayer(string playerId)
+    {
+        Instance._lobbyService.InvitePlayer(playerId);
+        Logger.Network($"Player invited: {playerId}");
+    }
+    
     public static Task<List<GlobalTypes.PlayerInvite>> GetInGameFriends()
     {
         try

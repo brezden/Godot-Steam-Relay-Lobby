@@ -9,6 +9,7 @@ public interface ILobbyService
     void JoinLobby(string lobbyId);
     void LeaveLobby();
     void InviteLobbyOverlay();
+    void InvitePlayer(string playerId);
     void SendLobbyMessage(string message);
     
     Task<List<GlobalTypes.PlayerInvite>> GetInGameFriends();

@@ -136,6 +136,21 @@ public class SteamLobbyService : ILobbyService
         return texture;
     }
     
+    public void InvitePlayer(string playerId)
+    {
+        try
+        {
+            ulong.TryParse(playerId, out ulong steamIdValue);
+            SteamId steamId = new SteamId();
+            steamId.Value = steamIdValue;
+            _lobby.InviteFriend(steamId);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Error inviting player: {ex.Message}");
+        }
+    }
+    
     public void InviteLobbyOverlay()
     {
         SteamFriends.OpenGameInviteOverlay(_lobbyId);
