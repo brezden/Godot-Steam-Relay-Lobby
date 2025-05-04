@@ -8,6 +8,12 @@ public partial class MemberPanel : Panel
 	public ImageTexture PlayerPicture { get; set; }
 	public string PlayerStatus { get; set; }
 	
+	public override void _Ready()
+	{
+		Button inviteButton = GetNode<Button>("%InviteButton");
+		inviteButton.Pressed += OnInviteButtonPressed;
+	}
+
 	public void Setup(string playerId, string playerName, ImageTexture playerPicture, string playerStatus)
 	{
 		PlayerId = playerId;
@@ -22,5 +28,10 @@ public partial class MemberPanel : Panel
 		playerNameLabel.Text = PlayerName;
 		playerStatusLabel.Text = PlayerStatus;
 		playerPictureRect.Texture = PlayerPicture;
+	}
+
+	public void OnInviteButtonPressed()
+	{
+		LobbyManager.InvitePlayer(PlayerId);
 	}
 }
