@@ -10,7 +10,14 @@ public partial class InviteMemberModal : Panel
 		var inGameFriends = await LobbyManager.GetInGameFriends();
 
 		var friendListContainer = GetNode<VBoxContainer>("%FriendContainer");
+		var noMemberLabel = GetNode<Label>("%NoMemberLabel");
 		var memberPanelScene = GD.Load<PackedScene>("res://Scenes/Components/Modal/InviteMembers/Member.tscn");
+		
+		if (inGameFriends.Count == 0)
+		{
+			noMemberLabel.Visible = true;
+			return;
+		}
 
 		foreach (var playerInvite in inGameFriends)
 		{
