@@ -5,11 +5,11 @@ public partial class EventBus: Node
 {
     public static class UI
     {
-        public static event EventHandler HideModal;
+        public static event EventHandler CloseModal;
 
-        public static void OnHideModal()
+        public static void OnCloseModal()
         {
-            HideModal?.Invoke(null, EventArgs.Empty);
+            CloseModal?.Invoke(null, EventArgs.Empty);
         }
     }
     

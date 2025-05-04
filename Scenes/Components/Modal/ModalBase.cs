@@ -14,6 +14,8 @@ public partial class ModalBase : Node
 	
 	public override void _Ready()
 	{
+		EventBus.UI.CloseModal += AnimationOut;
+		
 		var shaderCanvasLayer = GetNode<CanvasLayer>("Blur");
 		_shaderMaterial = (ShaderMaterial) shaderCanvasLayer.GetNode<ColorRect>("ColorRect").Material;
 		_shaderMaterial.SetShaderParameter("lod", 0f);
@@ -24,13 +26,18 @@ public partial class ModalBase : Node
 		AnimationIn();
 	}
 
+	public override void _ExitTree()
+	{
+		EventBus.UI.CloseModal -= AnimationOut;
+	}
+
 	public void AnimationIn()
 	{
 		BlurIn();
 		ModalAnimationIn();
 	}
 
-	public void AnimationOut()
+	public void AnimationOut(object sender, EventArgs e)
 	{
 		BlurOut();
 		ModalAnimationOut();

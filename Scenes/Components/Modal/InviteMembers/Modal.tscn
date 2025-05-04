@@ -1,9 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://dqxus7qgt7eiq"]
+[gd_scene load_steps=6 format=3 uid="uid://dqxus7qgt7eiq"]
 
 [ext_resource type="Script" path="res://Scenes/Components/Modal/InviteMembers/InviteMemberModal.cs" id="1_7l4cy"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_op8dr"]
 bg_color = Color(0.121569, 0.121569, 0.121569, 1)
+
+[sub_resource type="Gradient" id="Gradient_k3ovt"]
+colors = PackedColorArray(1, 0.501961, 0.435294, 1, 1, 0.5023, 0.43551, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_vfxbn"]
+gradient = SubResource("Gradient_k3ovt")
+width = 32
+height = 32
 
 [sub_resource type="LabelSettings" id="LabelSettings_nw664"]
 font_color = Color(1, 1, 1, 0.231373)
@@ -44,29 +52,33 @@ size_flags_horizontal = 4
 text = "Invite Members"
 horizontal_alignment = 1
 
-[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Panel"]
-custom_minimum_size = Vector2(25, 25)
+[node name="CloseButton" type="Button" parent="VBoxContainer/Panel"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -25.0
-offset_bottom = 25.0
+offset_left = -8.0
+offset_bottom = 8.0
 grow_horizontal = 0
-color = Color(1, 0.42, 0.42, 1)
+icon = SubResource("GradientTexture2D_vfxbn")
+icon_alignment = 1
 
 [node name="Panel2" type="Panel" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="FriendContainer" type="VBoxContainer" parent="VBoxContainer/Panel2"]
-unique_name_in_owner = true
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/Panel2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="FriendContainer" type="VBoxContainer" parent="VBoxContainer/Panel2/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="NoMemberLabel" type="Label" parent="."]
 unique_name_in_owner = true
