@@ -11,13 +11,10 @@ public partial class InviteMemberModal : Panel
 
 		var friendListContainer = GetNode<VBoxContainer>("%FriendContainer");
 		var noMemberLabel = GetNode<Label>("%NoMemberLabel");
+		var closeButton = GetNode<Button>("%CloseButton");
 		var memberPanelScene = GD.Load<PackedScene>("res://Scenes/Components/Modal/InviteMembers/Member.tscn");
 		
-		if (inGameFriends.Count == 0)
-		{
-			noMemberLabel.Visible = true;
-			return;
-		}
+		closeButton.Pressed += OnCloseButtonPressed;
 
 		foreach (var playerInvite in inGameFriends)
 		{
@@ -30,5 +27,21 @@ public partial class InviteMemberModal : Panel
 			);
 			friendListContainer.AddChild(memberPanel);
 		}
+		
+		if (friendListContainer.GetChildCount() == 0)
+		{
+			friendListContainer.Hide();
+			noMemberLabel.Show();
+		}
+		else
+		{
+			friendListContainer.Show();
+			noMemberLabel.Hide();
+		}
+	}
+
+	private void OnCloseButtonPressed()
+	{
+		EventBus.UI.OnCloseModal();
 	}
 }
