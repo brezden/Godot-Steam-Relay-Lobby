@@ -1,11 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://dqxus7qgt7eiq"]
+[gd_scene load_steps=4 format=3 uid="uid://dqxus7qgt7eiq"]
 
 [ext_resource type="Script" path="res://Scenes/Components/Modal/InviteMembers/InviteMemberModal.cs" id="1_7l4cy"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_op8dr"]
+bg_color = Color(0.121569, 0.121569, 0.121569, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_nw664"]
+font_color = Color(1, 1, 1, 0.231373)
 
 [node name="Modal" type="Panel"]
 custom_minimum_size = Vector2(400, 600)
 offset_right = 40.0
 offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_op8dr")
 script = ExtResource("1_7l4cy")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
@@ -60,3 +67,23 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="NoMemberLabel" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -117.5
+offset_top = -11.5
+offset_right = 117.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "No friends playing this game :("
+label_settings = SubResource("LabelSettings_nw664")
+horizontal_alignment = 1
