@@ -1,8 +1,17 @@
-[gd_scene load_steps=12 format=3 uid="uid://bminvyl36ago5"]
+[gd_scene load_steps=16 format=3 uid="uid://bminvyl36ago5"]
 
 [ext_resource type="Texture2D" uid="uid://bq7uvnehx1hup" path="res://Assets/loading-sheet.png" id="1_bhssf"]
 [ext_resource type="Script" path="res://Scenes/Components/Modal/Information/InformationModal.cs" id="1_o0rcg"]
+[ext_resource type="PackedScene" uid="uid://cia5cmlhsmh4k" path="res://Scenes/Components/Modal/CloseModalButton.tscn" id="2_mdpb7"]
 [ext_resource type="Script" path="res://Scenes/Components/Modal/Information/LoadingSpinner.cs" id="3_vdh6u"]
+[ext_resource type="Texture2D" uid="uid://b3gicaxw4xx82" path="res://Assets/error.png" id="5_rvxfa"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_v2crg"]
+font_size = 19
+
+[sub_resource type="LabelSettings" id="LabelSettings_4f2sp"]
+font_size = 11
+font_color = Color(1, 1, 1, 0.588235)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_olxbv"]
 atlas = ExtResource("1_bhssf")
@@ -62,16 +71,27 @@ animations = [{
 }]
 
 [node name="Panel" type="Panel"]
-custom_minimum_size = Vector2(650, 100)
+custom_minimum_size = Vector2(650, 125)
 size_flags_horizontal = 4
 script = ExtResource("1_o0rcg")
+
+[node name="CloseModalButton" parent="." instance=ExtResource("2_mdpb7")]
+visible = false
+layout_direction = 3
+layout_mode = 1
+anchors_preset = 0
+anchor_left = 0.0
+anchor_right = 0.0
+offset_left = 0.0
+offset_right = 40.0
+grow_horizontal = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.1
 anchor_right = 1.0
-anchor_bottom = 0.9
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -81,12 +101,23 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 1
 text = "Header"
+label_settings = SubResource("LabelSettings_v2crg")
 
-[node name="Control" type="Control" parent="VBoxContainer"]
+[node name="Description" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 1
+text = "Make sure that Steam is connected and running"
+label_settings = SubResource("LabelSettings_4f2sp")
+
+[node name="LoadingIcon" type="Control" parent="VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/Control"]
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/LoadingIcon"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -96,8 +127,29 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="VBoxContainer/Control/CenterContainer"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="VBoxContainer/LoadingIcon/CenterContainer"]
 scale = Vector2(3.5, 3.5)
 sprite_frames = SubResource("SpriteFrames_fje64")
-frame_progress = 0.162737
+frame_progress = 0.766122
 script = ExtResource("3_vdh6u")
+
+[node name="ErrorIcon" type="Control" parent="VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/ErrorIcon"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/ErrorIcon/CenterContainer"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+texture = ExtResource("5_rvxfa")

@@ -1,15 +1,20 @@
-[gd_scene load_steps=2 format=3 uid="uid://cia5cmlhsmh4k"]
+[gd_scene load_steps=3 format=3 uid="uid://cia5cmlhsmh4k"]
 
-[ext_resource type="Script" path="res://Scenes/Components/Modal/CloseModalButton.cs" id="1_voapi"]
+[sub_resource type="Gradient" id="Gradient_k3ovt"]
+colors = PackedColorArray(1, 0.501961, 0.435294, 1, 1, 0.5023, 0.43551, 1)
 
-[node name="CloseModalButton" type="Control"]
-layout_mode = 3
-anchors_preset = 0
-script = ExtResource("1_voapi")
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_vfxbn"]
+gradient = SubResource("Gradient_k3ovt")
+width = 32
+height = 32
 
-[node name="ColorRect" type="ColorRect" parent="."]
-custom_minimum_size = Vector2(25, 25)
-layout_mode = 1
-offset_right = 25.0
-offset_bottom = 25.0
-color = Color(1, 0.42, 0.42, 1)
+[node name="CloseButton" type="Button"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+size_flags_horizontal = 4
+icon = SubResource("GradientTexture2D_vfxbn")
+icon_alignment = 1

@@ -10,6 +10,7 @@ public partial class ModalManager : Node
     private Node currentModalInstance;
     private readonly string modalSceneDirectory = "res://Scenes/Components/Modal";
     private string baseScenePath;
+    private const float minimumTimeModal = 5.0f;
 
     public override void _Ready()
     {
@@ -58,13 +59,13 @@ public partial class ModalManager : Node
         currentModalInstance = modalBaseSceneInstance;
     }
 
-    public void OpenInformationModal(string HeaderName)
+    public async void showInformationModal(string HeaderName, InformationModalType type, string description = null)
     {
         if (!TryGetModalScenePath(ModalType.Information, out var path)) return;
         
         var modalScene = GD.Load<PackedScene>(path);
         var modalSceneInstance = modalScene.Instantiate<InformationModal>();
-        modalSceneInstance._headerText = HeaderName;
+        modalSceneInstance.prepareModal(HeaderName, type, description);
         ShowConfiguredModal(modalSceneInstance);
     }
     

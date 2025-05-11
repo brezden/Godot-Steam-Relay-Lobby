@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using GodotPeer2PeerSteamCSharp.Autoload.Types.Scene;
 using GodotPeer2PeerSteamCSharp.Multiplayer.Types;
 
 public partial class MainMenuButtons : Node
@@ -15,10 +16,9 @@ public partial class MainMenuButtons : Node
 		exitButton.Pressed += ExitGame;
 	}
 	
-	private async void HostOnline()
+	private void HostOnline()
 	{
-		SceneManager.Instance.ModalManager.OpenInformationModal("Creating a lobby");
-		await ToSignal(GetTree().CreateTimer(3), "timeout");
+		SceneManager.Instance.ModalManager.showInformationModal("Creating a lobby", InformationModalType.Loading);
 		EventBus.Lobby.OnCreateLobby();
 	}
 	
