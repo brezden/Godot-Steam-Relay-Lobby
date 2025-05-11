@@ -17,13 +17,13 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Logger="*res://Autoload/Logger.cs"
-EventBus="*res://Autoload/EventBus.cs"
-LobbyManager="*res://Autoload/LobbyManager.cs"
-TransportManager="*res://Autoload/TransportManager.cs"
-SceneManager="*res://Autoload/SceneManager/SceneManager.cs"
-StateManager="*res://Autoload/StateManager.cs"
-InputManager="*res://Autoload/InputManager.cs"
+Logger="*res://Core/Logger.cs"
+EventBus="*res://Core/EventBus.cs"
+LobbyManager="*res://Core/LobbyManager.cs"
+TransportManager="*res://Core/TransportManager.cs"
+InputManager="*res://Core/InputManager.cs"
+SceneManager="*res://Core/SceneManager/SceneManager.cs"
+StateManager="*res://Core/StateManager.cs"
 
 [display]
 
