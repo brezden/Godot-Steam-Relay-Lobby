@@ -5,8 +5,10 @@ public partial class SceneManager : Node
 {
     private static SceneManager _instance;
     public static SceneManager Instance => _instance;
-    private Node _currentScene;
     
+    public ModalManager ModalManager { get; private set; }
+    
+    private Node _currentScene;
     private Node _transitionScene;
     private AnimationPlayer _transitionAnimPlayer;
     private string _pendingScenePath;
@@ -21,6 +23,8 @@ public partial class SceneManager : Node
         
         _instance = this;
         
+        ModalManager = new ModalManager();
+        AddChild(ModalManager);
         Viewport root = GetTree().Root;
         _currentScene = root.GetChild(root.GetChildCount() - 1);
     }
@@ -43,12 +47,6 @@ public partial class SceneManager : Node
         animPlayer.AnimationFinished += OnAnimationFinished;
     }
 
-    public void OpenModal(int modalId = 0)
-    {
-        PackedScene modalBaseScene = GD.Load<PackedScene>("res://Scenes/Components/Modal/ModalBase.tscn");
-        Node modelBaseSceneInstance = modalBaseScene.Instantiate();
-        GetTree().Root.AddChild(modelBaseSceneInstance);
-    }
     
     private void OnAnimationFinished(StringName animationName)
     {
