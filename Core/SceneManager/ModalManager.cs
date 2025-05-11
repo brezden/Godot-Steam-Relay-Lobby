@@ -35,6 +35,8 @@ public partial class ModalManager : Node
         CenterContainer modalSceneContainer = modalBaseSceneInstance.GetNode<CenterContainer>("%ModalContainer"); 
         modalSceneContainer.AddChild(modalSceneInstance);
         
+        modalSceneInstance.Name = "Modal"; // Used for getting the modal instance later for tweening
+        
         GetTree().Root.AddChild(modalBaseSceneInstance);
         currentModalInstance = modalBaseSceneInstance;
     }
@@ -49,19 +51,20 @@ public partial class ModalManager : Node
         
         CenterContainer modalSceneContainer = modalBaseSceneInstance.GetNode<CenterContainer>("%ModalContainer"); 
         modalSceneContainer.AddChild(modalScene);
+
+        modalScene.Name = "Modal"; // Used for getting the modal instance later for tweening
         
         GetTree().Root.AddChild(modalBaseSceneInstance);
         currentModalInstance = modalBaseSceneInstance;
     }
-
 
     public void OpenInformationModal(string HeaderName)
     {
         if (!TryGetModalScenePath(ModalType.Information, out var path)) return;
         
         var modalScene = GD.Load<PackedScene>(path);
-        var modalSceneInstance = (InformationModal)modalScene.Instantiate();
-        modalSceneInstance.Setup(HeaderName);
+        var modalSceneInstance = modalScene.Instantiate<InformationModal>();
+        modalSceneInstance._headerText = HeaderName;
         ShowConfiguredModal(modalSceneInstance);
     }
     

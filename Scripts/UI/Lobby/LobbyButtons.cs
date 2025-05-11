@@ -7,7 +7,6 @@ public partial class LobbyButtons : Node
 {
 	public override void _Ready()
 	{
-		Button createLobbyButton = GetNode<Button>("HostLobby");
 		Button inviteLobbyButton = GetNode<Button>("InviteMembers");
 		Button sendReliableServerButton = GetNode<Button>("SendReliableServerPacket");
 		Button sendUnreliableServerButton = GetNode<Button>("SendUnreliableServerPacket");
@@ -16,7 +15,6 @@ public partial class LobbyButtons : Node
 		Button sendSceneChangeButton = GetNode<Button>("SendChangeScenePacket");
 		Button leaveLobbyButton = GetNode<Button>("LeaveLobby");
 
-		createLobbyButton.Pressed += CreateLobby;
 		inviteLobbyButton.Pressed += InviteLobby;
 		sendReliableServerButton.Pressed += SendReliableServerPacket;
 		sendUnreliableServerButton.Pressed += SendUnreliableServerPacket;
@@ -24,11 +22,6 @@ public partial class LobbyButtons : Node
 		sendUnreliableClientButton.Pressed += SendUnreliableClientPacket;
 		sendSceneChangeButton.Pressed += SendSceneChangePacket; 
 		leaveLobbyButton.Pressed += LeaveLobby;
-	}
-	
-	private void CreateLobby()
-	{
-		LobbyManager.CreateLobby();
 	}
 
 	private void InviteLobby()

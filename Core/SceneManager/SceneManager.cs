@@ -31,6 +31,8 @@ public partial class SceneManager : Node
 
     public void GotoScene(int sceneId, SceneRegistry.SceneAnimation animationName = SceneRegistry.SceneAnimation.FadeInOut)
     {
+        ModalManager.CloseModal();
+        
         string path = SceneRegistry.GetScenePath(sceneId);
         _pendingScenePath = path;
 

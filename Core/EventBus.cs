@@ -15,9 +15,15 @@ public partial class EventBus: Node
     
     public static class Lobby
     {
+        public static event EventHandler CreateLobby;
         public static event EventHandler<GlobalTypes.LobbyMessageArgs> LobbyMessageReceived;
         public static event EventHandler<string> LobbyMemberJoined;
         public static event EventHandler<string> LobbyMemberLeft;
+
+        public static void OnCreateLobby()
+        {
+            CreateLobby?.Invoke(null, EventArgs.Empty);
+        }
         
         public static void OnLobbyMemberJoined(string playerId)
         {
