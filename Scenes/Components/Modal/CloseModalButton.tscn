@@ -1,4 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://cia5cmlhsmh4k"]
+[gd_scene load_steps=4 format=3 uid="uid://cia5cmlhsmh4k"]
+
+[ext_resource type="Script" path="res://Scenes/Components/Modal/CloseModalButton.cs" id="1_bj66p"]
 
 [sub_resource type="Gradient" id="Gradient_k3ovt"]
 colors = PackedColorArray(1, 0.501961, 0.435294, 1, 1, 0.5023, 0.43551, 1)
@@ -15,6 +17,7 @@ anchor_right = 1.0
 offset_left = -40.0
 offset_bottom = 40.0
 grow_horizontal = 0
-size_flags_horizontal = 4
 icon = SubResource("GradientTexture2D_vfxbn")
+flat = true
 icon_alignment = 1
+script = ExtResource("1_bj66p")
