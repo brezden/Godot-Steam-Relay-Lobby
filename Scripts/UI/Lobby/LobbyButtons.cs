@@ -33,7 +33,7 @@ public partial class LobbyButtons : Node
 
 	private void InviteLobby()
 	{
-		SceneManager.Instance.ModalManager.OpenModal(ModalType.InvitePlayer);
+		SceneManager.Instance.ModalManager.ShowModal(ModalType.InvitePlayer);
 	}
 	
 	private void SendReliableServerPacket()
