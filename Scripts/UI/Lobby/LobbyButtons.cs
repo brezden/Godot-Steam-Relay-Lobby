@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Buffers.Binary;
+using GodotPeer2PeerSteamCSharp.Autoload.Types.Scene;
 
 public partial class LobbyButtons : Node
 {
@@ -32,7 +33,7 @@ public partial class LobbyButtons : Node
 
 	private void InviteLobby()
 	{
-		SceneManager.Instance.ModalManager.OpenModal(0);
+		SceneManager.Instance.ModalManager.OpenModal(ModalType.InvitePlayer);
 	}
 	
 	private void SendReliableServerPacket()

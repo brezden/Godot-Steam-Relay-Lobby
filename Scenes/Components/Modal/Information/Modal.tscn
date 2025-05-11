@@ -99,4 +99,4 @@ grow_vertical = 2
 scale = Vector2(3.5, 3.5)
 sprite_frames = SubResource("SpriteFrames_fje64")
 animation = &"new_animation"
-frame_progress = 0.92334
+frame_progress = 0.0096289
