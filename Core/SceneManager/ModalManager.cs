@@ -59,8 +59,18 @@ public partial class ModalManager : Node
         currentModalInstance = modalBaseSceneInstance;
     }
 
-    public async void showInformationModal(string HeaderName, InformationModalType type, string description = null)
+    public void RenderInformationModal(string HeaderName, InformationModalType type, string description = null)
     {
+        if (IsModalShowing())
+        {
+            var existingModalScene = currentModalInstance.GetNode<CenterContainer>("%ModalContainer").GetChild(0);
+            if (existingModalScene is InformationModal informationModal)
+            {
+                informationModal.UpdateModal(HeaderName, type, description);
+                return;
+            }
+        }
+        
         if (!TryGetModalScenePath(ModalType.Information, out var path)) return;
         
         var modalScene = GD.Load<PackedScene>(path);

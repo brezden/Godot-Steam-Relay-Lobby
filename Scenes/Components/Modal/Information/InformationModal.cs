@@ -12,6 +12,7 @@ public partial class InformationModal : Panel
 	private Label DescriptionLabel;
 	private Control LoadingSpinner;
 	private Control ErrorIcon;
+	private Button CloseButton;
 	
 	public override void _Ready()
 	{
@@ -19,6 +20,7 @@ public partial class InformationModal : Panel
 		DescriptionLabel = GetNode<Label>("%Description");
 		LoadingSpinner = GetNode<Control>("%LoadingIcon");
 		ErrorIcon = GetNode<Control>("%ErrorIcon");
+		CloseButton = GetNode<Button>("%CloseButton");
 		
 		setHeaderText(headerText);
 		setDescriptionText(descriptionText);
@@ -73,6 +75,7 @@ public partial class InformationModal : Panel
 	{
 		LoadingSpinner.Visible = false;
 		ErrorIcon.Visible = false;
+		CloseButton.Visible = false;
 		
 		switch (type)
 		{
@@ -81,8 +84,7 @@ public partial class InformationModal : Panel
 				break;
 			case InformationModalType.Error:
 				ErrorIcon.Visible = true;
-				break;
-			default:
+				CloseButton.Visible = true;
 				break;
 		}
 	}
