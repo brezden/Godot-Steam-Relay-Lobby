@@ -21,7 +21,7 @@ Logger="*res://Autoload/Logger.cs"
 EventBus="*res://Autoload/EventBus.cs"
 LobbyManager="*res://Autoload/LobbyManager.cs"
 TransportManager="*res://Autoload/TransportManager.cs"
-SceneManager="*res://Autoload/SceneManager.cs"
+SceneManager="*res://Autoload/SceneManager/SceneManager.cs"
 StateManager="*res://Autoload/StateManager.cs"
 InputManager="*res://Autoload/InputManager.cs"
 
@@ -37,5 +37,6 @@ project/assembly_name="Godot-Peer-2-Peer-Steam-CSharp"
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"

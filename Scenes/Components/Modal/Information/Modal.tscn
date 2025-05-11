@@ -1,0 +1,102 @@
+[gd_scene load_steps=11 format=3 uid="uid://bminvyl36ago5"]
+
+[ext_resource type="Texture2D" uid="uid://bq7uvnehx1hup" path="res://Assets/loading-sheet.png" id="1_bhssf"]
+[ext_resource type="Script" path="res://Scenes/Components/Modal/Information/Modal.cs" id="1_k1p72"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_olxbv"]
+atlas = ExtResource("1_bhssf")
+region = Rect2(0, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y4a1l"]
+atlas = ExtResource("1_bhssf")
+region = Rect2(8, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j8a0s"]
+atlas = ExtResource("1_bhssf")
+region = Rect2(16, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pofs6"]
+atlas = ExtResource("1_bhssf")
+region = Rect2(24, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nyv4m"]
+atlas = ExtResource("1_bhssf")
+region = Rect2(32, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4llnq"]
+atlas = ExtResource("1_bhssf")
+region = Rect2(40, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kifal"]
+atlas = ExtResource("1_bhssf")
+region = Rect2(48, 0, 8, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fje64"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_olxbv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y4a1l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j8a0s")
+}, {
+"duration": 1.4,
+"texture": SubResource("AtlasTexture_pofs6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nyv4m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4llnq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kifal")
+}],
+"loop": true,
+"name": &"new_animation",
+"speed": 10.0
+}]
+
+[node name="Modal" type="Panel"]
+custom_minimum_size = Vector2(650, 100)
+size_flags_horizontal = 4
+script = ExtResource("1_k1p72")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.1
+anchor_right = 1.0
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Header" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 1
+text = "Header"
+
+[node name="Control" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="VBoxContainer/Control/CenterContainer"]
+scale = Vector2(3.5, 3.5)
+sprite_frames = SubResource("SpriteFrames_fje64")
+animation = &"new_animation"
+frame_progress = 0.92334
