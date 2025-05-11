@@ -7,31 +7,28 @@ public partial class ModalManager : Node
 {
     public Dictionary<ModalType, string> Modals { get; private set; }
 
-    private readonly string ModalSceneDirectory = "res://Scenes/Components/Modal";
-    private string BaseScenePath;
+    private Node currentModalInstance;
+    private readonly string modalSceneDirectory = "res://Scenes/Components/Modal";
+    private string baseScenePath;
 
     public override void _Ready()
     {
-        BaseScenePath = $"{ModalSceneDirectory}/ModalBase.tscn";
+        baseScenePath = $"{modalSceneDirectory}/ModalBase.tscn";
         
         Modals = new Dictionary<ModalType, string>
         {
-            { ModalType.Information, $"{ModalSceneDirectory}/Information/Modal.tscn" },
-            { ModalType.InvitePlayer, $"{ModalSceneDirectory}/InviteMembers/Modal.tscn" }
+            { ModalType.Information, $"{modalSceneDirectory}/Information/Modal.tscn" },
+            { ModalType.InvitePlayer, $"{modalSceneDirectory}/InviteMembers/Modal.tscn" }
         };
     }
-    
-    public void OpenModal(ModalType modalType)
+
+    public void ShowModal(ModalType modalType)
     {
-        if (!Modals.TryGetValue(modalType, out var path))
-        {
-            Logger.Error($"Modal type {modalType} not found.");
-            return;
-        }
+        if (IsModalShowing() || !TryGetModalScenePath(modalType, out var path)) return;
         
-        PackedScene modalBaseScene = GD.Load<PackedScene>(BaseScenePath);
+        PackedScene modalBaseScene = GD.Load<PackedScene>(baseScenePath);
         PackedScene modalScene = GD.Load<PackedScene>(path);
-        
+
         Node modalBaseSceneInstance = modalBaseScene.Instantiate();
         Node modalSceneInstance = modalScene.Instantiate();
         
@@ -39,5 +36,52 @@ public partial class ModalManager : Node
         modalSceneContainer.AddChild(modalSceneInstance);
         
         GetTree().Root.AddChild(modalBaseSceneInstance);
+        currentModalInstance = modalBaseSceneInstance;
+    }
+    
+    private void ShowConfiguredModal(Node modalScene)
+    {
+        if (IsModalShowing()) return;
+        
+        PackedScene modalBaseScene = GD.Load<PackedScene>(baseScenePath);
+        
+        Node modalBaseSceneInstance = modalBaseScene.Instantiate();
+        
+        CenterContainer modalSceneContainer = modalBaseSceneInstance.GetNode<CenterContainer>("%ModalContainer"); 
+        modalSceneContainer.AddChild(modalScene);
+        
+        GetTree().Root.AddChild(modalBaseSceneInstance);
+        currentModalInstance = modalBaseSceneInstance;
+    }
+
+
+    public void OpenInformationModal(string HeaderName)
+    {
+        if (!TryGetModalScenePath(ModalType.Information, out var path)) return;
+        
+        var modalScene = GD.Load<PackedScene>(path);
+        var modalSceneInstance = (InformationModal)modalScene.Instantiate();
+        modalSceneInstance.Setup(HeaderName);
+        ShowConfiguredModal(modalSceneInstance);
+    }
+    
+    public void CloseModal()
+    {
+        EventBus.UI.OnCloseModal();
+    }
+
+    public bool IsModalShowing()
+    {
+        return IsInstanceValid(currentModalInstance);
+    }
+    
+    private bool TryGetModalScenePath(ModalType type, out string path)
+    {
+        if (!Modals.TryGetValue(type, out path))
+        {
+            Logger.Error($"Modal type '{type}' not found.");
+            return false;
+        }
+        return true;
     }
 }

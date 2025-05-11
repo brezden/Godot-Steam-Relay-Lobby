@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Modal : Panel
+public partial class InformationModal : Panel
 {
 	private Label _header;
 	

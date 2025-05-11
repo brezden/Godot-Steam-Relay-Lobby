@@ -42,6 +42,6 @@ public partial class InviteMemberModal : Panel
 
 	private void OnCloseButtonPressed()
 	{
-		EventBus.UI.OnCloseModal();
+		SceneManager.Instance.ModalManager.CloseModal();
 	}
 }
