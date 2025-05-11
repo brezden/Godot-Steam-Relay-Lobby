@@ -15,9 +15,11 @@ public partial class MainMenuButtons : Node
 		exitButton.Pressed += ExitGame;
 	}
 	
-	private void HostOnline()
+	private async void HostOnline()
 	{
-		SceneManager.Instance.GotoScene(SceneRegistry.Lobby.OnlineLobby);
+		SceneManager.Instance.ModalManager.OpenInformationModal("Creating a lobby");
+		await ToSignal(GetTree().CreateTimer(3), "timeout");
+		EventBus.Lobby.OnCreateLobby();
 	}
 	
 	private void LocalPlay()

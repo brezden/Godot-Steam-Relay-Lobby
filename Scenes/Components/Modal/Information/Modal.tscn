@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://bminvyl36ago5"]
+[gd_scene load_steps=12 format=3 uid="uid://bminvyl36ago5"]
 
 [ext_resource type="Texture2D" uid="uid://bq7uvnehx1hup" path="res://Assets/loading-sheet.png" id="1_bhssf"]
-[ext_resource type="Script" path="res://Scenes/Components/Modal/Information/Modal.cs" id="1_k1p72"]
+[ext_resource type="Script" path="res://Scenes/Components/Modal/Information/InformationModal.cs" id="1_o0rcg"]
+[ext_resource type="Script" path="res://Scenes/Components/Modal/Information/LoadingSpinner.cs" id="3_vdh6u"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_olxbv"]
 atlas = ExtResource("1_bhssf")
@@ -56,14 +57,14 @@ animations = [{
 "texture": SubResource("AtlasTexture_kifal")
 }],
 "loop": true,
-"name": &"new_animation",
+"name": &"default",
 "speed": 10.0
 }]
 
-[node name="Modal" type="Panel"]
+[node name="Panel" type="Panel"]
 custom_minimum_size = Vector2(650, 100)
 size_flags_horizontal = 4
-script = ExtResource("1_k1p72")
+script = ExtResource("1_o0rcg")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -98,5 +99,5 @@ grow_vertical = 2
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="VBoxContainer/Control/CenterContainer"]
 scale = Vector2(3.5, 3.5)
 sprite_frames = SubResource("SpriteFrames_fje64")
-animation = &"new_animation"
-frame_progress = 0.0096289
+frame_progress = 0.162737
+script = ExtResource("3_vdh6u")

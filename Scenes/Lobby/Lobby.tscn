@@ -49,12 +49,6 @@ offset_bottom = 56.0
 grow_horizontal = 0
 script = ExtResource("2_ld7vs")
 
-[node name="HostLobby" type="Button" parent="ButtonContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(125, 25)
-layout_mode = 2
-text = "Host"
-
 [node name="InviteMembers" type="Button" parent="ButtonContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(125, 25)

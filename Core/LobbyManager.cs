@@ -19,6 +19,8 @@ public partial class LobbyManager : Node
 
         _lobbyService = new SteamLobbyService();
         _lobbyService.Initialize();
+
+        EventBus.Lobby.CreateLobby += CreateLobby;
     }
     
     public override void _Process(double delta)
@@ -26,7 +28,7 @@ public partial class LobbyManager : Node
         _lobbyService.Update();
 	}
 
-    public static void CreateLobby()
+    private static void CreateLobby(object? sender, EventArgs e)
     {
         Instance._lobbyService.CreateLobby(4);
     }
@@ -43,6 +45,7 @@ public partial class LobbyManager : Node
         }
         
         _isHost = true;
+        SceneManager.Instance.GotoScene(SceneRegistry.Lobby.OnlineLobby);
     }
     
     public static void OnLobbyJoin(string lobbyId)
