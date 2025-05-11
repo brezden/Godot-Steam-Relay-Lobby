@@ -6,4 +6,12 @@ public enum ModalType
     InvitePlayer
 } 
 
+public enum InformationModalType
+{
+    Loading,
+    Error,
+    Warning,
+    Success
+}
+
 
