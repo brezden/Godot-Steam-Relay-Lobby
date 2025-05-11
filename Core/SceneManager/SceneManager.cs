@@ -29,9 +29,9 @@ public partial class SceneManager : Node
         _currentScene = root.GetChild(root.GetChildCount() - 1);
     }
 
-    public void GotoScene(int sceneId, SceneRegistry.SceneAnimation animationName = SceneRegistry.SceneAnimation.FadeInOut)
+    public async void GotoScene(int sceneId, SceneRegistry.SceneAnimation animationName = SceneRegistry.SceneAnimation.FadeInOut)
     {
-        ModalManager.CloseModal();
+        await ModalManager.CloseModal();
         
         string path = SceneRegistry.GetScenePath(sceneId);
         _pendingScenePath = path;
@@ -48,7 +48,6 @@ public partial class SceneManager : Node
         animPlayer.Play("start");
         animPlayer.AnimationFinished += OnAnimationFinished;
     }
-
     
     private void OnAnimationFinished(StringName animationName)
     {

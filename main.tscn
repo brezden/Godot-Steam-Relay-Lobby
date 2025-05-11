@@ -66,13 +66,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Create Online Lobby"
 
-[node name="LocalPlay" type="Button" parent="ButtonContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(50, 20)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Create Local Lobby"
-
 [node name="ExitGame" type="Button" parent="ButtonContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 20)

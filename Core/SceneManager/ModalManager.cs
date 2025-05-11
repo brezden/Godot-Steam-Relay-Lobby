@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using GodotPeer2PeerSteamCSharp.Autoload.Types.Scene;
 
 public partial class ModalManager : Node
@@ -8,9 +9,11 @@ public partial class ModalManager : Node
     public Dictionary<ModalType, string> Modals { get; private set; }
 
     private Node currentModalInstance;
+    private SceneTreeTimer modalMinTimeTimer;
+    
     private readonly string modalSceneDirectory = "res://Scenes/Components/Modal";
     private string baseScenePath;
-    private const float minimumTimeModal = 5.0f;
+    private const float minimumTimeModal = 0.75f;
 
     public override void _Ready()
     {
@@ -25,38 +28,35 @@ public partial class ModalManager : Node
 
     public void ShowModal(ModalType modalType)
     {
-        if (IsModalShowing() || !TryGetModalScenePath(modalType, out var path)) return;
-        
-        PackedScene modalBaseScene = GD.Load<PackedScene>(baseScenePath);
-        PackedScene modalScene = GD.Load<PackedScene>(path);
+        if (IsModalShowing() || !TryGetModalScenePath(modalType, out var path))
+            return;
 
-        Node modalBaseSceneInstance = modalBaseScene.Instantiate();
-        Node modalSceneInstance = modalScene.Instantiate();
-        
-        CenterContainer modalSceneContainer = modalBaseSceneInstance.GetNode<CenterContainer>("%ModalContainer"); 
-        modalSceneContainer.AddChild(modalSceneInstance);
-        
-        modalSceneInstance.Name = "Modal"; // Used for getting the modal instance later for tweening
-        
-        GetTree().Root.AddChild(modalBaseSceneInstance);
-        currentModalInstance = modalBaseSceneInstance;
+        var modalScene = GD.Load<PackedScene>(path);
+        var modalInstance = modalScene.Instantiate();
+
+        DisplayModal(modalInstance);
     }
-    
+
     private void ShowConfiguredModal(Node modalScene)
     {
-        if (IsModalShowing()) return;
-        
-        PackedScene modalBaseScene = GD.Load<PackedScene>(baseScenePath);
-        
-        Node modalBaseSceneInstance = modalBaseScene.Instantiate();
-        
-        CenterContainer modalSceneContainer = modalBaseSceneInstance.GetNode<CenterContainer>("%ModalContainer"); 
-        modalSceneContainer.AddChild(modalScene);
+        if (IsModalShowing())
+            return;
 
-        modalScene.Name = "Modal"; // Used for getting the modal instance later for tweening
-        
-        GetTree().Root.AddChild(modalBaseSceneInstance);
-        currentModalInstance = modalBaseSceneInstance;
+        DisplayModal(modalScene);
+    }
+
+    private void DisplayModal(Node modalContent)
+    {
+        var modalBaseScene = GD.Load<PackedScene>(baseScenePath);
+        var modalBaseInstance = modalBaseScene.Instantiate();
+
+        var container = modalBaseInstance.GetNode<CenterContainer>("%ModalContainer");
+        modalContent.Name = "Modal";
+        container.AddChild(modalContent);
+
+        GetTree().Root.AddChild(modalBaseInstance);
+        currentModalInstance = modalBaseInstance;
+        modalMinTimeTimer = GetTree().CreateTimer(minimumTimeModal);
     }
 
     public void RenderInformationModal(string HeaderName, InformationModalType type, string description = null)
@@ -79,12 +79,18 @@ public partial class ModalManager : Node
         ShowConfiguredModal(modalSceneInstance);
     }
     
-    public void CloseModal()
+    public async Task CloseModal()
     {
+        if (modalMinTimeTimer != null && modalMinTimeTimer.TimeLeft > 0)
+        {
+            await ToSignal(modalMinTimeTimer, SceneTreeTimer.SignalName.Timeout);
+        }
+
         EventBus.UI.OnCloseModal();
+        modalMinTimeTimer = null;
     }
 
-    public bool IsModalShowing()
+    private bool IsModalShowing()
     {
         return IsInstanceValid(currentModalInstance);
     }

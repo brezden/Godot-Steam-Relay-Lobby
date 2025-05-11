@@ -8,22 +8,16 @@ public partial class MainMenuButtons : Node
 	public override void _Ready()
 	{
 		Button hostOnlineButton = GetNode<Button>("HostOnline");
-		Button localPlayButton = GetNode<Button>("LocalPlay");
 		Button exitButton = GetNode<Button>("ExitGame");
 		
 		hostOnlineButton.Pressed += HostOnline;
-		localPlayButton.Pressed += LocalPlay;
 		exitButton.Pressed += ExitGame;
 	}
 	
-	private async void HostOnline()
+	private void HostOnline()
 	{
 		SceneManager.Instance.ModalManager.RenderInformationModal("Creating a lobby", InformationModalType.Loading);
 		EventBus.Lobby.OnCreateLobby();
-	}
-	
-	private void LocalPlay()
-	{
 	}
 	
 	private void ExitGame()
