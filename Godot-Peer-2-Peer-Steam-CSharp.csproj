@@ -6,6 +6,7 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RootNamespace>GodotPeer2PeerSteamCSharp</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
@@ -36,6 +37,7 @@
     <Folder Include="DLL\" />
     <Folder Include="Scenes\Transitions\" />
     <Folder Include="Scripts\UI\MainMenu\" />
+    <Compile Remove="Tests\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>
