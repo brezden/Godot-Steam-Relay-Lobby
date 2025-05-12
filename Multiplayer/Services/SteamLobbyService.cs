@@ -49,25 +49,18 @@ public class SteamLobbyService : ILobbyService
         }
     }
 
-    public async void CreateLobby(int maxPlayers)
+    public async Task CreateLobby(int maxPlayers)
     {
-        try
+        var lobbyResult = await SteamMatchmaking.CreateLobbyAsync(maxPlayers);
+        if (lobbyResult.HasValue)
         {
-            var lobbyResult = await SteamMatchmaking.CreateLobbyAsync(maxPlayers);
-            if (lobbyResult.HasValue)
-            {
-                _lobbyId = lobbyResult.Value.Id;
-                lobbyResult.Value.SetPublic();
-                lobbyResult.Value.SetJoinable(true);
-            }
-            else
-            {
-                Logger.Error("Failed to create Steam lobby.");
-            }
+            _lobbyId = lobbyResult.Value.Id;
+            lobbyResult.Value.SetPublic();
+            lobbyResult.Value.SetJoinable(true);
         }
-        catch (Exception ex)
+        else
         {
-            Logger.Error($"Error creating lobby: {ex.Message}");
+            throw new Exception("Failed to create lobby.");
         }
     }
 
@@ -103,6 +96,7 @@ public class SteamLobbyService : ILobbyService
     public void LeaveLobby()
     {
         _lobby.Leave();
+        Logger.Network($"Left lobby: {_lobbyId}");
         _lobbyId = 0;
     }
     

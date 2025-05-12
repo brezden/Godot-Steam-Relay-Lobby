@@ -33,20 +33,18 @@ public class SteamTransportService : ITransportService
 		clientConnection.Receive();
 	}
 
-	public bool CreateServer()
+	public void CreateServer()
 	{
 		serverSocket = SteamNetworkingSockets.CreateRelaySocket<SocketManager>();
 		
 		if (serverSocket == null)
 		{
-			Logger.Error("Failed to create Steam relay server.");
-			return false;
+			throw new Exception("Failed to create Steam relay server.");
 		}
 		
 		_updateMethod = ServerUpdate;
 		TransportManager.Instance.ExecuteProcessMethodStatus(true);
 		serverSocket.Interface = serverCallbacks;
-		return true;
 	}
 
 	public bool ConnectToServer(string serverId)

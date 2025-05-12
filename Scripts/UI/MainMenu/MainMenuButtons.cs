@@ -16,7 +16,6 @@ public partial class MainMenuButtons : Node
 	
 	private void HostOnline()
 	{
-		SceneManager.Instance.ModalManager.RenderInformationModal("Creating a lobby", InformationModalType.Loading);
 		EventBus.Lobby.OnCreateLobby();
 	}
 	
