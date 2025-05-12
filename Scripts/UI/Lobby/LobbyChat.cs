@@ -5,7 +5,7 @@ public partial class LobbyChat : Node
 {
     private TextEdit chatBox;
     private LineEdit chatInput;
-    
+
     public override void _Ready()
     {
         chatBox = GetNode<TextEdit>("ChatBox");

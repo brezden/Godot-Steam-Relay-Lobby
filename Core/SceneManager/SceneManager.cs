@@ -5,9 +5,9 @@ public partial class SceneManager : Node
 {
     private static SceneManager _instance;
     public static SceneManager Instance => _instance;
-    
+
     public ModalManager ModalManager { get; private set; }
-    
+
     private Node _currentScene;
     private Node _transitionScene;
     private AnimationPlayer _transitionAnimPlayer;
@@ -20,9 +20,9 @@ public partial class SceneManager : Node
             QueueFree();
             return;
         }
-        
+
         _instance = this;
-        
+
         ModalManager = new ModalManager();
         AddChild(ModalManager);
         Viewport root = GetTree().Root;
@@ -32,23 +32,23 @@ public partial class SceneManager : Node
     public async void GotoScene(int sceneId, SceneRegistry.SceneAnimation animationName = SceneRegistry.SceneAnimation.FadeInOut)
     {
         await ModalManager.CloseModal();
-        
+
         string path = SceneRegistry.GetScenePath(sceneId);
         _pendingScenePath = path;
 
         PackedScene animationScene = GD.Load<PackedScene>(SceneRegistry.SceneAnimationMapping.GetScene(animationName));
         Node animationSceneInstance = animationScene.Instantiate();
         _transitionScene = animationSceneInstance;
-        
+
         GetTree().Root.AddChild(animationSceneInstance);
-        
+
         AnimationPlayer animPlayer = animationSceneInstance.GetNode<AnimationPlayer>("AnimationPlayer");
         _transitionAnimPlayer = animPlayer;
-        
+
         animPlayer.Play("start");
         animPlayer.AnimationFinished += OnAnimationFinished;
     }
-    
+
     private void OnAnimationFinished(StringName animationName)
     {
         if (animationName == "start")

@@ -10,7 +10,7 @@ public partial class ModalManager : Node
 
     private Node currentModalInstance;
     private SceneTreeTimer modalMinTimeTimer;
-    
+
     private readonly string modalSceneDirectory = "res://Scenes/Components/Modal";
     private string baseScenePath;
     private const float minimumTimeModal = 0.75f;
@@ -18,7 +18,7 @@ public partial class ModalManager : Node
     public override void _Ready()
     {
         baseScenePath = $"{modalSceneDirectory}/ModalBase.tscn";
-        
+
         Modals = new Dictionary<ModalType, string>
         {
             { ModalType.Information, $"{modalSceneDirectory}/Information/Modal.tscn" },
@@ -70,15 +70,15 @@ public partial class ModalManager : Node
                 return;
             }
         }
-        
+
         if (!TryGetModalScenePath(ModalType.Information, out var path)) return;
-        
+
         var modalScene = GD.Load<PackedScene>(path);
         var modalSceneInstance = modalScene.Instantiate<InformationModal>();
         modalSceneInstance.prepareModal(HeaderName, type, description);
         ShowConfiguredModal(modalSceneInstance);
     }
-    
+
     public async Task CloseModal()
     {
         if (modalMinTimeTimer != null && modalMinTimeTimer.TimeLeft > 0)
@@ -94,7 +94,7 @@ public partial class ModalManager : Node
     {
         return IsInstanceValid(currentModalInstance);
     }
-    
+
     private bool TryGetModalScenePath(ModalType type, out string path)
     {
         if (!Modals.TryGetValue(type, out path))

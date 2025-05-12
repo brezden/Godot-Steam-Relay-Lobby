@@ -4,7 +4,7 @@ public enum ModalType
 {
     Information,
     InvitePlayer
-} 
+}
 
 public enum InformationModalType
 {

@@ -38,7 +38,7 @@ public class SteamLobbyService : ILobbyService
                 Logger.Network($"Steam initialized successfully! User: {SteamClient.Name}");
                 return true;
             }
-            
+
             Logger.Error("Steam initialization failed.");
             return false;
         }
@@ -81,12 +81,12 @@ public class SteamLobbyService : ILobbyService
     {
         _lobby.SendChatString(message);
     }
-    
+
     private static void OnLobbyChatMessage(Lobby lobby, Friend friend, string message)
     {
         LobbyManager.OnLobbyMessageReceived(friend.Name, message);
     }
-    
+
     private static void LobbyMemberJoined(Lobby lobby, Friend friend)
     {
         ImageTexture profilePicture = GetProfilePictureAsync(friend.Id).Result;
@@ -99,28 +99,28 @@ public class SteamLobbyService : ILobbyService
         Logger.Network($"Left lobby: {_lobbyId}");
         _lobbyId = 0;
     }
-    
+
     private static void LobbyMemberLeft(Lobby lobby, Friend friend)
     {
         LobbyManager.RemovePlayer(friend.Id.ToString());
     }
-    
+
     private void OnGameLobbyJoinRequested(Lobby lobby, SteamId id)
     {
         Logger.Network($"User accepted lobby invite through Steam UI. Joining lobby: {lobby.Id}");
         JoinLobby(lobby.Id.ToString());
     }
-    
+
     private static async Task<ImageTexture?> GetProfilePictureAsync(SteamId steamId)
     {
         var steamImage = await SteamFriends.GetMediumAvatarAsync(steamId);
         if (steamImage == null) return null;
-    
+
         Godot.Image newImage = Godot.Image.CreateFromData(
-            (int)steamImage.Value.Width, 
-            (int)steamImage.Value.Height, 
-            false, 
-            Godot.Image.Format.Rgba8, 
+            (int)steamImage.Value.Width,
+            (int)steamImage.Value.Height,
+            false,
+            Godot.Image.Format.Rgba8,
             steamImage.Value.Data
         );
 
@@ -129,7 +129,7 @@ public class SteamLobbyService : ILobbyService
 
         return texture;
     }
-    
+
     public void InvitePlayer(string playerId)
     {
         try
@@ -144,7 +144,7 @@ public class SteamLobbyService : ILobbyService
             Logger.Error($"Error inviting player: {ex.Message}");
         }
     }
-    
+
     public void InviteLobbyOverlay()
     {
         SteamFriends.OpenGameInviteOverlay(_lobbyId);
@@ -170,7 +170,7 @@ public class SteamLobbyService : ILobbyService
     {
         List<GlobalTypes.PlayerInvite> inGameFriends = new List<GlobalTypes.PlayerInvite>();
         var friends = SteamFriends.GetFriends();
-        
+
         foreach (var friend in friends)
         {
             if (friend.IsPlayingThisGame)

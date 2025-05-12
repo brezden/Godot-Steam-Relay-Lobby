@@ -5,7 +5,7 @@
         Input = 1,
         Scene = 2
     }
-    
+
     public enum Input : byte
     {
         Movement = 1,

@@ -38,7 +38,7 @@ public static class PacketFactory
     {
         totalSize = HeaderSizeUnreliable + data.Length;
         IntPtr ptr = Marshal.AllocHGlobal(totalSize);
-        
+
         unsafe
         {
             byte* buffer = (byte*)ptr;
@@ -47,7 +47,7 @@ public static class PacketFactory
             buffer[1] = subType;
             buffer[2] = playerIndex;
             buffer[3] = 1;
-            
+
             *(ushort*)(buffer + HeaderSizeUnreliable) = tick;
 
             if (data.Length > 0)
