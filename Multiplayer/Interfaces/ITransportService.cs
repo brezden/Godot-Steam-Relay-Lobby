@@ -4,7 +4,7 @@ public interface ITransportService
 {
     void Update();
     void Disconnect();
-    bool CreateServer();
+    void CreateServer();
     bool ConnectToServer(string serverId);
     void CreateAndSendReliablePacketToServer(byte mainType, byte subType, byte playerIndex, Span<byte> data);
     void CreateAndSendUnreliablePacketToServer(byte mainType, byte subType, byte playerIndex, ushort tick, Span<byte> data);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
+using GodotPeer2PeerSteamCSharp.Autoload.Types.Scene;
 using GodotPeer2PeerSteamCSharp.Multiplayer.Types;
 using Steamworks;
 
@@ -19,7 +20,6 @@ public partial class LobbyManager : Node
 
         _lobbyService = new SteamLobbyService();
         _lobbyService.Initialize();
-
         EventBus.Lobby.CreateLobby += CreateLobby;
     }
     
@@ -28,23 +28,50 @@ public partial class LobbyManager : Node
         _lobbyService.Update();
 	}
 
-    private static void CreateLobby(object? sender, EventArgs e)
+    private static async void CreateLobby(object? sender, EventArgs e)
     {
-        Instance._lobbyService.CreateLobby(4);
+        try
+        {
+            SceneManager.Instance.ModalManager.RenderInformationModal(
+                "Creating lobby",
+                InformationModalType.Loading);
+
+            await Instance._lobbyService.CreateLobby(4);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"[ERR-001] Exception creating lobby: {ex.Message}");
+
+            SceneManager.Instance.ModalManager.RenderInformationModal(
+                "[ERR-001] Failed to create lobby",
+                InformationModalType.Error,
+                "An unexpected error occurred while creating the lobby. Please try again.");
+        }
     }
 
     public static void OnLobbyCreation(string lobbyId)
     {
         Logger.Network($"Lobby created: {lobbyId}");
-        bool result = TransportManager.Server.CreateServer();
-        
-        if (!result)
+        _isHost = true;
+
+        try
         {
-            Logger.Error("Failed to create server.");
+            TransportManager.Server.CreateServer();
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"[ERR-002] Failed to create transport server: {ex}");
+
+            SceneManager.Instance.ModalManager.RenderInformationModal(
+                "[ERR-002] Failed to create server",
+                InformationModalType.Error,
+                "An error occurred while creating the transport server for the lobby. Please try again.");
+            
+            Instance._lobbyService.LeaveLobby();
+            TransportManager.Instance.ExecuteProcessMethodStatus(false);
             return;
         }
-        
-        _isHost = true;
+
         SceneManager.Instance.GotoScene(SceneRegistry.Lobby.OnlineLobby);
     }
     
@@ -116,7 +143,6 @@ public partial class LobbyManager : Node
         _isHost = false;
         Players.Clear();
         SceneManager.Instance.GotoScene(SceneRegistry.MainMenu.Home);
-        Logger.Network("Left lobby and cleared player list.");
     }
     
     public static void InvitePlayer(string playerId)

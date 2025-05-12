@@ -27,18 +27,10 @@ public partial class TransportManager : Node
     
     public class Server
     {
-        public static bool CreateServer()
-        {
-            bool result = Instance._transportService.CreateServer();
-            
-            if (!result)
-            {
-                Logger.Error("Failed to create server.");
-                return false;
-            }
-            
-            Logger.Network("Server created successfully.");
-            return true;
+        public static void CreateServer()
+        { 
+            Instance._transportService.CreateServer();
+            Logger.Network("Server created.");
         }
         
         public static void SendReliablePacket(PacketTypes.MainType mainType, byte subType, byte playerIndex, Span<byte> data = default) {

@@ -40,6 +40,5 @@
 
   <ItemGroup>
     <Content Include="steam_appid.txt" />
-    <Content Include="TODO.md" />
   </ItemGroup>
 </Project>
