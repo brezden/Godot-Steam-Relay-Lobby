@@ -12,6 +12,9 @@ data_*/
 mono_crash.*.json
 Folder.DotSettings.user
 
+Tests/obj/
+Tests/bin/
+
 *.import
 .idea/
 
