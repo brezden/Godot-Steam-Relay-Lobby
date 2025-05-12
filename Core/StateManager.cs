@@ -3,7 +3,7 @@ using GodotPeer2PeerSteamCSharp.Autoload;
 using GodotPeer2PeerSteamCSharp.Games;
 using GodotPeer2PeerSteamCSharp.Games.TankBattle;
 
-public partial class StateManager: Node
+public partial class StateManager : Node
 {
     private IGame _currentGame;
 

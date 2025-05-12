@@ -21,7 +21,7 @@ public partial class LobbyMemberContainer : Node
 
         //
     }
-    
+
     private void OnLobbyMemberJoined(object sender, string playerId)
     {
         if (_lobbyMemberScene == null)
@@ -29,11 +29,11 @@ public partial class LobbyMemberContainer : Node
             GD.PushError("LobbyMember scene is null! Make sure to assign it in the Inspector.");
             return;
         }
-        
+
         var lobbyMemberInstance = _lobbyMemberScene.Instantiate();
-        
+
         GlobalTypes.PlayerInfo args = LobbyManager.Players[playerId];
-        
+
         lobbyMemberInstance.Name = args.PlayerId;
 
         if (lobbyMemberInstance is LobbyMember lobbyMemberScript)
@@ -44,7 +44,7 @@ public partial class LobbyMemberContainer : Node
 
         AddChild(lobbyMemberInstance);
     }
-    
+
     private void OnLobbyMemberLeft(object sender, string playerId)
     {
         foreach (LobbyMember child in GetChildren())

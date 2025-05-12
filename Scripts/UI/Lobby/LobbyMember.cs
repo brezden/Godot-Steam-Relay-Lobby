@@ -24,7 +24,7 @@ public partial class LobbyMember : Control
             Logger.Error("ProfilePicture node not found in LobbyMember scene!");
             return;
         }
-        
+
         _nameLabel.Text = PlayerName;
         _profilePicture.Texture = ProfilePicture;
     }

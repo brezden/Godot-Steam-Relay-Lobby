@@ -25,15 +25,15 @@ public partial class Logger : Node
 
     private static void InitLogPaths()
     {
-        #if DEBUG
-            logDir = Path.Combine(ProjectSettings.GlobalizePath("res://"), "Logs");
-        #else
+#if DEBUG
+        logDir = Path.Combine(ProjectSettings.GlobalizePath("res://"), "Logs");
+#else
             logDir = Path.Combine(ProjectSettings.GlobalizePath("user://"), "Logs");
-        #endif
+#endif
 
         gameLogPath = Path.Combine(logDir, "game_log.txt");
-        netLogPath  = Path.Combine(logDir, "network_log.txt");
-        errLogPath  = Path.Combine(logDir, "error_log.txt");
+        netLogPath = Path.Combine(logDir, "network_log.txt");
+        errLogPath = Path.Combine(logDir, "error_log.txt");
     }
 
     private static void EnsureLogsExist()
@@ -70,7 +70,7 @@ public partial class Logger : Node
             LogType.Error => errLogPath,
             _ => gameLogPath
         };
-        
+
         switch (type)
         {
             case LogType.Error:

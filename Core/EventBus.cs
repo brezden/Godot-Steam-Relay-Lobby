@@ -1,7 +1,7 @@
 ﻿using Godot;
 using System;
 
-public partial class EventBus: Node
+public partial class EventBus : Node
 {
     public static class UI
     {
@@ -12,7 +12,7 @@ public partial class EventBus: Node
             CloseModal?.Invoke(null, EventArgs.Empty);
         }
     }
-    
+
     public static class Lobby
     {
         public static event EventHandler CreateLobby;
@@ -24,17 +24,17 @@ public partial class EventBus: Node
         {
             CreateLobby?.Invoke(null, EventArgs.Empty);
         }
-        
+
         public static void OnLobbyMemberJoined(string playerId)
         {
             LobbyMemberJoined?.Invoke(null, playerId);
         }
-        
+
         public static void OnLobbyMemberLeft(string playerId)
         {
             LobbyMemberLeft?.Invoke(null, playerId);
         }
-        
+
         public static void OnLobbyMessageReceived(string playerId, string message)
         {
             LobbyMessageReceived?.Invoke(null, new GlobalTypes.LobbyMessageArgs { PlayerName = playerId, Message = message });

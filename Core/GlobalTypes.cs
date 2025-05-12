@@ -12,7 +12,7 @@ public static class GlobalTypes
         public ImageTexture ProfilePicture;
         public bool IsReady;
     }
-    
+
     public struct PlayerInvite
     {
         public string PlayerId;
@@ -31,12 +31,12 @@ public static class GlobalTypes
 
     public enum GameType
     {
-       Duel,
-       TeamDuel, 
-       OneVersusMany,
-       FreeForAll
+        Duel,
+        TeamDuel,
+        OneVersusMany,
+        FreeForAll
     }
-    
+
     public class LobbyMessageArgs : EventArgs
     {
         public string PlayerName { get; set; }

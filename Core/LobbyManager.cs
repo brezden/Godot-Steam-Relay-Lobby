@@ -10,7 +10,7 @@ public partial class LobbyManager : Node
 {
     public static LobbyManager Instance { get; private set; }
     private ILobbyService _lobbyService;
-    
+
     public static Dictionary<string, GlobalTypes.PlayerInfo> Players = new Dictionary<string, GlobalTypes.PlayerInfo>();
     private static bool _isHost = false;
 
@@ -22,11 +22,11 @@ public partial class LobbyManager : Node
         _lobbyService.Initialize();
         EventBus.Lobby.CreateLobby += CreateLobby;
     }
-    
+
     public override void _Process(double delta)
-	{
+    {
         _lobbyService.Update();
-	}
+    }
 
     private static async void CreateLobby(object? sender, EventArgs e)
     {
@@ -66,7 +66,7 @@ public partial class LobbyManager : Node
                 "[ERR-002] Failed to create server",
                 InformationModalType.Error,
                 "An error occurred while creating the transport server for the lobby. Please try again.");
-            
+
             Instance._lobbyService.LeaveLobby();
             TransportManager.Instance.ExecuteProcessMethodStatus(false);
             return;
@@ -74,28 +74,28 @@ public partial class LobbyManager : Node
 
         SceneManager.Instance.GotoScene(SceneRegistry.Lobby.OnlineLobby);
     }
-    
+
     public static void OnLobbyJoin(string lobbyId)
     {
         if (_isHost) return;
-        
+
         bool result = TransportManager.Client.ConnectToServer(lobbyId);
 
         if (!result)
         {
             Logger.Error($"Failed to connect to lobby and socket successfully: {lobbyId}");
             return;
-        } 
-        
+        }
+
         Logger.Network($"Successfully connected to lobby and socket: {lobbyId}");
     }
-    
+
     public static void SendLobbyMessage(string message)
     {
         Instance._lobbyService.SendLobbyMessage(message);
         Logger.Network($"Lobby message sent: {message}");
     }
-    
+
     public static void OnLobbyMessageReceived(string sender, string message)
     {
         GlobalTypes.LobbyMessageArgs args = new GlobalTypes.LobbyMessageArgs
@@ -103,17 +103,17 @@ public partial class LobbyManager : Node
             PlayerName = sender,
             Message = message
         };
-        
+
         Logger.Network($"Lobby message received from {sender}: {message}");
-        
+
         EventBus.Lobby.OnLobbyMessageReceived(sender, message);
     }
-    
+
     public static void InviteLobbyOverlay()
     {
         Instance._lobbyService.InviteLobbyOverlay();
     }
-    
+
     public static void AddPlayer(ImageTexture playerPicture, string playerName, SteamId playerId)
     {
         Players.Add(playerId.ToString(), new GlobalTypes.PlayerInfo
@@ -123,7 +123,7 @@ public partial class LobbyManager : Node
             ProfilePicture = playerPicture,
             IsReady = false
         });
-        
+
         EventBus.Lobby.OnLobbyMemberJoined(playerId.ToString());
         Logger.Network($"Player added: {playerName}");
     }
@@ -134,7 +134,7 @@ public partial class LobbyManager : Node
         EventBus.Lobby.OnLobbyMemberLeft(playerId);
         Logger.Network($"Player removed: {playerId}");
     }
-    
+
     public static void LeaveLobby()
     {
         Instance._lobbyService.LeaveLobby();
@@ -144,13 +144,13 @@ public partial class LobbyManager : Node
         Players.Clear();
         SceneManager.Instance.GotoScene(SceneRegistry.MainMenu.Home);
     }
-    
+
     public static void InvitePlayer(string playerId)
     {
         Instance._lobbyService.InvitePlayer(playerId);
         Logger.Network($"Player invited: {playerId}");
     }
-    
+
     public static Task<List<GlobalTypes.PlayerInvite>> GetInGameFriends()
     {
         try

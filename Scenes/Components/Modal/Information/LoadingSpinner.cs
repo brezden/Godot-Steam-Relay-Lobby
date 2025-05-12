@@ -3,8 +3,8 @@ using System;
 
 public partial class LoadingSpinner : AnimatedSprite2D
 {
-	public override void _Ready()
-	{
-		Play("default");
-	}
+    public override void _Ready()
+    {
+        Play("default");
+    }
 }

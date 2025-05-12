@@ -23,7 +23,7 @@ public static class SceneRegistry
 
         public static string GetScene(SceneAnimation animation) => Map[animation];
     }
-    
+
     public static class MainMenu
     {
         public const int Home = 0;
@@ -54,7 +54,7 @@ public static class SceneRegistry
         {
             Logger.Error($"Scene ID {sceneId} not found in registry.");
         }
-        
+
         return path;
     }
 }

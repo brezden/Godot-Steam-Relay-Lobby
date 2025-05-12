@@ -11,6 +11,6 @@ public interface ILobbyService
     void InviteLobbyOverlay();
     void InvitePlayer(string playerId);
     void SendLobbyMessage(string message);
-    
+
     Task<List<GlobalTypes.PlayerInvite>> GetInGameFriends();
 }
