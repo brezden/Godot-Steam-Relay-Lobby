@@ -3,6 +3,7 @@ using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GodotPeer2PeerSteamCSharp.Types.Lobby;
 using Steamworks.Data;
 
 public class SteamLobbyService : ILobbyService
@@ -82,6 +83,11 @@ public class SteamLobbyService : ILobbyService
         _lobbyId = 0;
     }
 
+    public bool IsLobbyActive()
+    {
+        return _lobbyId != 0 && _lobby.MemberCount > 0;
+    }
+
     #endregion
 
     #region Lobby Chat
@@ -102,10 +108,10 @@ public class SteamLobbyService : ILobbyService
 
     private static void OnLobbyEnteredCallback(Lobby lobby)
     {
+        Logger.Network($"Joined lobby: {lobby.Id}");
         _lobby = lobby;
-        ImageTexture profilePicture = GetProfilePictureAsync(SteamClient.SteamId).Result;
-        LobbyManager.AddPlayer(profilePicture, SteamClient.Name, SteamClient.SteamId);
         LobbyManager.OnLobbyJoin(lobby.Owner.Id.ToString());
+        LobbyManager.GatherLobbyMembers();
     }
 
     private static void LobbyMemberJoined(Lobby lobby, Friend friend)
@@ -163,6 +169,25 @@ public class SteamLobbyService : ILobbyService
     #endregion
 
     #region Utiliy Methods
+
+    public LobbyMembersData GatherLobbyMembersData()
+    {
+        LobbyMembersData lobbyMembersData = new LobbyMembersData();
+        IEnumerable<Friend> members = _lobby.Members;
+
+        foreach (Friend member in members)
+        {
+            var profilePicture = GetProfilePictureAsync(member.Id).Result;
+            lobbyMembersData.Players.Add(member.Id.ToString(), new PlayerInfo
+            {
+                PlayerId = member.Id.ToString(),
+                Name = member.Name,
+                ProfilePicture = profilePicture
+            });
+        }
+
+        return lobbyMembersData;
+    }
 
     public async Task<List<GlobalTypes.PlayerInvite>> GetInGameFriends()
     {

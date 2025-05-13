@@ -3,6 +3,7 @@
 public interface ITransportService
 {
     void Update();
+    bool IsConnectionActive();
     void Disconnect();
     void CreateServer();
     bool ConnectToServer(string serverId);

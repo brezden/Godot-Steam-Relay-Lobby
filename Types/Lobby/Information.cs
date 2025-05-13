@@ -14,5 +14,11 @@ public struct PlayerInfo
 public struct LobbyMembersData
 {
     public Dictionary<string, PlayerInfo> Players;
+
+    public LobbyMembersData()
+    {
+        Players = new Dictionary<string, PlayerInfo>();
+    }
 }
+
 
