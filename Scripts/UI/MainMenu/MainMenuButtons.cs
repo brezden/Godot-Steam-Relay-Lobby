@@ -1,7 +1,6 @@
 using Godot;
 using System;
-using GodotPeer2PeerSteamCSharp.Autoload.Types.Scene;
-using GodotPeer2PeerSteamCSharp.Multiplayer.Types;
+using GodotPeer2PeerSteamCSharp.Types.Scene;
 
 public partial class MainMenuButtons : Node
 {

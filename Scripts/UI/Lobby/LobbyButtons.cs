@@ -1,7 +1,7 @@
 using Godot;
 using System;
 using System.Buffers.Binary;
-using GodotPeer2PeerSteamCSharp.Autoload.Types.Scene;
+using GodotPeer2PeerSteamCSharp.Types.Scene;
 
 public partial class LobbyButtons : Node
 {
