@@ -10,29 +10,26 @@ public partial class LobbyMemberContainer : Node
     {
         if (_lobbyMemberScene == null)
         {
-            GD.PushError("LobbyMember scene is not assigned!");
+            Logger.Error("LobbyMember scene is not assigned in the inspector.");
             return;
         }
-        EventBus.Lobby.LobbyMemberJoined += OnLobbyMemberJoined;
-        EventBus.Lobby.LobbyMemberLeft += OnLobbyMemberLeft;
 
-        //
+        if (LobbyManager._lobbyMembersData.Players.Count == 0)
+        {
+            Logger.Error("No players found in the lobby data.");
+            return;
+        }
 
-        // UPON THIS BEING CREATED FILL IN ALL THE PLAYERS THAT ARE ALREADY IN THE LOBBY FROM THE LobbyManager.Players
-
-        //
+        foreach (var playerId in LobbyManager._lobbyMembersData.Players.Keys)
+        {
+            AddLobbyMember(playerId);
+        }
     }
 
-    private void OnLobbyMemberJoined(object sender, string playerId)
+    private void AddLobbyMember(string playerId)
     {
-        if (_lobbyMemberScene == null)
-        {
-            GD.PushError("LobbyMember scene is null! Make sure to assign it in the Inspector.");
-            return;
-        }
 
         var lobbyMemberInstance = _lobbyMemberScene.Instantiate();
-
         PlayerInfo args = LobbyManager._lobbyMembersData.Players[playerId];
 
         lobbyMemberInstance.Name = args.PlayerId;
@@ -44,18 +41,5 @@ public partial class LobbyMemberContainer : Node
         }
 
         AddChild(lobbyMemberInstance);
-    }
-
-    private void OnLobbyMemberLeft(object sender, string playerId)
-    {
-        foreach (LobbyMember child in GetChildren())
-        {
-            if (child.Name == playerId)
-            {
-                RemoveChild(child);
-                child.QueueFree();
-                break;
-            }
-        }
     }
 }
