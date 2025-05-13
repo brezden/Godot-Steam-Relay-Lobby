@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GodotPeer2PeerSteamCSharp.Autoload.Types.Scene;
+using GodotPeer2PeerSteamCSharp.Types.Scene;
 
 public partial class ModalManager : Node
 {

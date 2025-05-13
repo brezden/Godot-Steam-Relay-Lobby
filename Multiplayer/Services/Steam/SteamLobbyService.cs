@@ -10,6 +10,8 @@ public class SteamLobbyService : ILobbyService
     private static SteamId _lobbyId;
     private static Lobby _lobby;
 
+    #region Initialization
+
     public void Initialize()
     {
         InitializeSteam();
@@ -49,6 +51,10 @@ public class SteamLobbyService : ILobbyService
         }
     }
 
+    #endregion
+
+    #region Lobby Management
+
     public async Task CreateLobby(int maxPlayers)
     {
         var lobbyResult = await SteamMatchmaking.CreateLobbyAsync(maxPlayers);
@@ -69,13 +75,16 @@ public class SteamLobbyService : ILobbyService
         LobbyManager.OnLobbyCreation(lobby.Id.ToString());
     }
 
-    private static void OnLobbyEnteredCallback(Lobby lobby)
+    public void LeaveLobby()
     {
-        _lobby = lobby;
-        ImageTexture profilePicture = GetProfilePictureAsync(SteamClient.SteamId).Result;
-        LobbyManager.AddPlayer(profilePicture, SteamClient.Name, SteamClient.SteamId);
-        LobbyManager.OnLobbyJoin(lobby.Owner.Id.ToString());
+        _lobby.Leave();
+        Logger.Network($"Left lobby: {_lobbyId}");
+        _lobbyId = 0;
     }
+
+    #endregion
+
+    #region Lobby Chat
 
     public void SendLobbyMessage(string message)
     {
@@ -87,17 +96,22 @@ public class SteamLobbyService : ILobbyService
         LobbyManager.OnLobbyMessageReceived(friend.Name, message);
     }
 
+    #endregion
+
+    #region Lobby Lifecycle
+
+    private static void OnLobbyEnteredCallback(Lobby lobby)
+    {
+        _lobby = lobby;
+        ImageTexture profilePicture = GetProfilePictureAsync(SteamClient.SteamId).Result;
+        LobbyManager.AddPlayer(profilePicture, SteamClient.Name, SteamClient.SteamId);
+        LobbyManager.OnLobbyJoin(lobby.Owner.Id.ToString());
+    }
+
     private static void LobbyMemberJoined(Lobby lobby, Friend friend)
     {
         ImageTexture profilePicture = GetProfilePictureAsync(friend.Id).Result;
         LobbyManager.AddPlayer(profilePicture, friend.Name, friend.Id);
-    }
-
-    public void LeaveLobby()
-    {
-        _lobby.Leave();
-        Logger.Network($"Left lobby: {_lobbyId}");
-        _lobbyId = 0;
     }
 
     private static void LobbyMemberLeft(Lobby lobby, Friend friend)
@@ -105,30 +119,9 @@ public class SteamLobbyService : ILobbyService
         LobbyManager.RemovePlayer(friend.Id.ToString());
     }
 
-    private void OnGameLobbyJoinRequested(Lobby lobby, SteamId id)
-    {
-        Logger.Network($"User accepted lobby invite through Steam UI. Joining lobby: {lobby.Id}");
-        JoinLobby(lobby.Id.ToString());
-    }
+    #endregion
 
-    private static async Task<ImageTexture?> GetProfilePictureAsync(SteamId steamId)
-    {
-        var steamImage = await SteamFriends.GetMediumAvatarAsync(steamId);
-        if (steamImage == null) return null;
-
-        Godot.Image newImage = Godot.Image.CreateFromData(
-            (int)steamImage.Value.Width,
-            (int)steamImage.Value.Height,
-            false,
-            Godot.Image.Format.Rgba8,
-            steamImage.Value.Data
-        );
-
-        var texture = new ImageTexture();
-        texture.SetImage(newImage);
-
-        return texture;
-    }
+    #region Lobby Invitation and Joining
 
     public void InvitePlayer(string playerId)
     {
@@ -143,11 +136,6 @@ public class SteamLobbyService : ILobbyService
         {
             Logger.Error($"Error inviting player: {ex.Message}");
         }
-    }
-
-    public void InviteLobbyOverlay()
-    {
-        SteamFriends.OpenGameInviteOverlay(_lobbyId);
     }
 
     public async void JoinLobby(string lobbyId)
@@ -165,6 +153,16 @@ public class SteamLobbyService : ILobbyService
             Logger.Error($"Error joining lobby: {ex.Message}");
         }
     }
+
+    private void OnGameLobbyJoinRequested(Lobby lobby, SteamId id)
+    {
+        Logger.Network($"Accepted lobby invite through Steam UI. Joining lobby: {lobby.Id}");
+        JoinLobby(lobby.Id.ToString());
+    }
+
+    #endregion
+
+    #region Utiliy Methods
 
     public async Task<List<GlobalTypes.PlayerInvite>> GetInGameFriends()
     {
@@ -188,4 +186,25 @@ public class SteamLobbyService : ILobbyService
 
         return inGameFriends;
     }
+
+    private static async Task<ImageTexture?> GetProfilePictureAsync(SteamId steamId)
+    {
+        var steamImage = await SteamFriends.GetMediumAvatarAsync(steamId);
+        if (steamImage == null) return null;
+
+        Godot.Image newImage = Godot.Image.CreateFromData(
+            (int)steamImage.Value.Width,
+            (int)steamImage.Value.Height,
+            false,
+            Godot.Image.Format.Rgba8,
+            steamImage.Value.Data
+        );
+
+        var texture = new ImageTexture();
+        texture.SetImage(newImage);
+
+        return texture;
+    }
+
+    #endregion
 }

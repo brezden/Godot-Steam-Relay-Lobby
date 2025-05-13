@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
-using GodotPeer2PeerSteamCSharp.Autoload.Types.Scene;
-using GodotPeer2PeerSteamCSharp.Multiplayer.Types;
+using GodotPeer2PeerSteamCSharp.Types.Lobby;
+using GodotPeer2PeerSteamCSharp.Types.Scene;
 using Steamworks;
 
 public partial class LobbyManager : Node
 {
     public static LobbyManager Instance { get; private set; }
     private ILobbyService _lobbyService;
-
-    public static Dictionary<string, GlobalTypes.PlayerInfo> Players = new Dictionary<string, GlobalTypes.PlayerInfo>();
+    public static LobbyMembersData _lobbyMembersData;
     private static bool _isHost = false;
 
     public override void _Ready()
@@ -72,14 +71,34 @@ public partial class LobbyManager : Node
             return;
         }
 
-        SceneManager.Instance.GotoScene(SceneRegistry.Lobby.OnlineLobby);
+        GatherLobbyMembers();
+    }
+
+    private static void GatherLobbyMembers()
+    {
+        try
+        {
+            _lobbyMembersData = Instance._lobbyService.GatherLobbyMembersData();
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"[ERR-003] Failed to get lobby members: {ex.Message}");
+            SceneManager.Instance.ModalManager.RenderInformationModal(
+                "[ERR-003] Failed to gather lobby members",
+                InformationModalType.Error,
+                "An error occurred while gathering lobby members. Please try again.");
+            LobbyManager.LeaveLobby();
+        }
     }
 
     public static void OnLobbyJoin(string lobbyId)
     {
-        if (_isHost) return;
+        if (_isHost)
+        {
+            return;
+        }
 
-        bool result = TransportManager.Client.ConnectToServer(lobbyId);
+        var result = TransportManager.Client.ConnectToServer(lobbyId);
 
         if (!result)
         {
@@ -109,14 +128,9 @@ public partial class LobbyManager : Node
         EventBus.Lobby.OnLobbyMessageReceived(sender, message);
     }
 
-    public static void InviteLobbyOverlay()
-    {
-        Instance._lobbyService.InviteLobbyOverlay();
-    }
-
     public static void AddPlayer(ImageTexture playerPicture, string playerName, SteamId playerId)
     {
-        Players.Add(playerId.ToString(), new GlobalTypes.PlayerInfo
+        _lobbyMembersData.Players.Add(playerId.ToString(), new PlayerInfo
         {
             PlayerId = playerId.ToString(),
             Name = playerName,
@@ -130,7 +144,7 @@ public partial class LobbyManager : Node
 
     public static void RemovePlayer(string playerId)
     {
-        Players.Remove(playerId);
+        _lobbyMembersData.Players.Remove(playerId);
         EventBus.Lobby.OnLobbyMemberLeft(playerId);
         Logger.Network($"Player removed: {playerId}");
     }
@@ -141,7 +155,7 @@ public partial class LobbyManager : Node
         TransportManager.Instance.ExecuteProcessMethodStatus(false);
         TransportManager.Client.Disconnect();
         _isHost = false;
-        Players.Clear();
+        _lobbyMembersData.Players.Clear();
         SceneManager.Instance.GotoScene(SceneRegistry.MainMenu.Home);
     }
 

@@ -1,4 +1,4 @@
-namespace GodotPeer2PeerSteamCSharp.Autoload.Types.Scene;
+namespace GodotPeer2PeerSteamCSharp.Types.Scene;
 
 public enum ModalType
 {

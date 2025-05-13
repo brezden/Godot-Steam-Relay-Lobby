@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using GodotPeer2PeerSteamCSharp.Types.Lobby;
 
 public partial class LobbyMemberContainer : Node
 {
@@ -32,7 +33,7 @@ public partial class LobbyMemberContainer : Node
 
         var lobbyMemberInstance = _lobbyMemberScene.Instantiate();
 
-        GlobalTypes.PlayerInfo args = LobbyManager.Players[playerId];
+        PlayerInfo args = LobbyManager._lobbyMembersData.Players[playerId];
 
         lobbyMemberInstance.Name = args.PlayerId;
 

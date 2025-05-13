@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GodotPeer2PeerSteamCSharp.Multiplayer.Types;
+namespace GodotPeer2PeerSteamCSharp.Types.Scene;
 
 public static class SceneRegistry
 {

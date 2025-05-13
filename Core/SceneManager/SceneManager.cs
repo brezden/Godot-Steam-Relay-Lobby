@@ -1,5 +1,5 @@
 ﻿using Godot;
-using GodotPeer2PeerSteamCSharp.Multiplayer.Types;
+using GodotPeer2PeerSteamCSharp.Types.Scene;
 
 public partial class SceneManager : Node
 {
