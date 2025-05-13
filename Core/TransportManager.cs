@@ -20,9 +20,20 @@ public partial class TransportManager : Node
         _transportService.Update();
     }
 
+    public bool IsConnectionActive()
+    {
+        return _transportService.IsConnectionActive();
+    }
+
     public void ExecuteProcessMethodStatus(bool status)
     {
         SetProcess(status);
+    }
+
+    public void Disconnect()
+    {
+        _transportService.Disconnect();
+        Logger.Network("Disconnected from server.");
     }
 
     public class Server
@@ -62,12 +73,6 @@ public partial class TransportManager : Node
         {
             Logger.Network($"Attempting to connect to server: {serverId}");
             return Instance._transportService.ConnectToServer(serverId);
-        }
-
-        public static void Disconnect()
-        {
-            Instance._transportService.Disconnect();
-            Logger.Network("Disconnected from server.");
         }
 
         public static void SendReliablePacket(PacketTypes.MainType mainType, byte subType, byte playerIndex, Span<byte> data = default)

@@ -23,6 +23,11 @@ public class SteamTransportService : ITransportService
         _updateMethod();
     }
 
+    public bool IsConnectionActive()
+    {
+        return (clientConnection.Connected || serverSocket != null);
+    }
+
     private void ServerUpdate()
     {
         serverSocket.Receive();

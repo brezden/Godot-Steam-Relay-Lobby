@@ -6,6 +6,7 @@ public interface ILobbyService
 {
     void Initialize();
     void Update();
+    bool IsLobbyActive();
     Task CreateLobby(int maxPlayers);
     void JoinLobby(string lobbyId);
     void LeaveLobby();
