@@ -8,49 +8,16 @@ using Steamworks;
 
 public partial class LobbyManager : Node
 {
-    private class ReadinessTracker
-    {
-        public bool LobbyEntered;
-        public bool TransportReady;
-        public bool LobbyInformationGathered;
-
-        public bool IsReady => LobbyEntered && TransportReady && LobbyInformationGathered;
-    }
-
-    private static ReadinessTracker _readiness = new();
-
-    public static void MarkLobbyEntered()
-    {
-        _readiness.LobbyEntered = true;
-        CheckLobbyReady();
-    }
-
-    public static void MarkTransportReady()
-    {
-        _readiness.TransportReady = true;
-        CheckLobbyReady();
-    }
-
-    public static void MarkLobbyInformationGathered()
-    {
-        _readiness.LobbyInformationGathered = true;
-        CheckLobbyReady();
-    }
-
-    private static void CheckLobbyReady()
-    {
-        if (_readiness.IsReady)
-        {
-            LobbyReady();
-            Logger.Network("Lobby is ready for use.");
-            _readiness = new ReadinessTracker();
-        }
-    }
-
-    public static LobbyManager Instance { get; private set; }
+    // Singleton instance
+    private static LobbyManager Instance { get; set; }
     private ILobbyService _lobbyService;
+
+    // Lobby Data
     public static LobbyMembersData _lobbyMembersData = new LobbyMembersData();
     private static bool _isHost = false;
+
+    // Readiness Tracker
+    private static ReadinessTracker _readiness = new ReadinessTracker();
 
     public override void _Ready()
     {
@@ -75,7 +42,7 @@ public partial class LobbyManager : Node
                 InformationModalType.Loading);
 
             await Instance._lobbyService.CreateLobby(4);
-            MarkLobbyEntered();
+            _readiness.MarkLobbyEntered();
         }
         catch (Exception ex)
         {
@@ -96,7 +63,7 @@ public partial class LobbyManager : Node
         try
         {
             TransportManager.Server.CreateServer();
-            MarkTransportReady();
+            _readiness.MarkTransportReady();
         }
         catch (Exception ex)
         {
@@ -108,7 +75,7 @@ public partial class LobbyManager : Node
                 "An error occurred while creating the transport server for the lobby. Please try again.");
 
             Instance._lobbyService.LeaveLobby();
-            TransportManager.Instance.ExecuteProcessMethodStatus(false);
+            TransportManager.Instance.Disconnect();
         }
     }
 
@@ -118,7 +85,7 @@ public partial class LobbyManager : Node
         {
             _lobbyMembersData = Instance._lobbyService.GatherLobbyMembersData();
             Logger.Network($"Lobby members gathered: {_lobbyMembersData.Players.Count}");
-            MarkLobbyInformationGathered();
+            _readiness.MarkLobbyInformationGathered();
         }
         catch (Exception ex)
         {
@@ -129,12 +96,13 @@ public partial class LobbyManager : Node
                 "An error occurred while gathering lobby members. Please try again.");
             Instance._lobbyService.LeaveLobby();
             TransportManager.Instance.Disconnect();
-            TransportManager.Instance.ExecuteProcessMethodStatus(false);
         }
     }
 
-    private static void LobbyReady()
+    public static void OnPlayerReadyToJoinGame()
     {
+        Logger.Network("Player is ready to join game");
+        _readiness = new ReadinessTracker();
         SceneManager.Instance.GotoScene(SceneRegistry.Lobby.OnlineLobby);
     }
 
@@ -145,17 +113,24 @@ public partial class LobbyManager : Node
             return;
         }
 
-        var result = TransportManager.Client.ConnectToServer(lobbyId);
+        Logger.Network($"Joining lobby: {lobbyId}");
+        _readiness.MarkLobbyEntered();
 
-        if (!result)
+        try
         {
-            Logger.Error($"Failed to connect to lobby and socket successfully: {lobbyId}");
-            return;
+            TransportManager.Client.ConnectToServer(lobbyId);
+            Logger.Network($"Connected to socket: {lobbyId}");
+            _readiness.MarkTransportReady();
         }
-
-        Logger.Network($"Successfully connected to lobby and socket: {lobbyId}");
-        MarkLobbyEntered();
-        MarkTransportReady();
+        catch
+        {
+            Logger.Error($"[ERR-006] Failed to connect to socket: {lobbyId}");
+            SceneManager.Instance.ModalManager.RenderInformationModal(
+                "[ERR-006] Failed to connect to socket",
+                InformationModalType.Error,
+                "An error occurred while connecting to the lobby. Please try again.");
+            Instance._lobbyService.LeaveLobby();
+        }
     }
 
     public static void SendLobbyMessage(string message)
@@ -194,18 +169,25 @@ public partial class LobbyManager : Node
     public static void RemovePlayer(string playerId)
     {
         _lobbyMembersData.Players.Remove(playerId);
-        EventBus.Lobby.OnLobbyMemberLeft(playerId);
         Logger.Network($"Player removed: {playerId}");
+    }
+
+    public static void ErrorJoiningLobby()
+    {
+        Logger.Error("Error joining lobby");
+        SceneManager.Instance.ModalManager.RenderInformationModal(
+            "[ERR-005] Failed to join lobby",
+            InformationModalType.Error,
+            "An error occurred while trying to join the lobby. Please try again.");
+        LeaveLobby();
     }
 
     public static void LeaveLobby()
     {
         Instance._lobbyService.LeaveLobby();
-        TransportManager.Instance.ExecuteProcessMethodStatus(false);
         TransportManager.Instance.Disconnect();
         _isHost = false;
         _lobbyMembersData.Players.Clear();
-        SceneManager.Instance.GotoScene(SceneRegistry.MainMenu.Home);
     }
 
     public static void InvitePlayer(string playerId)
@@ -224,6 +206,41 @@ public partial class LobbyManager : Node
         {
             Logger.Error($"Failed to get online friends. {e.Message}");
             return Task.FromResult(new List<GlobalTypes.PlayerInvite>());
+        }
+    }
+}
+
+public class ReadinessTracker
+{
+    private bool LobbyEntered;
+    private bool TransportReady;
+    private bool LobbyInformationGathered;
+
+    private bool IsReady => LobbyEntered && TransportReady && LobbyInformationGathered;
+
+    public void MarkLobbyEntered()
+    {
+        LobbyEntered = true;
+        CheckLobbyReady();
+    }
+
+    public void MarkTransportReady()
+    {
+        TransportReady = true;
+        CheckLobbyReady();
+    }
+
+    public void MarkLobbyInformationGathered()
+    {
+        LobbyInformationGathered = true;
+        CheckLobbyReady();
+    }
+
+    private void CheckLobbyReady()
+    {
+        if (IsReady)
+        {
+            LobbyManager.OnPlayerReadyToJoinGame();
         }
     }
 }
