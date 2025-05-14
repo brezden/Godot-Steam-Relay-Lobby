@@ -6,12 +6,11 @@ public interface ILobbyService
 {
     void Initialize();
     void Update();
-    bool IsLobbyActive();
     Task CreateLobby(int maxPlayers);
-    void JoinLobby(string lobbyId);
     void LeaveLobby();
     void InvitePlayer(string playerId);
     void SendLobbyMessage(string message);
-    LobbyMembersData GatherLobbyMembersData();
+    Task<PlayerInfo> GetPlayerInfo(string playerId);
+    Task<LobbyMembersData> GatherLobbyMembersData();
     Task<List<GlobalTypes.PlayerInvite>> GetInGameFriends();
 }

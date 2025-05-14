@@ -60,5 +60,6 @@ public partial class LobbyButtons : Node
     private void LeaveLobby()
     {
         LobbyManager.LeaveLobby();
+        SceneManager.Instance.GotoScene(SceneRegistry.MainMenu.Home);
     }
 }
