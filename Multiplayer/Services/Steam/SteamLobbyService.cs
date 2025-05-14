@@ -116,13 +116,12 @@ public class SteamLobbyService : ILobbyService
 
     private static void LobbyMemberJoined(Lobby lobby, Friend friend)
     {
-        ImageTexture profilePicture = GetProfilePictureAsync(friend.Id).Result;
-        LobbyManager.AddPlayer(profilePicture, friend.Name, friend.Id);
+        LobbyManager.OnPlayerAdded(friend.Id.ToString());
     }
 
     private static void LobbyMemberLeft(Lobby lobby, Friend friend)
     {
-        LobbyManager.RemovePlayer(friend.Id.ToString());
+        LobbyManager.OnRemovePlayer(friend.Id.ToString());
     }
 
     #endregion
@@ -133,10 +132,7 @@ public class SteamLobbyService : ILobbyService
     {
         try
         {
-            ulong.TryParse(playerId, out ulong steamIdValue);
-            SteamId steamId = new SteamId();
-            steamId.Value = steamIdValue;
-            _lobby.InviteFriend(steamId);
+            _lobby.InviteFriend(ConvertStringToSteamId(playerId));
         }
         catch (Exception ex)
         {
@@ -170,23 +166,31 @@ public class SteamLobbyService : ILobbyService
 
     #region Utiliy Methods
 
-    public LobbyMembersData GatherLobbyMembersData()
+    public async Task<LobbyMembersData> GatherLobbyMembersData()
     {
         LobbyMembersData lobbyMembersData = new LobbyMembersData();
         IEnumerable<Friend> members = _lobby.Members;
 
         foreach (Friend member in members)
         {
-            var profilePicture = GetProfilePictureAsync(member.Id).Result;
-            lobbyMembersData.Players.Add(member.Id.ToString(), new PlayerInfo
-            {
-                PlayerId = member.Id.ToString(),
-                Name = member.Name,
-                ProfilePicture = profilePicture
-            });
+            PlayerInfo playerInfo = GetPlayerInfo(member.Id.ToString()).Result;
+            lobbyMembersData.Players.Add(member.Id.ToString(), playerInfo);
         }
 
         return lobbyMembersData;
+    }
+
+    public async Task<PlayerInfo> GetPlayerInfo(string playerId)
+    {
+        Friend friend = new Friend(ConvertStringToSteamId(playerId));
+        var profilePicture = GetProfilePictureAsync(friend.Id).Result;
+        return new PlayerInfo
+        {
+            PlayerId = playerId,
+            Name = friend.Name,
+            ProfilePicture = profilePicture,
+            IsReady = false
+        };
     }
 
     public async Task<List<GlobalTypes.PlayerInvite>> GetInGameFriends()
@@ -229,6 +233,14 @@ public class SteamLobbyService : ILobbyService
         texture.SetImage(newImage);
 
         return texture;
+    }
+
+    private static SteamId ConvertStringToSteamId(string playerId)
+    {
+        ulong.TryParse(playerId, out ulong steamIdValue);
+        SteamId steamId = new SteamId();
+        steamId.Value = steamIdValue;
+        return steamId;
     }
 
     #endregion

@@ -83,7 +83,7 @@ public partial class LobbyManager : Node
     {
         try
         {
-            _lobbyMembersData = Instance._lobbyService.GatherLobbyMembersData();
+            _lobbyMembersData = Instance._lobbyService.GatherLobbyMembersData().Result;
             Logger.Network($"Lobby members gathered: {_lobbyMembersData.Players.Count}");
             _readiness.MarkLobbyInformationGathered();
         }
@@ -152,24 +152,19 @@ public partial class LobbyManager : Node
         EventBus.Lobby.OnLobbyMessageReceived(sender, message);
     }
 
-    public static void AddPlayer(ImageTexture playerPicture, string playerName, SteamId playerId)
+    public static void OnPlayerAdded(string playerId)
     {
-        _lobbyMembersData.Players.Add(playerId.ToString(), new PlayerInfo
-        {
-            PlayerId = playerId.ToString(),
-            Name = playerName,
-            ProfilePicture = playerPicture,
-            IsReady = false
-        });
-
-        EventBus.Lobby.OnLobbyMemberJoined(playerId.ToString());
-        Logger.Network($"Player added: {playerName}");
+        PlayerInfo playerInfo = Instance._lobbyService.GetPlayerInfo(playerId).Result;
+        _lobbyMembersData.Players.Add(playerId, playerInfo);
+        Logger.Network($"Player added to lobby: {playerId}");
+        EventBus.Lobby.OnLobbyMemberJoined(playerId);
     }
 
-    public static void RemovePlayer(string playerId)
+    public static void OnRemovePlayer(string playerId)
     {
         _lobbyMembersData.Players.Remove(playerId);
-        Logger.Network($"Player removed: {playerId}");
+        Logger.Network($"Player removed from lobby: {playerId}");
+        EventBus.Lobby.OnLobbyMemberLeft(playerId);
     }
 
     public static void ErrorJoiningLobby()
