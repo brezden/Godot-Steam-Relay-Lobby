@@ -158,6 +158,7 @@ public class SteamLobbyService : ILobbyService
 
     private void OnGameLobbyJoinRequested(Lobby lobby, SteamId id)
     {
+        LobbyManager.AttemptingToJoinLobby();
         Logger.Network($"Accepted lobby invite through Steam UI. Joining lobby: {lobby.Id}");
         JoinLobby(lobby.Id.ToString());
     }
