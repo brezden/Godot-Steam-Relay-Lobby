@@ -8,6 +8,9 @@ public partial class LobbyMemberContainer : Node
 
     public override void _Ready()
     {
+        EventBus.Lobby.LobbyMemberJoined += AddLobbyMember;
+        EventBus.Lobby.LobbyMemberLeft += RemoveLobbyMember;
+
         if (_lobbyMemberScene == null)
         {
             Logger.Error("LobbyMember scene is not assigned in the inspector.");
@@ -26,6 +29,11 @@ public partial class LobbyMemberContainer : Node
         }
     }
 
+    private void AddLobbyMember(object sender, string playerId)
+    {
+        AddLobbyMember(playerId);
+    }
+
     private void AddLobbyMember(string playerId)
     {
 
@@ -40,6 +48,25 @@ public partial class LobbyMemberContainer : Node
             lobbyMemberScript.ProfilePicture = args.ProfilePicture;
         }
 
+        lobbyMemberInstance.Name = args.PlayerId;
         AddChild(lobbyMemberInstance);
+    }
+
+    private void RemoveLobbyMember(object sender, string playerId)
+    {
+        RemoveLobbyMember(playerId);
+    }
+
+    private void RemoveLobbyMember(string playerId)
+    {
+        var lobbyMemberInstance = GetNodeOrNull<LobbyMember>(playerId);
+        if (lobbyMemberInstance != null)
+        {
+            lobbyMemberInstance.QueueFree();
+        }
+        else
+        {
+            Logger.Error($"Lobby member with ID {playerId} not found.");
+        }
     }
 }

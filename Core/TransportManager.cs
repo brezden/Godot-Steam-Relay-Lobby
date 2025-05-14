@@ -33,6 +33,7 @@ public partial class TransportManager : Node
     public void Disconnect()
     {
         _transportService.Disconnect();
+        ExecuteProcessMethodStatus(false);
         Logger.Network("Disconnected from server.");
     }
 

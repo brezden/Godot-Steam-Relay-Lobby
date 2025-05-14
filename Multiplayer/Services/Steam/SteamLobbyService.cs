@@ -151,12 +151,12 @@ public class SteamLobbyService : ILobbyService
             var result = await SteamMatchmaking.JoinLobbyAsync(ulong.Parse(lobbyId));
             if (!result.HasValue)
             {
-                Logger.Error($"Failed to join lobby: {lobbyId}");
+                throw new Exception("Failed to join lobby.");
             }
         }
         catch (Exception ex)
         {
-            Logger.Error($"Error joining lobby: {ex.Message}");
+            LobbyManager.ErrorJoiningLobby();
         }
     }
 
