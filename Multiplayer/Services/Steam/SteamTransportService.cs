@@ -23,6 +23,17 @@ public class SteamTransportService : ITransportService
         _updateMethod();
     }
 
+    public void SetUpdateMethod(string updateMethod)
+    {
+        if (updateMethod == "ServerUpdate")
+        {
+            _updateMethod = ServerUpdate;
+            return;
+        }
+
+        _updateMethod = ClientUpdate;
+    }
+
     public bool IsConnectionActive()
     {
         return (clientConnection.Connected || serverSocket != null);
@@ -52,22 +63,11 @@ public class SteamTransportService : ITransportService
         serverSocket.Interface = serverCallbacks;
     }
 
-    public bool ConnectToServer(string serverId)
+    public void ConnectToServer(string serverId)
     {
         ulong steamIdValue = ulong.Parse(serverId);
         SteamId hostSteamId = new SteamId { Value = steamIdValue };
-
         clientConnection = SteamNetworkingSockets.ConnectRelay<ClientConnectionManager>(hostSteamId, 0);
-
-        if (clientConnection == null)
-        {
-            return false;
-        }
-
-        _updateMethod = ClientUpdate;
-        TransportManager.Instance.ExecuteProcessMethodStatus(true);
-
-        return true;
     }
 
     public void Disconnect()
@@ -202,7 +202,7 @@ public class ClientConnectionManager : ConnectionManager
 
     public override void OnConnected(ConnectionInfo info)
     {
-        Logger.Network("Client: Successfully connected to server!");
+        TransportManager.Client.OnSuccessfulConnection();
     }
 
     public override void OnDisconnected(ConnectionInfo info)

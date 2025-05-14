@@ -17,7 +17,7 @@ public partial class LobbyManager : Node
     private static bool _isHost = false;
 
     // Readiness Tracker
-    private static ReadinessTracker _readiness = new ReadinessTracker();
+    public static ReadinessTracker _readiness = new ReadinessTracker();
 
     public override void _Ready()
     {
@@ -106,6 +106,13 @@ public partial class LobbyManager : Node
         SceneManager.Instance.GotoScene(SceneRegistry.Lobby.OnlineLobby);
     }
 
+    public static void AttemptingToJoinLobby()
+    {
+        SceneManager.Instance.ModalManager.RenderInformationModal(
+            "Joining lobby",
+            InformationModalType.Loading);
+    }
+
     public static void OnLobbyJoin(string lobbyId)
     {
         if (_isHost)
@@ -119,12 +126,10 @@ public partial class LobbyManager : Node
         try
         {
             TransportManager.Client.ConnectToServer(lobbyId);
-            Logger.Network($"Connected to socket: {lobbyId}");
-            _readiness.MarkTransportReady();
         }
         catch
         {
-            Logger.Error($"[ERR-006] Failed to connect to socket: {lobbyId}");
+            Logger.Error($"[ERR-006] Failed to attempt connection to socket: {lobbyId}");
             SceneManager.Instance.ModalManager.RenderInformationModal(
                 "[ERR-006] Failed to connect to socket",
                 InformationModalType.Error,

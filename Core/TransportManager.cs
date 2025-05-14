@@ -70,10 +70,20 @@ public partial class TransportManager : Node
 
     public class Client
     {
-        public static bool ConnectToServer(string serverId)
+        public static void ConnectToServer(string serverId)
         {
             Logger.Network($"Attempting to connect to server: {serverId}");
-            return Instance._transportService.ConnectToServer(serverId);
+            Instance._transportService.ConnectToServer(serverId);
+        }
+
+        public static void OnSuccessfulConnection()
+        {
+            LobbyManager.ErrorJoiningLobby();
+            return;
+            Logger.Network("Successfully connected to server. (Client)");
+            Instance._transportService.SetUpdateMethod("Client");
+            Instance.ExecuteProcessMethodStatus(true);
+            LobbyManager._readiness.MarkTransportReady();
         }
 
         public static void SendReliablePacket(PacketTypes.MainType mainType, byte subType, byte playerIndex, Span<byte> data = default)
