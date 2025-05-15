@@ -1,6 +1,8 @@
 using System;
 using System.Buffers.Binary;
 using Godot;
+using GodotPeer2PeerSteamCSharp.Core;
+using GodotPeer2PeerSteamCSharp.Core.Lobby;
 using GodotPeer2PeerSteamCSharp.Types.Scene;
 
 public partial class LobbyButtons : Node

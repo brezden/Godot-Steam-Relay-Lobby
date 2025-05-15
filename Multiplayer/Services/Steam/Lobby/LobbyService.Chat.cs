@@ -1,3 +1,4 @@
+using GodotPeer2PeerSteamCSharp.Core.Lobby;
 using Steamworks;
 
 namespace GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
@@ -16,6 +17,6 @@ public partial class LobbyService : ILobbyService
 
     private static void OnLobbyChatMessage(Steamworks.Data.Lobby lobby, Friend friend, string message)
     {
-        LobbyManager.OnLobbyMessageReceived(friend.Name, message);
+        LobbyManager.ReceiveLobbyMessage(friend.Name, message);
     }
 }

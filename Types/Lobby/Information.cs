@@ -20,3 +20,9 @@ public struct LobbyMembersData
         Players = new Dictionary<string, PlayerInfo>();
     }
 }
+
+public struct LobbyMessageArgs
+{
+    public string PlayerName;
+    public string Message;
+}

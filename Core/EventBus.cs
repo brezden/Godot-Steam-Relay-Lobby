@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using GodotPeer2PeerSteamCSharp.Types.Lobby;
 
 public partial class EventBus : Node
 {
@@ -35,10 +36,10 @@ public partial class EventBus : Node
             LobbyMemberLeft?.Invoke(null, playerId);
         }
 
-        public static void OnLobbyMessageReceived(string playerId, string message)
+        public static void OnLobbyMessageReceived(LobbyMessageArgs args)
         {
             LobbyMessageReceived?.Invoke(null,
-                new GlobalTypes.LobbyMessageArgs { PlayerName = playerId, Message = message });
+                new GlobalTypes.LobbyMessageArgs { PlayerName = args.PlayerName, Message = args.Message });
         }
     }
 }

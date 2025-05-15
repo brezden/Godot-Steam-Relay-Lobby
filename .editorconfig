@@ -91,5 +91,5 @@ dotnet_naming_rule.interfaces_must_have_i_prefix.symbols = interfaces
 dotnet_naming_rule.interfaces_must_have_i_prefix.style = interface_prefix_style
 dotnet_naming_rule.interfaces_must_have_i_prefix.severity = suggestion
 
-# ---- Supressions ----
+# ---- Suppressions ----
 dotnet_diagnostic.CA1822.severity = none

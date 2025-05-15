@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Buffers.Binary;
 
 namespace GodotPeer2PeerSteamCSharp.Routers;

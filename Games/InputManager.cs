@@ -1,4 +1,4 @@
-using Steamworks.Data;
+﻿using Steamworks.Data;
 
 namespace GodotPeer2PeerSteamCSharp.Games;
 
