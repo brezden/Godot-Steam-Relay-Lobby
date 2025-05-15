@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
+using GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
 using GodotPeer2PeerSteamCSharp.Types.Lobby;
 using GodotPeer2PeerSteamCSharp.Types.Scene;
 using Steamworks;
@@ -23,7 +24,7 @@ public partial class LobbyManager : Node
     {
         Instance = this;
 
-        _lobbyService = new SteamLobbyService();
+        _lobbyService = new LobbyService();
         _lobbyService.Initialize();
         EventBus.Lobby.CreateLobby += CreateLobby;
     }
@@ -106,8 +107,9 @@ public partial class LobbyManager : Node
         SceneManager.Instance.GotoScene(SceneRegistry.Lobby.OnlineLobby);
     }
 
-    public static void AttemptingToJoinLobby()
+    public static void AttemptingToJoinLobby(string lobbyId)
     {
+        Logger.Network($"Attempting to join lobby: {lobbyId}");
         SceneManager.Instance.ModalManager.RenderInformationModal(
             "Joining lobby",
             InformationModalType.Loading);

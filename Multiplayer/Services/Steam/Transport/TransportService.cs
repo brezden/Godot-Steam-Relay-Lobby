@@ -5,7 +5,7 @@ using Steamworks.Data;
 using System.Buffers;
 using System.Runtime.InteropServices;
 
-public class SteamTransportService : ITransportService
+public class TransportService : ITransportService
 {
     private static SocketManager serverSocket;
     private static ClientConnectionManager clientConnection;
@@ -13,7 +13,7 @@ public class SteamTransportService : ITransportService
 
     private Action _updateMethod;
 
-    public SteamTransportService()
+    public TransportService()
     {
         serverCallbacks = new ServerCallbacks();
     }
@@ -177,7 +177,7 @@ public class ServerCallbacks : ISocketManager
         // Reliable
         if (sendType == 0)
         {
-            SteamTransportService.RelayPacketToClients(connection, data, size, SendType.Reliable);
+            TransportService.RelayPacketToClients(connection, data, size, SendType.Reliable);
             Span<byte> payload = span.Slice(PacketFactory.HeaderSizeReliable, size - PacketFactory.HeaderSizeReliable);
             TransportManager.Server.OnReliablePacketReceived(mainType, subType, playerIndex, payload);
         }
@@ -185,7 +185,7 @@ public class ServerCallbacks : ISocketManager
         // Unreliable
         else
         {
-            SteamTransportService.RelayPacketToClients(connection, data, size, SendType.Unreliable);
+            TransportService.RelayPacketToClients(connection, data, size, SendType.Unreliable);
             ushort tick = BitConverter.ToUInt16(span.Slice(PacketFactory.HeaderSizeReliable, 2));
             Span<byte> payload = span.Slice(PacketFactory.HeaderSizeUnreliable, size - PacketFactory.HeaderSizeUnreliable);
             TransportManager.Server.OnUnreliablePacketReceived(mainType, subType, playerIndex, tick, payload);
