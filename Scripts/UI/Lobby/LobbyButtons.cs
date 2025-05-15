@@ -1,19 +1,19 @@
-using Godot;
 using System;
 using System.Buffers.Binary;
+using Godot;
 using GodotPeer2PeerSteamCSharp.Types.Scene;
 
 public partial class LobbyButtons : Node
 {
     public override void _Ready()
     {
-        Button inviteLobbyButton = GetNode<Button>("InviteMembers");
-        Button sendReliableServerButton = GetNode<Button>("SendReliableServerPacket");
-        Button sendUnreliableServerButton = GetNode<Button>("SendUnreliableServerPacket");
-        Button sendReliableClientButton = GetNode<Button>("SendReliableClientPacket");
-        Button sendUnreliableClientButton = GetNode<Button>("SendUnreliableClientPacket");
-        Button sendSceneChangeButton = GetNode<Button>("SendChangeScenePacket");
-        Button leaveLobbyButton = GetNode<Button>("LeaveLobby");
+        var inviteLobbyButton = GetNode<Button>("InviteMembers");
+        var sendReliableServerButton = GetNode<Button>("SendReliableServerPacket");
+        var sendUnreliableServerButton = GetNode<Button>("SendUnreliableServerPacket");
+        var sendReliableClientButton = GetNode<Button>("SendReliableClientPacket");
+        var sendUnreliableClientButton = GetNode<Button>("SendUnreliableClientPacket");
+        var sendSceneChangeButton = GetNode<Button>("SendChangeScenePacket");
+        var leaveLobbyButton = GetNode<Button>("LeaveLobby");
 
         inviteLobbyButton.Pressed += InviteLobby;
         sendReliableServerButton.Pressed += SendReliableServerPacket;

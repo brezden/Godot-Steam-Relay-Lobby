@@ -1,4 +1,4 @@
-﻿using GodotPeer2PeerSteamCSharp.Games;
+using GodotPeer2PeerSteamCSharp.Games;
 
 public class TankBattleGame : IGame
 {

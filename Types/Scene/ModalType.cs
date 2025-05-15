@@ -13,5 +13,3 @@ public enum InformationModalType
     Warning,
     Success
 }
-
-

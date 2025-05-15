@@ -1,6 +1,6 @@
-﻿namespace GodotPeer2PeerSteamCSharp.Games.TankBattle;
-using GodotPeer2PeerSteamCSharp.Games;
 using Steamworks.Data;
+
+namespace GodotPeer2PeerSteamCSharp.Games.TankBattle;
 
 public class TankBattleInputManager : IInputManager
 {

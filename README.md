@@ -74,38 +74,6 @@ Following these steps should allow Steam API initialization to succeed without m
 
 ---
 
-## Pre-commit Hook (Format Before Commit)
-
-Create a `.git/hooks/pre-commit` file with the following:
-
-```bash
-#!/bin/sh
-# Format and re-stage pre-staged .cs files
-
-# Get staged .cs files before formatting
-STAGED_FILES=$(git diff --cached --name-only -- '*.cs')
-
-if [ -z "$STAGED_FILES" ]; then
-  echo "No staged C# files to format."
-  exit 0
-fi
-
-echo "Formatting staged C# files..."
-dotnet format Godot-Peer-2-Peer-Steam-CSharp.csproj
-
-# Re-stage only the previously staged files
-echo "$STAGED_FILES" | xargs git add
-
-echo "Formatted and re-staged:"
-echo "$STAGED_FILES"
-```
-
-Make the hook executable:
-
-```bash
-chmod +x .git/hooks/pre-commit
-```
-
 # Runs Tests
 ```bash
 dotnet test Tests/Tests.csproj

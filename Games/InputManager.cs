@@ -1,9 +1,14 @@
-﻿namespace GodotPeer2PeerSteamCSharp.Games;
 using Steamworks.Data;
+
+namespace GodotPeer2PeerSteamCSharp.Games;
 
 public interface IInputManager
 {
-    SendType InputDefaultSendType { get; }
+    SendType InputDefaultSendType
+    {
+        get;
+    }
+
     void ProcessPositionalInput(int playerIndex, float x, float y);
     void ProcessActionInput(int playerIndex, string action);
 }

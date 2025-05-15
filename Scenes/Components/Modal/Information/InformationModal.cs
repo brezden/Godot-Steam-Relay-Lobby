@@ -1,18 +1,17 @@
 using Godot;
-using System;
 using GodotPeer2PeerSteamCSharp.Types.Scene;
 
 public partial class InformationModal : Panel
 {
-    public string headerText;
+    private Button CloseButton;
+    private Label DescriptionLabel;
     public string descriptionText;
-    public InformationModalType type;
+    private Control ErrorIcon;
 
     private Label HeaderLabel;
-    private Label DescriptionLabel;
+    public string headerText;
     private Control LoadingSpinner;
-    private Control ErrorIcon;
-    private Button CloseButton;
+    public InformationModalType type;
 
     public override void _Ready()
     {

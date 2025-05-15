@@ -1,5 +1,5 @@
-﻿using Godot;
 using System;
+using Godot;
 
 public partial class EventBus : Node
 {
@@ -37,7 +37,8 @@ public partial class EventBus : Node
 
         public static void OnLobbyMessageReceived(string playerId, string message)
         {
-            LobbyMessageReceived?.Invoke(null, new GlobalTypes.LobbyMessageArgs { PlayerName = playerId, Message = message });
+            LobbyMessageReceived?.Invoke(null,
+                new GlobalTypes.LobbyMessageArgs { PlayerName = playerId, Message = message });
         }
     }
 }

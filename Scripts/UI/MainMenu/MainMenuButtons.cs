@@ -4,8 +4,8 @@ public partial class MainMenuButtons : Node
 {
     public override void _Ready()
     {
-        Button hostOnlineButton = GetNode<Button>("HostOnline");
-        Button exitButton = GetNode<Button>("ExitGame");
+        var hostOnlineButton = GetNode<Button>("HostOnline");
+        var exitButton = GetNode<Button>("ExitGame");
 
         hostOnlineButton.Pressed += HostOnline;
         exitButton.Pressed += ExitGame;

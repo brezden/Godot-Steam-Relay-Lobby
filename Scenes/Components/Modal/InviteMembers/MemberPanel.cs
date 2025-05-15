@@ -1,16 +1,34 @@
 using Godot;
-using System;
 
 public partial class MemberPanel : Panel
 {
-    public string PlayerId { get; set; }
-    public string PlayerName { get; set; }
-    public ImageTexture PlayerPicture { get; set; }
-    public string PlayerStatus { get; set; }
+    public string PlayerId
+    {
+        get;
+        set;
+    }
+
+    public string PlayerName
+    {
+        get;
+        set;
+    }
+
+    public ImageTexture PlayerPicture
+    {
+        get;
+        set;
+    }
+
+    public string PlayerStatus
+    {
+        get;
+        set;
+    }
 
     public override void _Ready()
     {
-        Button inviteButton = GetNode<Button>("%InviteButton");
+        var inviteButton = GetNode<Button>("%InviteButton");
         inviteButton.Pressed += OnInviteButtonPressed;
     }
 
@@ -21,9 +39,9 @@ public partial class MemberPanel : Panel
         PlayerPicture = playerPicture;
         PlayerStatus = playerStatus;
 
-        Label playerNameLabel = GetNode<Label>("%PlayerName");
-        Label playerStatusLabel = GetNode<Label>("%PlayerStatus");
-        TextureRect playerPictureRect = GetNode<TextureRect>("%PlayerPicture");
+        var playerNameLabel = GetNode<Label>("%PlayerName");
+        var playerStatusLabel = GetNode<Label>("%PlayerStatus");
+        var playerPictureRect = GetNode<TextureRect>("%PlayerPicture");
 
         playerNameLabel.Text = PlayerName;
         playerStatusLabel.Text = PlayerStatus;

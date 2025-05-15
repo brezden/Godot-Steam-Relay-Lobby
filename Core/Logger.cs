@@ -1,7 +1,7 @@
-using Godot;
 using System;
 using System.IO;
 using System.Runtime.CompilerServices;
+using Godot;
 
 public enum LogType
 {
@@ -59,11 +59,11 @@ public partial class Logger : Node
         [CallerLineNumber] int line = 0,
         [CallerMemberName] string member = "")
     {
-        string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-        string location = $"{Path.GetFileName(file)}:{line} ({member})";
-        string formatted = $"[{timestamp}] [{location}] {message}";
+        var timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        var location = $"{Path.GetFileName(file)}:{line} ({member})";
+        var formatted = $"[{timestamp}] [{location}] {message}";
 
-        string path = type switch
+        var path = type switch
         {
             LogType.Game => gameLogPath,
             LogType.Network => netLogPath,
@@ -92,14 +92,20 @@ public partial class Logger : Node
     }
 
     public static void Game(string msg,
-        [CallerFilePath] string file = "", [CallerLineNumber] int line = 0, [CallerMemberName] string member = "") =>
+        [CallerFilePath] string file = "", [CallerLineNumber] int line = 0, [CallerMemberName] string member = "")
+    {
         LogInternal(LogType.Game, msg, file, line, member);
+    }
 
     public static void Network(string msg,
-        [CallerFilePath] string file = "", [CallerLineNumber] int line = 0, [CallerMemberName] string member = "") =>
+        [CallerFilePath] string file = "", [CallerLineNumber] int line = 0, [CallerMemberName] string member = "")
+    {
         LogInternal(LogType.Network, msg, file, line, member);
+    }
 
     public static void Error(string msg,
-        [CallerFilePath] string file = "", [CallerLineNumber] int line = 0, [CallerMemberName] string member = "") =>
+        [CallerFilePath] string file = "", [CallerLineNumber] int line = 0, [CallerMemberName] string member = "")
+    {
         LogInternal(LogType.Error, msg, file, line, member);
+    }
 }

@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public partial class LobbyChat : Node
 {
@@ -13,16 +12,15 @@ public partial class LobbyChat : Node
 
         EventBus.Lobby.LobbyMessageReceived += OnLobbyMessageReceived;
 
-        Button sendLobbyMessageButton = GetNode<Button>("SendLobbyMessage");
+        var sendLobbyMessageButton = GetNode<Button>("SendLobbyMessage");
         sendLobbyMessageButton.Pressed += OnSendLobbyMessage;
     }
 
     private void OnSendLobbyMessage()
     {
         if (string.IsNullOrEmpty(chatInput.Text))
-        {
             return;
-        }
+
         LobbyManager.SendLobbyMessage(chatInput.Text);
         chatInput.Text = string.Empty;
     }

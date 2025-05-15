@@ -1,4 +1,4 @@
-﻿using Godot;
+using Godot;
 using GodotPeer2PeerSteamCSharp.Autoload;
 using GodotPeer2PeerSteamCSharp.Games;
 using GodotPeer2PeerSteamCSharp.Games.TankBattle;

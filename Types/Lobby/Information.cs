@@ -20,5 +20,3 @@ public struct LobbyMembersData
         Players = new Dictionary<string, PlayerInfo>();
     }
 }
-
-
