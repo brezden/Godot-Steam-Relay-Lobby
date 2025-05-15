@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using GodotPeer2PeerSteamCSharp.Core.Lobby;
 using Steamworks;
 
 namespace GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
@@ -24,6 +25,6 @@ public partial class LobbyService : ILobbyService
 
     private static void OnLobbyCreatedCallback(Result result, Steamworks.Data.Lobby lobby)
     {
-        LobbyManager.OnLobbyCreation(lobby.Id.ToString());
+        LobbyManager.Instance.OnLobbyCreation(lobby.Id.ToString());
     }
 }

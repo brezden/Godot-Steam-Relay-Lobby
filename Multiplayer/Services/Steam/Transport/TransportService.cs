@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using GodotPeer2PeerSteamCSharp.Core;
 using Steamworks;
 using Steamworks.Data;
 

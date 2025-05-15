@@ -1,4 +1,5 @@
 using System;
+using GodotPeer2PeerSteamCSharp.Core.Lobby;
 using Steamworks;
 
 namespace GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
@@ -35,11 +36,10 @@ public partial class LobbyService : ILobbyService
         Logger.Network($"Joined lobby: {lobby.Id}");
         _lobby = lobby;
         LobbyManager.OnLobbyJoin(lobby.Owner.Id.ToString());
-        LobbyManager.GatherLobbyMembers();
     }
 
     private static void OnLobbyMemberLeft(Steamworks.Data.Lobby lobby, Friend friend)
     {
-        LobbyManager.OnRemovePlayer(friend.Id.ToString());
+        LobbyManager.RemovePlayer(friend.Id.ToString());
     }
 }

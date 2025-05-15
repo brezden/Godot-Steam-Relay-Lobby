@@ -1,6 +1,9 @@
 using System;
 using Godot;
+using GodotPeer2PeerSteamCSharp.Core.Lobby;
 using GodotPeer2PeerSteamCSharp.Routers;
+
+namespace GodotPeer2PeerSteamCSharp.Core;
 
 public partial class TransportManager : Node
 {
@@ -92,12 +95,10 @@ public partial class TransportManager : Node
 
         public static void OnSuccessfulConnection()
         {
-            LobbyManager.ErrorJoiningLobby();
-            return;
             Logger.Network("Successfully connected to server. (Client)");
             Instance._transportService.SetUpdateMethod("Client");
             Instance.ExecuteProcessMethodStatus(true);
-            LobbyManager._readiness.MarkTransportReady();
+            LobbyManager.LobbyConnectionGate.MarkTransportReady();
         }
 
         public static void SendReliablePacket(PacketTypes.MainType mainType, byte subType, byte playerIndex,

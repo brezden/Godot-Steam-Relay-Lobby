@@ -1,4 +1,5 @@
 using Godot;
+using GodotPeer2PeerSteamCSharp.Core.Lobby;
 
 public partial class InviteMemberModal : Panel
 {
