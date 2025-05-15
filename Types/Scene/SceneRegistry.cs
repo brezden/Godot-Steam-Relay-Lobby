@@ -1,4 +1,3 @@
-﻿using System;
 using System.Collections.Generic;
 
 namespace GodotPeer2PeerSteamCSharp.Types.Scene;
@@ -12,6 +11,23 @@ public static class SceneRegistry
         SlideRight
     }
 
+    public static readonly Dictionary<int, string> ScenePaths = new()
+    {
+        { MainMenu.Home, "res://main.tscn" },
+        { Lobby.OnlineLobby, "res://Scenes/Lobby/Lobby.tscn" },
+        { TankBattle.Game, "res://Games/TankBattle/Game.tscn" }
+    };
+
+    public static string GetScenePath(int sceneId)
+    {
+        var scenePath = ScenePaths.TryGetValue(sceneId, out var path);
+
+        if (!scenePath)
+            Logger.Error($"Scene ID {sceneId} not found in registry.");
+
+        return path;
+    }
+
     public static class SceneAnimationMapping
     {
         public static readonly Dictionary<SceneAnimation, string> Map = new()
@@ -21,7 +37,10 @@ public static class SceneRegistry
             { SceneAnimation.SlideRight, "res://Scenes/Transitions/SlideRight.tscn" }
         };
 
-        public static string GetScene(SceneAnimation animation) => Map[animation];
+        public static string GetScene(SceneAnimation animation)
+        {
+            return Map[animation];
+        }
     }
 
     public static class MainMenu
@@ -37,24 +56,5 @@ public static class SceneRegistry
     public static class TankBattle
     {
         public const int Game = 100;
-    }
-
-    public static readonly Dictionary<int, string> ScenePaths = new()
-    {
-        { MainMenu.Home, "res://main.tscn" },
-        { Lobby.OnlineLobby, "res://Scenes/Lobby/Lobby.tscn"},
-        { TankBattle.Game, "res://Games/TankBattle/Game.tscn" },
-    };
-
-    public static string GetScenePath(int sceneId)
-    {
-        bool scenePath = ScenePaths.TryGetValue(sceneId, out var path);
-
-        if (!scenePath)
-        {
-            Logger.Error($"Scene ID {sceneId} not found in registry.");
-        }
-
-        return path;
     }
 }

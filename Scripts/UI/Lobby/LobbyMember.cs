@@ -5,8 +5,19 @@ public partial class LobbyMember : Control
     private Label _nameLabel;
     private TextureRect _profilePicture;
 
-    [Export] public string PlayerName { get; set; } = "Unknown";
-    [Export] public Texture2D ProfilePicture { get; set; }
+    [Export]
+    public string PlayerName
+    {
+        get;
+        set;
+    } = "Unknown";
+
+    [Export]
+    public Texture2D ProfilePicture
+    {
+        get;
+        set;
+    }
 
     public override void _Ready()
     {

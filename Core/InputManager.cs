@@ -1,7 +1,8 @@
-﻿namespace GodotPeer2PeerSteamCSharp.Autoload;
-using GodotPeer2PeerSteamCSharp.Games;
 using Godot;
+using GodotPeer2PeerSteamCSharp.Games;
 using Steamworks.Data;
+
+namespace GodotPeer2PeerSteamCSharp.Autoload;
 
 public partial class InputManager : Node
 {

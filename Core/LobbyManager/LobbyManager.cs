@@ -1,37 +1,39 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
 using GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
 using GodotPeer2PeerSteamCSharp.Types.Lobby;
 using GodotPeer2PeerSteamCSharp.Types.Scene;
-using Steamworks;
 
 public partial class LobbyManager : Node
 {
-    // Singleton instance
-    private static LobbyManager Instance { get; set; }
-    private ILobbyService _lobbyService;
-
     // Lobby Data
-    public static LobbyMembersData _lobbyMembersData = new LobbyMembersData();
-    private static bool _isHost = false;
+    public static LobbyMembersData _lobbyMembersData = new();
+    private static bool _isHost;
 
     // Readiness Tracker
-    public static ReadinessTracker _readiness = new ReadinessTracker();
+    public static ReadinessTracker _readiness = new();
+    private ILobbyService LobbyService;
+
+    public LobbyManager Instance
+    {
+        get;
+        private set;
+    }
 
     public override void _Ready()
     {
         Instance = this;
 
-        _lobbyService = new LobbyService();
-        _lobbyService.Initialize();
+        LobbyService = new LobbyService();
+        LobbyService.Initialize();
         EventBus.Lobby.CreateLobby += CreateLobby;
     }
 
     public override void _Process(double delta)
     {
-        _lobbyService.Update();
+        LobbyService.Update();
     }
 
     private static async void CreateLobby(object? sender, EventArgs e)
@@ -42,7 +44,7 @@ public partial class LobbyManager : Node
                 "Creating lobby",
                 InformationModalType.Loading);
 
-            await Instance._lobbyService.CreateLobby(4);
+            await Instance.LobbyService.CreateLobby(4);
             _readiness.MarkLobbyEntered();
         }
         catch (Exception ex)
@@ -75,7 +77,7 @@ public partial class LobbyManager : Node
                 InformationModalType.Error,
                 "An error occurred while creating the transport server for the lobby. Please try again.");
 
-            Instance._lobbyService.LeaveLobby();
+            Instance.LobbyService.LeaveLobby();
             TransportManager.Instance.Disconnect();
         }
     }
@@ -84,7 +86,7 @@ public partial class LobbyManager : Node
     {
         try
         {
-            _lobbyMembersData = Instance._lobbyService.GatherLobbyMembersData().Result;
+            _lobbyMembersData = Instance.LobbyService.GatherLobbyMembersData().Result;
             Logger.Network($"Lobby members gathered: {_lobbyMembersData.Players.Count}");
             _readiness.MarkLobbyInformationGathered();
         }
@@ -95,7 +97,7 @@ public partial class LobbyManager : Node
                 "[ERR-003] Failed to gather lobby members",
                 InformationModalType.Error,
                 "An error occurred while gathering lobby members. Please try again.");
-            Instance._lobbyService.LeaveLobby();
+            Instance.LobbyService.LeaveLobby();
             TransportManager.Instance.Disconnect();
         }
     }
@@ -118,9 +120,7 @@ public partial class LobbyManager : Node
     public static void OnLobbyJoin(string lobbyId)
     {
         if (_isHost)
-        {
             return;
-        }
 
         Logger.Network($"Joining lobby: {lobbyId}");
         _readiness.MarkLobbyEntered();
@@ -136,19 +136,19 @@ public partial class LobbyManager : Node
                 "[ERR-006] Failed to connect to socket",
                 InformationModalType.Error,
                 "An error occurred while connecting to the lobby. Please try again.");
-            Instance._lobbyService.LeaveLobby();
+            Instance.LobbyService.LeaveLobby();
         }
     }
 
     public static void SendLobbyMessage(string message)
     {
-        Instance._lobbyService.SendLobbyMessage(message);
+        Instance.LobbyService.SendLobbyMessage(message);
         Logger.Network($"Lobby message sent: {message}");
     }
 
     public static void OnLobbyMessageReceived(string sender, string message)
     {
-        GlobalTypes.LobbyMessageArgs args = new GlobalTypes.LobbyMessageArgs
+        var args = new GlobalTypes.LobbyMessageArgs
         {
             PlayerName = sender,
             Message = message
@@ -161,7 +161,7 @@ public partial class LobbyManager : Node
 
     public static void OnPlayerAdded(string playerId)
     {
-        PlayerInfo playerInfo = Instance._lobbyService.GetPlayerInfo(playerId).Result;
+        var playerInfo = Instance.LobbyService.GetPlayerInfo(playerId).Result;
         _lobbyMembersData.Players.Add(playerId, playerInfo);
         Logger.Network($"Player added to lobby: {playerId}");
         EventBus.Lobby.OnLobbyMemberJoined(playerId);
@@ -186,7 +186,7 @@ public partial class LobbyManager : Node
 
     public static void LeaveLobby()
     {
-        Instance._lobbyService.LeaveLobby();
+        Instance.LobbyService.LeaveLobby();
         TransportManager.Instance.Disconnect();
         _isHost = false;
         _lobbyMembersData.Players.Clear();
@@ -194,7 +194,7 @@ public partial class LobbyManager : Node
 
     public static void InvitePlayer(string playerId)
     {
-        Instance._lobbyService.InvitePlayer(playerId);
+        Instance.LobbyService.InvitePlayer(playerId);
         Logger.Network($"Player invited: {playerId}");
     }
 
@@ -202,7 +202,7 @@ public partial class LobbyManager : Node
     {
         try
         {
-            return Instance._lobbyService.GetInGameFriends();
+            return Instance.LobbyService.GetInGameFriends();
         }
         catch (Exception e)
         {
@@ -215,8 +215,8 @@ public partial class LobbyManager : Node
 public class ReadinessTracker
 {
     private bool LobbyEntered;
-    private bool TransportReady;
     private bool LobbyInformationGathered;
+    private bool TransportReady;
 
     private bool IsReady => LobbyEntered && TransportReady && LobbyInformationGathered;
 
@@ -241,8 +241,6 @@ public class ReadinessTracker
     private void CheckLobbyReady()
     {
         if (IsReady)
-        {
             LobbyManager.OnPlayerReadyToJoinGame();
-        }
     }
 }

@@ -1,13 +1,12 @@
-namespace GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
-
-using Steamworks;
 using System;
-using Steamworks.Data;
+using Steamworks;
+
+namespace GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
 
 public partial class LobbyService : ILobbyService
 {
+    private Steamworks.Data.Lobby _lobby;
     private SteamId _lobbyId;
-    private Lobby _lobby;
 
     public void Initialize()
     {
@@ -18,7 +17,12 @@ public partial class LobbyService : ILobbyService
         RegisterParticipantCallbacks();
     }
 
-    private void InitializeSteam()
+    public void Update()
+    {
+        SteamClient.RunCallbacks();
+    }
+
+    private static void InitializeSteam()
     {
         try
         {
@@ -28,12 +32,7 @@ public partial class LobbyService : ILobbyService
         {
             Logger.Error($"Steam initialization error: {ex.Message}");
         }
-        
+
         Logger.Network($"Steam initialized successfully! User: {SteamClient.Name}");
-    }
-    
-    public void Update()
-    {
-        SteamClient.RunCallbacks();
     }
 }

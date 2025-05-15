@@ -1,6 +1,4 @@
 using Godot;
-using System;
-using GodotPeer2PeerSteamCSharp.Types.Lobby;
 
 public partial class LobbyMemberContainer : Node
 {
@@ -24,9 +22,7 @@ public partial class LobbyMemberContainer : Node
         }
 
         foreach (var playerId in LobbyManager._lobbyMembersData.Players.Keys)
-        {
             AddLobbyMember(playerId);
-        }
     }
 
     private void AddLobbyMember(object sender, string playerId)
@@ -36,9 +32,8 @@ public partial class LobbyMemberContainer : Node
 
     private void AddLobbyMember(string playerId)
     {
-
         var lobbyMemberInstance = _lobbyMemberScene.Instantiate();
-        PlayerInfo args = LobbyManager._lobbyMembersData.Players[playerId];
+        var args = LobbyManager._lobbyMembersData.Players[playerId];
 
         lobbyMemberInstance.Name = args.PlayerId;
 
@@ -61,12 +56,8 @@ public partial class LobbyMemberContainer : Node
     {
         var lobbyMemberInstance = GetNodeOrNull<LobbyMember>(playerId);
         if (lobbyMemberInstance != null)
-        {
             lobbyMemberInstance.QueueFree();
-        }
         else
-        {
             Logger.Error($"Lobby member with ID {playerId} not found.");
-        }
     }
 }

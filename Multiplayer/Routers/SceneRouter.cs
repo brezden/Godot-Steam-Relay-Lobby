@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Buffers.Binary;
 
 namespace GodotPeer2PeerSteamCSharp.Routers;
@@ -7,7 +7,7 @@ public class SceneRouter
 {
     public static void Route(byte subType, byte playerIndex, Span<byte> data = default)
     {
-        switch ((PacketTypes.Scene)subType)
+        switch ((PacketTypes.Scene) subType)
         {
             case PacketTypes.Scene.Change:
                 ChangeScene(data);
@@ -26,7 +26,7 @@ public class SceneRouter
             return;
         }
 
-        ushort sceneId = BinaryPrimitives.ReadUInt16LittleEndian(data);
+        var sceneId = BinaryPrimitives.ReadUInt16LittleEndian(data);
         SceneManager.Instance.GotoScene(sceneId);
     }
 }

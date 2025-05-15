@@ -1,9 +1,7 @@
 using System;
-using Godot;
+using System.Runtime.InteropServices;
 using Steamworks;
 using Steamworks.Data;
-using System.Buffers;
-using System.Runtime.InteropServices;
 
 public class TransportService : ITransportService
 {
@@ -36,17 +34,7 @@ public class TransportService : ITransportService
 
     public bool IsConnectionActive()
     {
-        return (clientConnection.Connected || serverSocket != null);
-    }
-
-    private void ServerUpdate()
-    {
-        serverSocket.Receive();
-    }
-
-    private void ClientUpdate()
-    {
-        clientConnection.Receive();
+        return clientConnection.Connected || serverSocket != null;
     }
 
     public void CreateServer()
@@ -54,9 +42,7 @@ public class TransportService : ITransportService
         serverSocket = SteamNetworkingSockets.CreateRelaySocket<SocketManager>();
 
         if (serverSocket == null)
-        {
             throw new Exception("Failed to create Steam relay server.");
-        }
 
         _updateMethod = ServerUpdate;
         TransportManager.Instance.ExecuteProcessMethodStatus(true);
@@ -65,9 +51,9 @@ public class TransportService : ITransportService
 
     public void ConnectToServer(string serverId)
     {
-        ulong steamIdValue = ulong.Parse(serverId);
-        SteamId hostSteamId = new SteamId { Value = steamIdValue };
-        clientConnection = SteamNetworkingSockets.ConnectRelay<ClientConnectionManager>(hostSteamId, 0);
+        var steamIdValue = ulong.Parse(serverId);
+        var hostSteamId = new SteamId { Value = steamIdValue };
+        clientConnection = SteamNetworkingSockets.ConnectRelay<ClientConnectionManager>(hostSteamId);
     }
 
     public void Disconnect()
@@ -85,65 +71,75 @@ public class TransportService : ITransportService
 
     public void CreateAndSendReliablePacketToServer(byte mainType, byte subType, byte playerIndex, Span<byte> data)
     {
-        IntPtr packet = PacketFactory.CreateReliablePacket(mainType, subType, playerIndex, data, out int totalSize);
+        var packet = PacketFactory.CreateReliablePacket(mainType, subType, playerIndex, data, out var totalSize);
         clientConnection?.Connection.SendMessage(packet, totalSize);
         Marshal.FreeHGlobal(packet);
     }
 
-    public void CreateAndSendUnreliablePacketToServer(byte mainType, byte subType, byte playerIndex, ushort tick, Span<byte> data)
+    public void CreateAndSendUnreliablePacketToServer(byte mainType, byte subType, byte playerIndex, ushort tick,
+        Span<byte> data)
     {
-        IntPtr packetPtr = PacketFactory.CreateUnreliablePacket(mainType, subType, playerIndex, tick, data, out int totalSize);
+        var packetPtr =
+            PacketFactory.CreateUnreliablePacket(mainType, subType, playerIndex, tick, data, out var totalSize);
         clientConnection?.Connection.SendMessage(packetPtr, totalSize, SendType.Unreliable);
         Marshal.FreeHGlobal(packetPtr);
     }
 
     public void CreateAndSendReliablePacketToClients(byte mainType, byte subType, byte playerIndex, Span<byte> data)
     {
-        IntPtr packetPtr = PacketFactory.CreateReliablePacket(mainType, subType, playerIndex, data, out int totalSize);
+        var packetPtr = PacketFactory.CreateReliablePacket(mainType, subType, playerIndex, data, out var totalSize);
         SendReliablePacketToClients(packetPtr, totalSize);
+    }
+
+    public void CreateAndSendUnreliablePacketToClients(byte mainType, byte subType, byte playerIndex, ushort tick,
+        Span<byte> data)
+    {
+        var packet =
+            PacketFactory.CreateUnreliablePacket(mainType, subType, playerIndex, tick, data, out var totalSize);
+        SendUnreliablePacketToClients(packet, totalSize);
+    }
+
+    private void ServerUpdate()
+    {
+        serverSocket.Receive();
+    }
+
+    private void ClientUpdate()
+    {
+        clientConnection.Receive();
     }
 
     private static void SendReliablePacketToClients(IntPtr packetPtr, int totalSize)
     {
-        if (serverSocket == null) return;
+        if (serverSocket == null)
+            return;
 
         foreach (var client in serverSocket.Connected)
-        {
             client.SendMessage(packetPtr, totalSize);
-        }
 
         Marshal.FreeHGlobal(packetPtr);
-    }
-
-    public void CreateAndSendUnreliablePacketToClients(byte mainType, byte subType, byte playerIndex, ushort tick, Span<byte> data)
-    {
-        IntPtr packet = PacketFactory.CreateUnreliablePacket(mainType, subType, playerIndex, tick, data, out int totalSize);
-        SendUnreliablePacketToClients(packet, totalSize);
     }
 
     private static void SendUnreliablePacketToClients(IntPtr packetPtr, int totalSize)
     {
-        if (serverSocket == null) return;
+        if (serverSocket == null)
+            return;
 
         foreach (var client in serverSocket.Connected)
-        {
             client.SendMessage(packetPtr, totalSize, SendType.Unreliable);
-        }
 
         Marshal.FreeHGlobal(packetPtr);
     }
 
-    public static void RelayPacketToClients(Connection originConnection, IntPtr packetPtr, int totalSize, SendType sendType)
+    public static void RelayPacketToClients(Connection originConnection, IntPtr packetPtr, int totalSize,
+        SendType sendType)
     {
-        if (serverSocket == null) return;
+        if (serverSocket == null)
+            return;
 
         foreach (var client in serverSocket.Connected)
-        {
             if (client != originConnection)
-            {
                 client.SendMessage(packetPtr, totalSize, sendType);
-            }
-        }
     }
 }
 
@@ -165,20 +161,21 @@ public class ServerCallbacks : ISocketManager
         Logger.Network($"Server: Player {data.Identity} has disconnected.");
     }
 
-    public unsafe void OnMessage(Connection connection, NetIdentity identity, IntPtr data, int size, long messageNum, long recvTime, int channel)
+    public unsafe void OnMessage(Connection connection, NetIdentity identity, IntPtr data, int size, long messageNum,
+        long recvTime, int channel)
     {
-        var span = new Span<byte>((void*)data, size);
+        var span = new Span<byte>((void*) data, size);
 
-        byte mainType = span[0];
-        byte subType = span[1];
-        byte playerIndex = span[2];
-        byte sendType = span[3];
+        var mainType = span[0];
+        var subType = span[1];
+        var playerIndex = span[2];
+        var sendType = span[3];
 
         // Reliable
         if (sendType == 0)
         {
             TransportService.RelayPacketToClients(connection, data, size, SendType.Reliable);
-            Span<byte> payload = span.Slice(PacketFactory.HeaderSizeReliable, size - PacketFactory.HeaderSizeReliable);
+            var payload = span.Slice(PacketFactory.HeaderSizeReliable, size - PacketFactory.HeaderSizeReliable);
             TransportManager.Server.OnReliablePacketReceived(mainType, subType, playerIndex, payload);
         }
 
@@ -186,8 +183,8 @@ public class ServerCallbacks : ISocketManager
         else
         {
             TransportService.RelayPacketToClients(connection, data, size, SendType.Unreliable);
-            ushort tick = BitConverter.ToUInt16(span.Slice(PacketFactory.HeaderSizeReliable, 2));
-            Span<byte> payload = span.Slice(PacketFactory.HeaderSizeUnreliable, size - PacketFactory.HeaderSizeUnreliable);
+            var tick = BitConverter.ToUInt16(span.Slice(PacketFactory.HeaderSizeReliable, 2));
+            var payload = span.Slice(PacketFactory.HeaderSizeUnreliable, size - PacketFactory.HeaderSizeUnreliable);
             TransportManager.Server.OnUnreliablePacketReceived(mainType, subType, playerIndex, tick, payload);
         }
     }
@@ -213,25 +210,25 @@ public class ClientConnectionManager : ConnectionManager
 
     public override unsafe void OnMessage(IntPtr data, int size, long messageNum, long recvTime, int channel)
     {
-        var span = new Span<byte>((void*)data, size);
+        var span = new Span<byte>((void*) data, size);
 
-        byte mainType = span[0];
-        byte subType = span[1];
-        byte playerIndex = span[2];
-        byte sendType = span[3];
+        var mainType = span[0];
+        var subType = span[1];
+        var playerIndex = span[2];
+        var sendType = span[3];
 
         // Reliable
         if (sendType == 0)
         {
-            Span<byte> payload = span.Slice(PacketFactory.HeaderSizeReliable, size - PacketFactory.HeaderSizeReliable);
+            var payload = span.Slice(PacketFactory.HeaderSizeReliable, size - PacketFactory.HeaderSizeReliable);
             TransportManager.Client.OnReliablePacketReceived(mainType, subType, playerIndex, payload);
         }
 
         // Unreliable
         else
         {
-            ushort tick = BitConverter.ToUInt16(span.Slice(PacketFactory.HeaderSizeReliable, 2));
-            Span<byte> payload = span.Slice(PacketFactory.HeaderSizeUnreliable, size - PacketFactory.HeaderSizeUnreliable);
+            var tick = BitConverter.ToUInt16(span.Slice(PacketFactory.HeaderSizeReliable, 2));
+            var payload = span.Slice(PacketFactory.HeaderSizeUnreliable, size - PacketFactory.HeaderSizeUnreliable);
             TransportManager.Client.OnUnreliablePacketReceived(mainType, subType, playerIndex, tick, payload);
         }
     }

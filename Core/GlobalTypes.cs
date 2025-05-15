@@ -1,10 +1,17 @@
-using Godot;
-using System.Collections.Generic;
 using System;
-using Steamworks;
+using System.Collections.Generic;
+using Godot;
 
 public static class GlobalTypes
 {
+    public enum GameType
+    {
+        Duel,
+        TeamDuel,
+        OneVersusMany,
+        FreeForAll
+    }
+
     public struct PlayerInfo
     {
         public string PlayerId;
@@ -29,17 +36,18 @@ public static class GlobalTypes
         public Dictionary<string, PlayerInfo> Players;
     }
 
-    public enum GameType
-    {
-        Duel,
-        TeamDuel,
-        OneVersusMany,
-        FreeForAll
-    }
-
     public class LobbyMessageArgs : EventArgs
     {
-        public string PlayerName { get; set; }
-        public string Message { get; set; }
+        public string PlayerName
+        {
+            get;
+            set;
+        }
+
+        public string Message
+        {
+            get;
+            set;
+        }
     }
 }

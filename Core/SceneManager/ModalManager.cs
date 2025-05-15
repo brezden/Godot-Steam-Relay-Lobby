@@ -1,19 +1,23 @@
-using Godot;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Godot;
 using GodotPeer2PeerSteamCSharp.Types.Scene;
 
 public partial class ModalManager : Node
 {
-    public Dictionary<ModalType, string> Modals { get; private set; }
+    private const float minimumTimeModal = 0.75f;
+
+    private readonly string modalSceneDirectory = "res://Scenes/Components/Modal";
+    private string baseScenePath;
 
     private Node currentModalInstance;
     private SceneTreeTimer modalMinTimeTimer;
 
-    private readonly string modalSceneDirectory = "res://Scenes/Components/Modal";
-    private string baseScenePath;
-    private const float minimumTimeModal = 0.75f;
+    public Dictionary<ModalType, string> Modals
+    {
+        get;
+        private set;
+    }
 
     public override void _Ready()
     {
@@ -71,7 +75,8 @@ public partial class ModalManager : Node
             }
         }
 
-        if (!TryGetModalScenePath(ModalType.Information, out var path)) return;
+        if (!TryGetModalScenePath(ModalType.Information, out var path))
+            return;
 
         var modalScene = GD.Load<PackedScene>(path);
         var modalSceneInstance = modalScene.Instantiate<InformationModal>();
@@ -82,9 +87,7 @@ public partial class ModalManager : Node
     public async Task CloseModal()
     {
         if (modalMinTimeTimer != null && modalMinTimeTimer.TimeLeft > 0)
-        {
             await ToSignal(modalMinTimeTimer, SceneTreeTimer.SignalName.Timeout);
-        }
 
         EventBus.UI.OnCloseModal();
         modalMinTimeTimer = null;
@@ -102,6 +105,7 @@ public partial class ModalManager : Node
             Logger.Error($"Modal type '{type}' not found.");
             return false;
         }
+
         return true;
     }
 }
