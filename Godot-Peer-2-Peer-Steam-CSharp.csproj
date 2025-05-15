@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <Folder Include="DLL\" />
+    <Folder Include="Multiplayer\Services\Steam\" />
     <Folder Include="Scenes\Transitions\" />
     <Folder Include="Scripts\UI\MainMenu\" />
     <Compile Remove="Tests\**\*.cs" />
