@@ -36,16 +36,16 @@ public partial class LobbyService : ILobbyService
         };
     }
 
-    public async Task<List<GlobalTypes.PlayerInvite>> GetInGameFriends()
+    public async Task<List<PlayerInvite>> GetInGameFriends()
     {
-        var inGameFriends = new List<GlobalTypes.PlayerInvite>();
+        var inGameFriends = new List<PlayerInvite>();
         var friends = SteamFriends.GetFriends();
 
         foreach (var friend in friends)
             if (friend.IsPlayingThisGame)
             {
                 var profilePicture = await GetProfilePictureAsync(friend.Id);
-                inGameFriends.Add(new GlobalTypes.PlayerInvite
+                inGameFriends.Add(new PlayerInvite
                 {
                     PlayerId = friend.Id.ToString(),
                     PlayerName = friend.Name,

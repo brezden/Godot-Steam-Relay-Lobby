@@ -1,7 +1,8 @@
 using GodotPeer2PeerSteamCSharp.Games;
+using GodotPeer2PeerSteamCSharp.Types.Games;
 
 public class TankBattleGame : IGame
 {
     public string GameName => "Tank Battle";
-    public GlobalTypes.GameType GameType => GlobalTypes.GameType.FreeForAll;
+    public GameType GameType => GameType.FreeForAll;
 }

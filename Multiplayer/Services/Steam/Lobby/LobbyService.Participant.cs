@@ -45,7 +45,6 @@ public partial class LobbyService : ILobbyService
     private void OnLobbyEnteredCallback(Steamworks.Data.Lobby lobby)
     {
         _lobby = lobby;
-        EventBus.Lobby.OnLobbyEntered(lobby.Owner.Id.ToString());
     }
 
     private static void OnLobbyMemberLeft(Steamworks.Data.Lobby lobby, Friend friend)

@@ -19,6 +19,14 @@ public struct PlayerInfo
     public bool IsReady;
 }
 
+public struct PlayerInvite
+{
+    public string PlayerId;
+    public string PlayerName;
+    public string PlayerStatus;
+    public ImageTexture PlayerPicture;
+}
+
 public struct LobbyMembersData
 {
     public Dictionary<string, PlayerInfo> Players;

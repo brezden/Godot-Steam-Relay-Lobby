@@ -15,5 +15,5 @@ public interface ILobbyService
     void EnterLobbyScene();
     Task<PlayerInfo> GetPlayerInfo(string playerId);
     Task<LobbyMembersData> GatherLobbyMembersData();
-    Task<List<GlobalTypes.PlayerInvite>> GetInGameFriends();
+    Task<List<PlayerInvite>> GetInGameFriends();
 }

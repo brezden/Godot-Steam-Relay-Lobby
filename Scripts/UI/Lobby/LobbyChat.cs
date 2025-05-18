@@ -1,5 +1,6 @@
 using Godot;
 using GodotPeer2PeerSteamCSharp.Core.Lobby;
+using GodotPeer2PeerSteamCSharp.Types.Lobby;
 
 public partial class LobbyChat : Node
 {
@@ -26,7 +27,7 @@ public partial class LobbyChat : Node
         chatInput.Text = string.Empty;
     }
 
-    public void OnLobbyMessageReceived(object sender, GlobalTypes.LobbyMessageArgs e)
+    public void OnLobbyMessageReceived(object sender, LobbyMessageArgs e)
     {
         chatBox.Text += e.PlayerName + ": " + e.Message + "\n";
     }
