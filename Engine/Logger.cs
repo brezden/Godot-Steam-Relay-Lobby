@@ -11,7 +11,7 @@ public enum LogType
     Error
 }
 
-public partial class Logger : Node
+public static class Logger
 {
     private static string logDir;
     private static string gameLogPath;
@@ -19,7 +19,7 @@ public partial class Logger : Node
     private static string netLogPath;
     private static string errLogPath;
 
-    public override void _Ready()
+    static Logger()
     {
         InitLogPaths();
         EnsureLogsExist();
