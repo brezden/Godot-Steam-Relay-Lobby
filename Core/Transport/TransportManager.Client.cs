@@ -7,10 +7,15 @@ public partial class TransportManager
 {
     public static class Client
     {
-        public static void ConnectToServer(string serverId)
+        public static void RegisterCallbacks()
+        {
+            EventBus.Lobby.LobbyEntered += ConnectToServer;
+        }
+        
+        public static void ConnectToServer(object? sender, EventArgs serverId)
         {
             Logger.Network($"Attempting to connect to server: {serverId}");
-            Instance._transportService.ConnectToServer(serverId);
+            Instance._transportService.ConnectToServer(serverId.ToString());
         }
 
         public static void OnSuccessfulConnection()

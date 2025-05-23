@@ -1,11 +1,17 @@
 using System;
 using GodotPeer2PeerSteamCSharp.Core.Lobby;
+using GodotPeer2PeerSteamCSharp.Types.Scene;
 using Steamworks;
 
 namespace GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
 
 public partial class LobbyService : ILobbyService
 {
+    public void EnterLobbyScene()
+    {
+        SceneManager.Instance.GotoScene(SceneRegistry.Lobby.OnlineLobby);
+    }
+    
     public void InvitePlayer(string playerId)
     {
         try
@@ -33,9 +39,8 @@ public partial class LobbyService : ILobbyService
 
     private void OnLobbyEnteredCallback(Steamworks.Data.Lobby lobby)
     {
-        Logger.Network($"Joined lobby: {lobby.Id}");
         _lobby = lobby;
-        LobbyManager.OnLobbyJoin(lobby.Owner.Id.ToString());
+        EventBus.Lobby.OnLobbyEntered(lobby.Owner.Id.ToString());
     }
 
     private static void OnLobbyMemberLeft(Steamworks.Data.Lobby lobby, Friend friend)

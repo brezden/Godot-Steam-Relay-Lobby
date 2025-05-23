@@ -8,6 +8,7 @@ public partial class LobbyManager
     private void RegisterHostCallbacks()
     {
         EventBus.Lobby.CreateLobby += CreateLobby;
+        EventBus.Lobby.LobbyCreated += OnLobbyCreated;
     }
 
     private async void CreateLobby(object? sender, EventArgs e)
@@ -18,8 +19,8 @@ public partial class LobbyManager
                 "Creating lobby",
                 InformationModalType.Loading);
 
+            _isHost = true;
             await _lobbyService.CreateLobby(4);
-            LobbyConnectionGate.MarkLobbyEntered();
         }
         catch (Exception ex)
         {
@@ -29,30 +30,12 @@ public partial class LobbyManager
                 "[ERR-001] Failed to create lobby",
                 InformationModalType.Error,
                 "An unexpected error occurred while creating the lobby. Please try again.");
+            LeaveLobby();
         }
     }
 
-    public void OnLobbyCreation(string lobbyId)
+    private void OnLobbyCreated(object? sender, string lobbyId)
     {
-        Logger.Network($"Lobby created: {lobbyId}");
-        _isHost = true;
-
-        try
-        {
-            TransportManager.Server.CreateServer();
-            LobbyConnectionGate.MarkTransportReady();
-        }
-        catch (Exception ex)
-        {
-            Logger.Error($"[ERR-002] Failed to create transport server: {ex}");
-
-            SceneManager.Instance.ModalManager.RenderInformationModal(
-                "[ERR-002] Failed to create server",
-                InformationModalType.Error,
-                "An error occurred while creating the transport server for the lobby. Please try again.");
-
-            _lobbyService.LeaveLobby();
-            TransportManager.Instance.Disconnect();
-        }
+        Logger.Lobby($"Lobby created: {lobbyId}");
     }
 }

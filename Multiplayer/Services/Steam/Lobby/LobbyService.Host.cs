@@ -25,6 +25,6 @@ public partial class LobbyService : ILobbyService
 
     private static void OnLobbyCreatedCallback(Result result, Steamworks.Data.Lobby lobby)
     {
-        LobbyManager.Instance.OnLobbyCreation(lobby.Id.ToString());
+        EventBus.Lobby.OnLobbyCreated(lobby.Id.ToString());
     }
 }
