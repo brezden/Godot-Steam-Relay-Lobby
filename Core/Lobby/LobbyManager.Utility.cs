@@ -7,12 +7,17 @@ namespace GodotPeer2PeerSteamCSharp.Core.Lobby;
 
 public partial class LobbyManager 
 {
+    public static void RegisterUtilityCallbacks()
+    {
+        EventBus.Lobby.LobbyEntered += (_, _) => GatherLobbyMembers();
+    }
+    
     public static void GatherLobbyMembers()
     {
         try
         {
             LobbyMembersData = _lobbyService.GatherLobbyMembersData().Result;
-            Logger.Network($"Lobby members gathered: {LobbyMembersData.Players.Count}");
+            Logger.Lobby($"Lobby members gathered: {LobbyMembersData.Players.Count}");
             LobbyConnectionGate.MarkLobbyInformationGathered();
         }
         catch (Exception ex)

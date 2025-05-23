@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Godot;
 using GodotPeer2PeerSteamCSharp.Core.Lobby.Gates;
 using GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
 using GodotPeer2PeerSteamCSharp.Types.Lobby;
-using GodotPeer2PeerSteamCSharp.Types.Scene;
 
 namespace GodotPeer2PeerSteamCSharp.Core.Lobby;
 

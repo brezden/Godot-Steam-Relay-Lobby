@@ -15,6 +15,9 @@ public partial class TransportManager : Node
     public override void _Ready()
     {
         Instance = this;
+        
+        Server.RegisterCallbacks();
+        Client.RegisterCallbacks();
 
         _transportService = new TransportService();
         SetProcess(false);

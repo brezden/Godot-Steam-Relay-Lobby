@@ -6,6 +6,7 @@ using Godot;
 public enum LogType
 {
     Game,
+    Lobby,
     Network,
     Error
 }
@@ -14,6 +15,7 @@ public partial class Logger : Node
 {
     private static string logDir;
     private static string gameLogPath;
+    private static string lobbyLogPath;
     private static string netLogPath;
     private static string errLogPath;
 
@@ -32,6 +34,7 @@ public partial class Logger : Node
 #endif
 
         gameLogPath = Path.Combine(logDir, "game_log.txt");
+        lobbyLogPath = Path.Combine(logDir, "lobby_log.txt");
         netLogPath = Path.Combine(logDir, "network_log.txt");
         errLogPath = Path.Combine(logDir, "error_log.txt");
     }
@@ -42,6 +45,7 @@ public partial class Logger : Node
             Directory.CreateDirectory(logDir);
 
         CreateFileIfMissing(gameLogPath);
+        CreateFileIfMissing(lobbyLogPath);
         CreateFileIfMissing(netLogPath);
         CreateFileIfMissing(errLogPath);
     }
@@ -66,6 +70,7 @@ public partial class Logger : Node
         var path = type switch
         {
             LogType.Game => gameLogPath,
+            LogType.Lobby => lobbyLogPath,
             LogType.Network => netLogPath,
             LogType.Error => errLogPath,
             _ => gameLogPath
@@ -95,6 +100,12 @@ public partial class Logger : Node
         [CallerFilePath] string file = "", [CallerLineNumber] int line = 0, [CallerMemberName] string member = "")
     {
         LogInternal(LogType.Game, msg, file, line, member);
+    }
+    
+    public static void Lobby(string msg,
+        [CallerFilePath] string file = "", [CallerLineNumber] int line = 0, [CallerMemberName] string member = "")
+    {
+        LogInternal(LogType.Lobby, msg, file, line, member);
     }
 
     public static void Network(string msg,

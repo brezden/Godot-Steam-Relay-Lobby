@@ -1,20 +1,32 @@
+using System;
 using GodotPeer2PeerSteamCSharp.Types.Scene;
 
 namespace GodotPeer2PeerSteamCSharp.Core.Lobby;
 
 public partial class LobbyManager
 {
+    public static void RegisterParticipantCallbacks()
+    {
+        EventBus.Lobby.LobbyEntered += OnLobbyEntered;
+    }
+
+    public static void OnLobbyEntered(object? sender, EventArgs lobbyId)
+    {
+        Logger.Lobby($"Joined lobby: {lobbyId}");
+        LobbyConnectionGate.MarkLobbyEntered();
+    }
+    
     public static void PlayerReadyToJoinGame()
     {
-        Logger.Network("Player is ready to join game");
-        SceneManager.Instance.GotoScene(SceneRegistry.Lobby.OnlineLobby);
+        Logger.Lobby("Player is ready to join game");
+        _lobbyService.EnterLobbyScene();
     }
 
     public static void PlayerAdded(string playerId)
     {
         var playerInfo = _lobbyService.GetPlayerInfo(playerId).Result;
         LobbyMembersData.Players.Add(playerId, playerInfo);
-        Logger.Network($"Player added to lobby: {playerId}");
+        Logger.Lobby($"Player added to lobby: {playerId}");
         EventBus.Lobby.OnLobbyMemberJoined(playerId);
     }
 
@@ -31,14 +43,14 @@ public partial class LobbyManager
     public static void RemovePlayer(string playerId)
     {
         LobbyMembersData.Players.Remove(playerId);
-        Logger.Network($"Player removed from lobby: {playerId}");
+        Logger.Lobby($"Player removed from lobby: {playerId}");
         EventBus.Lobby.OnLobbyMemberLeft(playerId);
     }
 
     public static void InvitePlayer(string playerId)
     {
         _lobbyService.InvitePlayer(playerId);
-        Logger.Network($"Player invited: {playerId}");
+        Logger.Lobby($"Player invited: {playerId}");
     }
 
     public static void LeaveLobby()

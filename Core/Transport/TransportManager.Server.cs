@@ -1,4 +1,7 @@
 using System;
+using GodotPeer2PeerSteamCSharp.Core.Lobby;
+using GodotPeer2PeerSteamCSharp.Core.Lobby.Gates;
+using GodotPeer2PeerSteamCSharp.Types.Scene;
 
 namespace GodotPeer2PeerSteamCSharp.Core;
 
@@ -6,10 +9,30 @@ public partial class TransportManager
 {
     public static class Server
     {
-        public static void CreateServer()
+        public static void RegisterCallbacks()
         {
-            Instance._transportService.CreateServer();
-            Logger.Network("Server created.");
+            EventBus.Lobby.LobbyCreated += (_, _) => CreateServer();
+        }
+        
+        private static void CreateServer()
+        {
+            try
+            {
+                Instance._transportService.CreateServer();
+                Logger.Network("Server created.");
+                LobbyManager.LobbyConnectionGate.MarkTransportReady();
+            } 
+            catch (Exception ex)
+            {
+                Logger.Error($"[ERR-002] Failed to create transport server: {ex}");
+
+                SceneManager.Instance.ModalManager.RenderInformationModal(
+                    "[ERR-002] Failed to create server",
+                    InformationModalType.Error,
+                    "An error occurred while creating the transport server for the lobby. Please try again.");
+
+                LobbyManager.LeaveLobby();
+            }
         }
 
         public static void SendReliablePacket(PacketTypes.MainType mainType, byte subType, byte playerIndex,

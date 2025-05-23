@@ -7,7 +7,7 @@ public partial class LobbyManager
     public static void SendLobbyMessage(string message)
     {
         _lobbyService.SendLobbyMessage(message);
-        Logger.Network($"Lobby message sent: {message}");
+        Logger.Lobby($"Lobby message sent: {message}");
     }
 
     public static void ReceiveLobbyMessage(string sender, string message)
@@ -18,7 +18,7 @@ public partial class LobbyManager
             Message = message
         };
 
-        Logger.Network($"Lobby message received from {args.PlayerName}: {args.Message}");
+        Logger.Lobby($"Lobby message received from {args.PlayerName}: {args.Message}");
 
         EventBus.Lobby.OnLobbyMessageReceived(args);
     }
