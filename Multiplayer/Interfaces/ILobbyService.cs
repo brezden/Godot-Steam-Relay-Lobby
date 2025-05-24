@@ -8,6 +8,8 @@ public interface ILobbyService
     void Update();
     Task CreateLobby(int maxPlayers);
     void LeaveLobby();
+    void SetServerId(string serverId);
+    string GetServerId();
     void InvitePlayer(string playerId);
     void SendLobbyMessage(string message);
     void EnterLobbyScene();

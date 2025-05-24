@@ -10,10 +10,15 @@ public partial class LobbyManager
         EventBus.Lobby.LobbyEntered += OnLobbyEntered;
     }
 
-    public static void OnLobbyEntered(object? sender, EventArgs lobbyId)
+    public static void OnLobbyEntered(object? sender, string lobbyId)
     {
         Logger.Lobby($"Joined lobby: {lobbyId}");
         LobbyConnectionGate.MarkLobbyEntered();
+    }
+
+    public bool isPlayerHost()
+    {
+        return _isHost;
     }
     
     public static void PlayerReadyToJoinGame()

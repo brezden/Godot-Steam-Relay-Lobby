@@ -38,4 +38,17 @@ public partial class LobbyManager
     {
         Logger.Lobby($"Lobby created: {lobbyId}");
     }
+
+    public string GetServerId()
+    {
+        string serverId = _lobbyService.GetServerId();
+        Logger.Lobby($"Retrieved server ID: {serverId}");
+        return serverId;
+    }
+
+    public void SetServerId(string serverId)
+    {
+        _lobbyService.SetServerId(serverId);
+        Logger.Lobby($"ServerId has been set: {serverId}");
+    }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using GodotPeer2PeerSteamCSharp.Core;
+using GodotPeer2PeerSteamCSharp.Core.Lobby;
 using Steamworks;
 using Steamworks.Data;
 
@@ -45,6 +46,7 @@ public class TransportService : ITransportService
         if (serverSocket == null)
             throw new Exception("Failed to create Steam relay server.");
 
+        LobbyManager.Instance.SetServerId(SteamClient.SteamId.ToString());
         _updateMethod = ServerUpdate;
         TransportManager.Instance.ExecuteProcessMethodStatus(true);
         serverSocket.Interface = serverCallbacks;

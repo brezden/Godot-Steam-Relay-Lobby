@@ -27,4 +27,9 @@ public partial class LobbyService : ILobbyService
     {
         EventBus.Lobby.OnLobbyCreated(lobby.Id.ToString());
     }
+
+    public void SetServerId(string serverId)
+    {
+        _lobby.SetGameServer(ConvertStringToSteamId(serverId));
+    }
 }

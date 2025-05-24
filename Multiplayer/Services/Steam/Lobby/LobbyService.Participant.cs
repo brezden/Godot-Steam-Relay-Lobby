@@ -47,4 +47,21 @@ public partial class LobbyService : ILobbyService
     {
         LobbyManager.RemovePlayer(friend.Id.ToString());
     }
+
+    public string GetServerId()
+    {
+        uint ip = 0;
+        ushort port = 0;
+        SteamId serverId = default;
+
+        bool hasServer = _lobby.GetGameServer(ref ip, ref port, ref serverId);
+
+        if (hasServer)
+        {
+            return serverId.ToString();
+        }
+        
+        throw new Exception("Unable to get server ID");
+    }
+
 }

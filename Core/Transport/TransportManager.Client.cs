@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices.ComTypes;
 using GodotPeer2PeerSteamCSharp.Core.Lobby;
 
 namespace GodotPeer2PeerSteamCSharp.Core;
@@ -9,13 +10,23 @@ public partial class TransportManager
     {
         public static void RegisterCallbacks()
         {
-            EventBus.Lobby.LobbyEntered += ConnectToServer;
+            EventBus.Lobby.LobbyEntered += (_,_) => ConnectToServer();
         }
         
-        public static void ConnectToServer(object? sender, EventArgs serverId)
+        public static void ConnectToServer()
         {
-            Logger.Network($"Attempting to connect to server: {serverId}");
-            Instance._transportService.ConnectToServer(serverId.ToString());
+            if (LobbyManager.Instance.isPlayerHost()) return;
+            
+            try
+            {
+                var serverId = LobbyManager.Instance.GetServerId();
+                Instance._transportService.ConnectToServer(serverId);
+            }
+            catch (Exception e)
+            {
+                // TODO
+                Logger.Error("oops");
+            }
         }
 
         public static void OnSuccessfulConnection()

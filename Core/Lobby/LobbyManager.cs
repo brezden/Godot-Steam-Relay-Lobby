@@ -27,6 +27,8 @@ public partial class LobbyManager : Node
         _lobbyService.Initialize();
 
         RegisterHostCallbacks();
+        RegisterParticipantCallbacks();
+        RegisterUtilityCallbacks();
     }
 
     public override void _Process(double delta)
