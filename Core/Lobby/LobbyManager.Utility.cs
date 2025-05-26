@@ -7,29 +7,10 @@ namespace GodotPeer2PeerSteamCSharp.Core.Lobby;
 
 public partial class LobbyManager 
 {
-    public static void RegisterUtilityCallbacks()
+    public static async Task GatherLobbyMembers()
     {
-        EventBus.Lobby.LobbyEntered += (_, _) => GatherLobbyMembers();
-    }
-    
-    public static void GatherLobbyMembers()
-    {
-        try
-        {
-            LobbyMembersData = _lobbyService.GatherLobbyMembersData().Result;
-            Logger.Lobby($"Lobby members gathered: {LobbyMembersData.Players.Count}");
-            LobbyConnectionGate.MarkLobbyInformationGathered();
-        }
-        catch (Exception ex)
-        {
-            Logger.Error($"[ERR-003] Failed to get lobby members: {ex.Message}");
-            SceneManager.Instance.ModalManager.RenderInformationModal(
-                "[ERR-003] Failed to gather lobby members",
-                InformationModalType.Error,
-                "An error occurred while gathering lobby members. Please try again.");
-            _lobbyService.LeaveLobby();
-            TransportManager.Instance.Disconnect();
-        }
+        LobbyMembersData = _lobbyService.GatherLobbyMembersData().Result;
+        Logger.Lobby($"Lobby members gathered: {LobbyMembersData.Players.Count}");
     }
     
     public static Task<List<GlobalTypes.PlayerInvite>> GetInGameFriends()

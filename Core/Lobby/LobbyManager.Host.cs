@@ -7,36 +7,28 @@ public partial class LobbyManager
 {
     private void RegisterHostCallbacks()
     {
-        EventBus.Lobby.CreateLobby += CreateLobby;
-        EventBus.Lobby.LobbyCreated += OnLobbyCreated;
+        EventBus.Lobby.StartHost += (_, _) => StartHost();
     }
 
-    private async void CreateLobby(object? sender, EventArgs e)
+    private static async void StartHost()
     {
         try
         {
             SceneManager.Instance.ModalManager.RenderInformationModal(
                 "Creating lobby",
                 InformationModalType.Loading);
-
-            _isHost = true;
-            await _lobbyService.CreateLobby(4);
+            await _lobbyService.StartHost();
+            _lobbyService.EnterLobbyScene();
         }
         catch (Exception ex)
         {
             Logger.Error($"[ERR-001] Exception creating lobby: {ex.Message}");
-
             SceneManager.Instance.ModalManager.RenderInformationModal(
                 "[ERR-001] Failed to create lobby",
                 InformationModalType.Error,
-                "An unexpected error occurred while creating the lobby. Please try again.");
-            LeaveLobby();
+                "An unexpected error occurred while creating the lobby. Please try again");
+            LeaveLobbyAndTransport();
         }
-    }
-
-    private void OnLobbyCreated(object? sender, string lobbyId)
-    {
-        Logger.Lobby($"Lobby created: {lobbyId}");
     }
 
     public string GetServerId()

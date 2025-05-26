@@ -26,7 +26,12 @@ public partial class LobbyService : ILobbyService
 
     public void LeaveLobby()
     {
-        _lobby.Leave();
+        if (_lobby.Id != 0)
+        {
+            _lobby.Leave();
+        }
+
+        _lobby = default;
         _lobbyId = 0;
     }
 

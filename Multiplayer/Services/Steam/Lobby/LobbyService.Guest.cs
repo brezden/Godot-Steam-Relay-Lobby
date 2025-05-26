@@ -20,7 +20,7 @@ public partial class LobbyService : ILobbyService
         if (!result.HasValue)
         {
             LobbyManager.ErrorJoiningLobby();
-            throw new Exception("Failed to join lobby.");
+            throw new Exception("Failed to join lobby");
         }
     }
 

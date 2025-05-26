@@ -1,16 +1,16 @@
 namespace GodotPeer2PeerSteamCSharp.Core.Lobby.Gates;
 
-public class LobbyConnectionGate
+public class LobbyOnlineHostGate
 {
-    private bool _lobbyEntered;
+    private bool _lobbyCreated;
     private bool _lobbyInformationGathered;
     private bool _transportReady;
 
-    private bool IsReady => _lobbyEntered && _transportReady && _lobbyInformationGathered;
+    private bool IsReady => _lobbyCreated && _transportReady && _lobbyInformationGathered;
 
-    public void MarkLobbyEntered()
+    public void MarkLobbyCreated()
     {
-        _lobbyEntered = true;
+        _lobbyCreated = true;
         CheckLobbyReady();
     }
 
@@ -30,14 +30,14 @@ public class LobbyConnectionGate
     {
         if (IsReady)
         {
-            LobbyManager.PlayerReadyToJoinGame();
+            
             Reset();
         }
     }
 
     public void Reset()
     {
-        _lobbyEntered = false;
+        _lobbyCreated = false;
         _lobbyInformationGathered = false;
         _transportReady = false;
     }

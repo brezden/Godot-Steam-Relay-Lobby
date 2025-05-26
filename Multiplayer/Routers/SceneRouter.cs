@@ -22,7 +22,7 @@ public class SceneRouter
     {
         if (data.Length < 1)
         {
-            Logger.Error("Scene change packet data is too short.");
+            Logger.Error("Scene change packet data is too short");
             return;
         }
 

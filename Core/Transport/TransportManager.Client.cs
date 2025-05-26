@@ -8,15 +8,8 @@ public partial class TransportManager
 {
     public static class Client
     {
-        public static void RegisterCallbacks()
-        {
-            EventBus.Lobby.LobbyEntered += (_,_) => ConnectToServer();
-        }
-        
         public static void ConnectToServer()
         {
-            if (LobbyManager.Instance.isPlayerHost()) return;
-            
             try
             {
                 var serverId = LobbyManager.Instance.GetServerId();
@@ -34,7 +27,6 @@ public partial class TransportManager
             Logger.Network("Successfully connected to server. (Client)");
             Instance._transportService.SetUpdateMethod("Client");
             Instance.ExecuteProcessMethodStatus(true);
-            LobbyManager.LobbyConnectionGate.MarkTransportReady();
         }
 
         public static void SendReliablePacket(PacketTypes.MainType mainType, byte subType, byte playerIndex,
