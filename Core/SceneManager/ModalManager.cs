@@ -102,7 +102,7 @@ public partial class ModalManager : Node
     {
         if (!Modals.TryGetValue(type, out path))
         {
-            Logger.Error($"Modal type '{type}' not found.");
+            Logger.Error($"Modal type '{type}' not found");
             return false;
         }
 

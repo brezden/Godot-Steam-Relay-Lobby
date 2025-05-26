@@ -44,7 +44,7 @@ public class TransportService : ITransportService
         serverSocket = SteamNetworkingSockets.CreateRelaySocket<SocketManager>();
 
         if (serverSocket == null)
-            throw new Exception("Failed to create Steam relay server.");
+            throw new Exception("Failed to create Steam relay server");
 
         LobbyManager.Instance.SetServerId(SteamClient.SteamId.ToString());
         _updateMethod = ServerUpdate;
@@ -151,7 +151,7 @@ public class ServerCallbacks : ISocketManager
     public void OnConnecting(Connection connection, ConnectionInfo data)
     {
         connection.Accept();
-        Logger.Network($"Server: Player {data.Identity} is attempting to connect...");
+        Logger.Network($"Server: Player {data.Identity} is attempting to connect.");
     }
 
     public void OnConnected(Connection connection, ConnectionInfo data)
@@ -161,7 +161,7 @@ public class ServerCallbacks : ISocketManager
 
     public void OnDisconnected(Connection connection, ConnectionInfo data)
     {
-        Logger.Network($"Server: Player {data.Identity} has disconnected.");
+        Logger.Network($"Server: Player {data.Identity} has disconnected");
     }
 
     public unsafe void OnMessage(Connection connection, NetIdentity identity, IntPtr data, int size, long messageNum,
@@ -197,7 +197,7 @@ public class ClientConnectionManager : ConnectionManager
 {
     public override void OnConnecting(ConnectionInfo info)
     {
-        Logger.Network("Client: Attempting to connect to server...");
+        Logger.Network("Client: Attempting to connect to server.");
     }
 
     public override void OnConnected(ConnectionInfo info)
@@ -207,7 +207,7 @@ public class ClientConnectionManager : ConnectionManager
 
     public override void OnDisconnected(ConnectionInfo info)
     {
-        Logger.Network("Client: Disconnected from server.");
+        Logger.Network("Client: Disconnected from server");
         TransportManager.Instance.ExecuteProcessMethodStatus(false);
     }
 

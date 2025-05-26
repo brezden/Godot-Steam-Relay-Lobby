@@ -23,7 +23,7 @@ public static class SceneRegistry
         var scenePath = ScenePaths.TryGetValue(sceneId, out var path);
 
         if (!scenePath)
-            Logger.Error($"Scene ID {sceneId} not found in registry.");
+            Logger.Error($"Scene ID {sceneId} not found in registry");
 
         return path;
     }

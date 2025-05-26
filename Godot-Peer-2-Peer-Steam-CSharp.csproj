@@ -39,6 +39,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Core\Lobby\Gates\" />
         <Folder Include="DLL\"/>
         <Folder Include="Multiplayer\Services\Steam\"/>
         <Folder Include="Scenes\Transitions\"/>

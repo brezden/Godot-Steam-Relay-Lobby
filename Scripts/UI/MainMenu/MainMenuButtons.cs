@@ -1,4 +1,5 @@
 using Godot;
+using GodotPeer2PeerSteamCSharp.Types.Lobby;
 
 public partial class MainMenuButtons : Node
 {
@@ -13,7 +14,7 @@ public partial class MainMenuButtons : Node
 
     private void HostOnline()
     {
-        EventBus.Lobby.OnCreateLobby();
+        EventBus.Lobby.OnStartHost(ConnectionType.Online);
     }
 
     private void ExitGame()

@@ -16,6 +16,7 @@ public partial class EventBus : Node
 
     public static class Lobby
     {
+        public static event EventHandler<ConnectionType> StartHost;
         public static event EventHandler CreateLobby;
         public static event EventHandler<string> LobbyCreated;
         public static event EventHandler<string> LobbyEntered;
@@ -23,6 +24,11 @@ public partial class EventBus : Node
         public static event EventHandler<string> LobbyMemberJoined;
         public static event EventHandler<string> LobbyMemberLeft;
 
+        public static void OnStartHost(ConnectionType connectionType)
+        {
+            StartHost?.Invoke(null, connectionType);
+        }
+        
         public static void OnCreateLobby()
         {
             CreateLobby?.Invoke(null, EventArgs.Empty);

@@ -12,13 +12,13 @@ public partial class LobbyMemberContainer : Node
 
         if (_lobbyMemberScene == null)
         {
-            Logger.Error("LobbyMember scene is not assigned in the inspector.");
+            Logger.Error("LobbyMember scene is not assigned in the inspector");
             return;
         }
 
         if (LobbyManager.LobbyMembersData.Players.Count == 0)
         {
-            Logger.Error("No players found in the lobby data.");
+            Logger.Error("No players found in the lobby data");
             return;
         }
 
@@ -59,6 +59,6 @@ public partial class LobbyMemberContainer : Node
         if (lobbyMemberInstance != null)
             lobbyMemberInstance.QueueFree();
         else
-            Logger.Error($"Lobby member with ID {playerId} not found.");
+            Logger.Error($"Lobby member with ID {playerId} not found");
     }
 }

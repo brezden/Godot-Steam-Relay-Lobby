@@ -5,22 +5,6 @@ namespace GodotPeer2PeerSteamCSharp.Core.Lobby;
 
 public partial class LobbyManager
 {
-    public static void RegisterParticipantCallbacks()
-    {
-        EventBus.Lobby.LobbyEntered += OnLobbyEntered;
-    }
-
-    public static void OnLobbyEntered(object? sender, string lobbyId)
-    {
-        Logger.Lobby($"Joined lobby: {lobbyId}");
-        LobbyConnectionGate.MarkLobbyEntered();
-    }
-
-    public bool isPlayerHost()
-    {
-        return _isHost;
-    }
-    
     public static void PlayerReadyToJoinGame()
     {
         Logger.Lobby("Player is ready to join game");
@@ -41,8 +25,8 @@ public partial class LobbyManager
         SceneManager.Instance.ModalManager.RenderInformationModal(
             "[ERR-005] Failed to join lobby",
             InformationModalType.Error,
-            "An error occurred while trying to join the lobby. Please try again.");
-        LeaveLobby();
+            "An error occurred while trying to join the lobby. Please try again");
+        LeaveLobbyAndTransport();
     }
 
     public static void RemovePlayer(string playerId)
@@ -58,11 +42,13 @@ public partial class LobbyManager
         Logger.Lobby($"Player invited: {playerId}");
     }
 
-    public static void LeaveLobby()
+    public static void LeaveLobbyAndTransport()
     {
         _lobbyService.LeaveLobby();
-        TransportManager.Instance.Disconnect();
         _isHost = false;
         LobbyMembersData.Players.Clear();
+        Logger.Lobby("Disconnected from lobby");
+        
+        TransportManager.Instance.Disconnect();
     }
 }

@@ -11,6 +11,6 @@ public partial class TransportManager
     {
         _transportService.Disconnect();
         ExecuteProcessMethodStatus(false);
-        Logger.Network("Disconnected from server.");
+        Logger.Network("Disconnected from server");
     }
 }

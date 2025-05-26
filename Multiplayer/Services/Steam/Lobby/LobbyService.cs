@@ -13,7 +13,6 @@ public partial class LobbyService : ILobbyService
         InitializeSteam();
         RegisterChatCallbacks();
         RegisterGuestCallbacks();
-        RegisterHostCallbacks();
         RegisterParticipantCallbacks();
     }
 

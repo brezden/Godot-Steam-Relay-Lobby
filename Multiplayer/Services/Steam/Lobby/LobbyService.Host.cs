@@ -1,31 +1,34 @@
 using System;
 using System.Threading.Tasks;
+using GodotPeer2PeerSteamCSharp.Core;
 using GodotPeer2PeerSteamCSharp.Core.Lobby;
+using GodotPeer2PeerSteamCSharp.Core.Lobby.Gates;
 using Steamworks;
 
 namespace GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
 
 public partial class LobbyService : ILobbyService
 {
-    private static void RegisterHostCallbacks()
+    private LobbyOnlineHostGate lobbyOnlineGate;
+    
+    public async Task StartHost()
     {
-        SteamMatchmaking.OnLobbyCreated += OnLobbyCreatedCallback;
+        await CreateLobby();
+        TransportManager.Server.CreateServer();
+        await LobbyManager.GatherLobbyMembers();
     }
     
-    public async Task CreateLobby(int maxPlayers)
+    private async Task CreateLobby()
     {
-        var lobby = await SteamMatchmaking.CreateLobbyAsync(maxPlayers);
+        var lobby = await SteamMatchmaking.CreateLobbyAsync(4);
         if (!lobby.HasValue)
             throw new Exception();
 
-        _lobbyId = lobby.Value.Id;
+        _lobby = lobby.Value;
+        _lobbyId = _lobby.Id;
         lobby.Value.SetPrivate();
         lobby.Value.SetJoinable(true);
-    }
-
-    private static void OnLobbyCreatedCallback(Result result, Steamworks.Data.Lobby lobby)
-    {
-        EventBus.Lobby.OnLobbyCreated(lobby.Id.ToString());
+        Logger.Lobby($"Lobby created ({_lobbyId})");
     }
 
     public void SetServerId(string serverId)

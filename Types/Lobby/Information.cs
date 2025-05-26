@@ -1,7 +1,15 @@
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using Godot;
 
 namespace GodotPeer2PeerSteamCSharp.Types.Lobby;
+
+public enum ConnectionType
+{
+    Local,
+    LAN,
+    Online
+}
 
 public struct PlayerInfo
 {
