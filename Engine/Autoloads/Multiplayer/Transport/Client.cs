@@ -10,16 +10,8 @@ public partial class TransportManager
     {
         public static void ConnectToServer()
         {
-            try
-            {
-                var serverId = LobbyManager.Instance.GetServerId();
-                Instance._transportService.ConnectToServer(serverId);
-            }
-            catch (Exception e)
-            {
-                // TODO
-                Logger.Error("oops");
-            }
+            var serverId = LobbyManager.Instance.GetServerId();
+            Instance._transportService.ConnectToServer(serverId);
         }
 
         public static void OnSuccessfulConnection()

@@ -13,6 +13,8 @@ public class TransportService : ITransportService
 
     private Action _updateMethod;
 
+    public static bool IsConnecting; 
+    
     public TransportService()
     {
         serverCallbacks = new ServerCallbacks();
@@ -54,6 +56,7 @@ public class TransportService : ITransportService
 
     public void ConnectToServer(string serverId)
     {
+        IsConnecting = true;
         var steamIdValue = ulong.Parse(serverId);
         var hostSteamId = new SteamId { Value = steamIdValue };
         clientConnection = SteamNetworkingSockets.ConnectRelay<ClientConnectionManager>(hostSteamId);
@@ -202,13 +205,23 @@ public class ClientConnectionManager : ConnectionManager
 
     public override void OnConnected(ConnectionInfo info)
     {
+        TransportService.IsConnecting = false;
         TransportManager.Client.OnSuccessfulConnection();
+        LobbyManager.FinishGuest();
     }
 
     public override void OnDisconnected(ConnectionInfo info)
     {
         Logger.Network("Client: Disconnected from server");
         TransportManager.Instance.ExecuteProcessMethodStatus(false);
+        
+        // If a connection had an error while connecting, it disconnects automatically.
+        if (TransportService.IsConnecting)
+        {
+            Logger.Network("Client: Connection attempt failed.");
+            TransportService.IsConnecting = false;
+            LobbyManager.ErrorGuest(new Exception("Transport steam connection attempt failed."));
+        }
     }
 
     public override unsafe void OnMessage(IntPtr data, int size, long messageNum, long recvTime, int channel)

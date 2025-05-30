@@ -19,7 +19,7 @@ config/icon="res://icon.svg"
 
 LobbyManager="*res://Engine/Autoloads/Multiplayer/Lobby/LobbyManager.cs"
 TransportManager="*res://Engine/Autoloads/Multiplayer/Transport/TransportManager.cs"
-SceneManager="*res://Engine/SceneManager/SceneManager.cs"
+SceneManager="*res://Engine/Autoloads/SceneManager/SceneManager.cs"
 StateManager="*res://Engine/Autoloads/StateManager.cs"
 InputManager="*res://Engine/Autoloads/InputManager.cs"
 

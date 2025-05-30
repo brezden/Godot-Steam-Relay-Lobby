@@ -2,15 +2,12 @@ using System;
 using System.Threading.Tasks;
 using GodotPeer2PeerSteamCSharp.Core;
 using GodotPeer2PeerSteamCSharp.Core.Lobby;
-using GodotPeer2PeerSteamCSharp.Core.Lobby.Gates;
 using Steamworks;
 
 namespace GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
 
 public partial class LobbyService : ILobbyService
 {
-    private LobbyOnlineHostGate lobbyOnlineGate;
-    
     public async Task StartHost()
     {
         await CreateLobby();
