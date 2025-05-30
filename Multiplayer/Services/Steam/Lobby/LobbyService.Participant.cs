@@ -60,12 +60,11 @@ public partial class LobbyService : ILobbyService
 
         bool hasServer = _lobby.GetGameServer(ref ip, ref port, ref serverId);
 
-        if (hasServer)
+        if (hasServer && serverId != 0)
         {
             return serverId.ToString();
         }
         
         throw new Exception("Unable to get server ID");
     }
-
 }

@@ -7,6 +7,7 @@ public interface ILobbyService
     void Initialize();
     void Update();
     Task StartHost();
+    Task StartGuest(string lobbyId);
     void LeaveLobby();
     void SetServerId(string serverId);
     string GetServerId();
