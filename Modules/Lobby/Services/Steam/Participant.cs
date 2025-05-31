@@ -5,7 +5,7 @@ using Steamworks;
 
 namespace GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
 
-public partial class LobbyService : ILobbyService
+public partial class LobbyService
 {
     public void EnterLobbyScene()
     {
@@ -38,6 +38,7 @@ public partial class LobbyService : ILobbyService
     private void RegisterParticipantCallbacks()
     {
         SteamMatchmaking.OnLobbyEntered += OnLobbyEnteredCallback;
+        SteamMatchmaking.OnLobbyMemberJoined += OnLobbyMemberJoinedCallback;
         SteamMatchmaking.OnLobbyMemberDisconnected += OnLobbyMemberLeft;
         SteamMatchmaking.OnLobbyMemberLeave += OnLobbyMemberLeft;
     }
@@ -45,6 +46,11 @@ public partial class LobbyService : ILobbyService
     private void OnLobbyEnteredCallback(Steamworks.Data.Lobby lobby)
     {
         _lobby = lobby;
+    }
+
+    private void OnLobbyMemberJoinedCallback(Steamworks.Data.Lobby lobby, Friend friend)
+    {
+        LobbyManager.AddPlayer(friend.Id.ToString());
     }
 
     private static void OnLobbyMemberLeft(Steamworks.Data.Lobby lobby, Friend friend)

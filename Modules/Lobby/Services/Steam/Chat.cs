@@ -3,7 +3,7 @@ using Steamworks;
 
 namespace GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
 
-public partial class LobbyService : ILobbyService
+public partial class LobbyService 
 {
     public void SendLobbyMessage(string message)
     {

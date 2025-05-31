@@ -15,7 +15,7 @@ public struct PlayerInfo
 {
     public string PlayerId;
     public string Name;
-    public ImageTexture ProfilePicture;
+    public ImageTexture? ProfilePicture;
     public bool IsReady;
 }
 

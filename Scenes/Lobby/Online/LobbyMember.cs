@@ -4,7 +4,7 @@ public partial class LobbyMember : Control
 {
     private Label _nameLabel;
     private TextureRect _profilePicture;
-
+    
     [Export]
     public string PlayerName
     {
