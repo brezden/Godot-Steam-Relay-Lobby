@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bnsdhe30786fb"]
 
-[ext_resource type="Script" path="res://Scripts/UI/MainMenu/MainMenuButtons.cs" id="1_l18al"]
+[ext_resource type="Script" path="res://Scenes/MainMenu/MainMenuButtons.cs" id="1_1e3dq"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_p81fg"]
 font_size = 32
@@ -57,7 +57,7 @@ offset_right = 304.0
 grow_horizontal = 2
 grow_vertical = 0
 alignment = 1
-script = ExtResource("1_l18al")
+script = ExtResource("1_1e3dq")
 
 [node name="HostOnline" type="Button" parent="ButtonContainer"]
 unique_name_in_owner = true

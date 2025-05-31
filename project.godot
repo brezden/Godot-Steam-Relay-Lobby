@@ -11,17 +11,16 @@ config_version=5
 [application]
 
 config/name="Godot-Peer-2-Peer-Steam-CSharp"
-run/main_scene="res://main.tscn"
+run/main_scene="res://Scenes/MainMenu/main.tscn"
 config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-LobbyManager="*res://Engine/Autoloads/Multiplayer/Lobby/LobbyManager.cs"
-TransportManager="*res://Engine/Autoloads/Multiplayer/Transport/TransportManager.cs"
-SceneManager="*res://Engine/Autoloads/SceneManager/SceneManager.cs"
-StateManager="*res://Engine/Autoloads/StateManager.cs"
-InputManager="*res://Engine/Autoloads/InputManager.cs"
+LobbyManager="*res://Modules/Lobby/LobbyManager.cs"
+TransportManager="*res://Modules/Transport/TransportManager.cs"
+SceneManager="*res://Modules/Scene/SceneManager.cs"
+InputManager="*res://Modules/Input/InputManager.cs"
 
 [display]
 
