@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://qsoslr654lwv"]
 
-[ext_resource type="Script" path="res://Scenes/Lobby/LobbyChat.cs" id="1_7dbfh"]
-[ext_resource type="Script" path="res://Scenes/Lobby/LobbyButtons.cs" id="2_2bxjq"]
-[ext_resource type="Script" path="res://Scenes/Lobby/LobbyMemberContainer.cs" id="3_gklqx"]
-[ext_resource type="PackedScene" uid="uid://s8d6qytpgyqq" path="res://Scenes/Lobby/LobbyMember.tscn" id="4_8mcj3"]
+[ext_resource type="Script" path="res://Scenes/Lobby/Online/LobbyChat.cs" id="1_7dbfh"]
+[ext_resource type="Script" path="res://Scenes/Lobby/Online/LobbyButtons.cs" id="2_2bxjq"]
+[ext_resource type="Script" path="res://Scenes/Lobby/Online/LobbyMemberContainer.cs" id="3_gklqx"]
+[ext_resource type="PackedScene" uid="uid://s8d6qytpgyqq" path="res://Scenes/Lobby/Online/LobbyMember.tscn" id="4_8mcj3"]
 
 [node name="Main" type="Control"]
 layout_mode = 3

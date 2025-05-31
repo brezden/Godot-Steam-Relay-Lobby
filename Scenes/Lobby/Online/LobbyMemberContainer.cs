@@ -7,8 +7,8 @@ public partial class LobbyMemberContainer : Node
 
     public override void _Ready()
     {
-        EventBus.Lobby.LobbyMemberJoined += AddLobbyMember;
-        EventBus.Lobby.LobbyMemberLeft += RemoveLobbyMember;
+        EventBus.Lobby.LobbyMemberJoined += (_, playerId) => AddLobbyMember(playerId);
+        EventBus.Lobby.LobbyMemberLeft += (_,playerId) => RemoveLobbyMember(playerId);
 
         if (_lobbyMemberScene == null)
         {
@@ -26,31 +26,20 @@ public partial class LobbyMemberContainer : Node
             AddLobbyMember(playerId);
     }
 
-    private void AddLobbyMember(object sender, string playerId)
-    {
-        AddLobbyMember(playerId);
-    }
-
     private void AddLobbyMember(string playerId)
     {
         var lobbyMemberInstance = _lobbyMemberScene.Instantiate();
         var args = LobbyManager.LobbyMembersData.Players[playerId];
 
         lobbyMemberInstance.Name = args.PlayerId;
-
+        
         if (lobbyMemberInstance is LobbyMember lobbyMemberScript)
         {
             lobbyMemberScript.PlayerName = args.Name;
             lobbyMemberScript.ProfilePicture = args.ProfilePicture;
         }
 
-        lobbyMemberInstance.Name = args.PlayerId;
         AddChild(lobbyMemberInstance);
-    }
-
-    private void RemoveLobbyMember(object sender, string playerId)
-    {
-        RemoveLobbyMember(playerId);
     }
 
     private void RemoveLobbyMember(string playerId)

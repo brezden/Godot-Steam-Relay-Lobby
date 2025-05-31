@@ -11,14 +11,6 @@ public partial class LobbyManager
         _lobbyService.EnterLobbyScene();
     }
 
-    public static void PlayerAdded(string playerId)
-    {
-        var playerInfo = _lobbyService.GetPlayerInfo(playerId).Result;
-        LobbyMembersData.Players.Add(playerId, playerInfo);
-        Logger.Lobby($"Player added to lobby: {playerId}");
-        EventBus.Lobby.OnLobbyMemberJoined(playerId);
-    }
-
     public static void ErrorJoiningLobby()
     {
         Logger.Error("Error joining lobby");
@@ -27,6 +19,20 @@ public partial class LobbyManager
             InformationModalType.Error,
             "An error occurred while trying to join the lobby. Please try again");
         LeaveLobbyAndTransport();
+    }
+    
+    public static void AddPlayer(string playerId)
+    {
+        if (LobbyMembersData.Players.ContainsKey(playerId))
+        {
+            Logger.Error($"Player {playerId} is already in the lobby");
+            return;
+        }
+
+        var playerInfo = _lobbyService.GetPlayerInfo(playerId).Result;
+        LobbyMembersData.Players.Add(playerId, playerInfo);
+        Logger.Lobby($"Player added to lobby: {playerId}");
+        EventBus.Lobby.OnLobbyMemberJoined(playerId);
     }
 
     public static void RemovePlayer(string playerId)

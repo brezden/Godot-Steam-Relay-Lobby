@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://s8d6qytpgyqq"]
 
-[ext_resource type="Script" path="res://Scenes/Lobby/LobbyMember.cs" id="1_mputd"]
+[ext_resource type="Script" path="res://Scenes/Lobby/Online/LobbyMember.cs" id="1_mputd"]
 
 [node name="LobbyMember" type="VBoxContainer"]
 custom_minimum_size = Vector2(96, 64)
