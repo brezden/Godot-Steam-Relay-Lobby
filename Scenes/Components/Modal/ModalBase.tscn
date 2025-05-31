@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://b6o6t8mwntibi"]
 
 [ext_resource type="Script" path="res://Scenes/Components/Modal/ModalBase.cs" id="1_xm572"]
-[ext_resource type="Shader" path="res://Shaders/blur.gdshader" id="2_mcmvp"]
+[ext_resource type="Shader" path="res://Assets/Shaders/blur.gdshader" id="2_mcmvp"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fgkc4"]
 shader = ExtResource("2_mcmvp")

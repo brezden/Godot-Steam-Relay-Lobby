@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://s8d6qytpgyqq"]
 
-[ext_resource type="Script" path="res://Scripts/UI/Lobby/LobbyMember.cs" id="1_blfyv"]
+[ext_resource type="Script" path="res://Scenes/Lobby/LobbyMember.cs" id="1_mputd"]
 
 [node name="LobbyMember" type="VBoxContainer"]
 custom_minimum_size = Vector2(96, 64)
@@ -8,7 +8,7 @@ offset_right = 47.0
 offset_bottom = 59.0
 size_flags_horizontal = 3
 alignment = 1
-script = ExtResource("1_blfyv")
+script = ExtResource("1_mputd")
 
 [node name="NameLabel" type="Label" parent="."]
 layout_mode = 2

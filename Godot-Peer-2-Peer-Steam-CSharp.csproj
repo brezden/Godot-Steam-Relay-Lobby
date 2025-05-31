@@ -27,6 +27,7 @@
 
     <ItemGroup>
         <Content Include=".editorconfig"/>
+        <Content Include="Assets\Shaders\blur.gdshader" />
         <Content Include="steam_api.dll" Condition="$([MSBuild]::IsOSPlatform('Windows'))">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
@@ -39,11 +40,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Assets\" />
         <Folder Include="DLL\"/>
-        <Folder Include="Engine\Autoloads\Multiplayer\" />
-        <Folder Include="Multiplayer\Services\Steam\"/>
         <Folder Include="Scenes\Transitions\"/>
-        <Folder Include="Scripts\UI\MainMenu\"/>
         <Compile Remove="Tests\**\*.cs"/>
     </ItemGroup>
 
