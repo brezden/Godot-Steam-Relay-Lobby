@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://bayxy2p0vlckn"]
+
+[ext_resource type="Texture2D" uid="uid://dpn4ofaucikpv" path="res://Assets/Map.Png" id="1_16xei"]
+[ext_resource type="PackedScene" uid="uid://bh21abwq7yrd0" path="res://Scenes/Tank.tscn" id="1_dmisb"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pvoke"]
+texture = ExtResource("1_16xei")
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_rj6tk"]
+sources/0 = SubResource("TileSetAtlasSource_pvoke")
+
+[node name="Game" type="Node2D"]
+scale = Vector2(10, 10)
+
+[node name="TileMap" type="TileMap" parent="."]
+position = Vector2(1.1, 0.6)
+scale = Vector2(1, 1)
+tile_set = SubResource("TileSet_rj6tk")
+format = 2
+layer_0/tile_data = PackedInt32Array(0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 65543, 0, 0, 131079, 0, 0, 196615, 0, 0, 262151, 0, 0, 262150, 0, 0, 262149, 0, 0, 262148, 0, 0, 262147, 0, 0, 262146, 0, 0, 262145, 0, 0, 262144, 0, 0, 196608, 0, 0, 131072, 0, 0, 65536, 0, 0, 65537, 0, 0, 65538, 0, 0, 65539, 0, 0, 65540, 0, 0, 65541, 0, 0, 65542, 0, 0, 131078, 0, 0, 131077, 0, 0, 131076, 0, 0, 131075, 0, 0, 131074, 0, 0, 131073, 0, 0, 196609, 0, 0, 196610, 0, 0, 196611, 0, 0, 196612, 0, 0, 196613, 0, 0, 196614, 0, 0)
+
+[node name="Tank" parent="." instance=ExtResource("1_dmisb")]
+position = Vector2(35.8, 34.5)
+
+[node name="Tank2" parent="." instance=ExtResource("1_dmisb")]
+position = Vector2(96.9, 27.2)
+PlayerIndex = 2
