@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://bnsdhe30786fb"]
+[gd_scene load_steps=4 format=3 uid="uid://bnsdhe30786fb"]
 
 [ext_resource type="Script" path="res://Scenes/MainMenu/MainMenuButtons.cs" id="1_1e3dq"]
+[ext_resource type="PackedScene" uid="uid://eg0ek83bmyb6" path="res://Scenes/Backgrounds/ShapeShifter.tscn" id="1_ihx5l"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_p81fg"]
 font_size = 32
@@ -13,39 +14,44 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Logo Container" type="CenterContainer" parent="."]
-layout_mode = 1
+[node name="Background" type="CanvasLayer" parent="."]
+layer = 0
+
+[node name="ShapeShifter" parent="Background" instance=ExtResource("1_ihx5l")]
+
+[node name="Game" type="CanvasLayer" parent="."]
+
+[node name="Logo Container" type="CenterContainer" parent="Game"]
 anchors_preset = -1
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -180.0
-offset_top = 95.0
-offset_right = 181.0
-offset_bottom = 82.0
+offset_left = -359.5
+offset_top = 52.5
+offset_right = 360.5
+offset_bottom = 124.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Logo Container"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Game/Logo Container"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Logo Container/VBoxContainer"]
+[node name="Label" type="Label" parent="Game/Logo Container/VBoxContainer"]
 layout_mode = 2
 text = "Godot Steam Lobby & Relay Server Multiplayer"
 label_settings = SubResource("LabelSettings_p81fg")
 horizontal_alignment = 1
 
-[node name="CenterContainer" type="CenterContainer" parent="Logo Container/VBoxContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="Game/Logo Container/VBoxContainer"]
 layout_mode = 2
 
-[node name="RichTextLabel" type="LinkButton" parent="Logo Container/VBoxContainer/CenterContainer"]
+[node name="RichTextLabel" type="LinkButton" parent="Game/Logo Container/VBoxContainer/CenterContainer"]
 layout_mode = 2
 text = "https://github.com/brezden/Godot-Steam-Relay-Lobby"
 uri = "https://github.com/brezden/Godot-Steam-Relay-Lobby"
 text_direction = 3
 
-[node name="ButtonContainer" type="HBoxContainer" parent="."]
+[node name="ButtonContainer" type="HBoxContainer" parent="Game"]
 custom_minimum_size = Vector2(0, 50)
-layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.95
@@ -59,14 +65,14 @@ grow_vertical = 0
 alignment = 1
 script = ExtResource("1_1e3dq")
 
-[node name="HostOnline" type="Button" parent="ButtonContainer"]
+[node name="HostOnline" type="Button" parent="Game/ButtonContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 20)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Create Online Lobby"
 
-[node name="ExitGame" type="Button" parent="ButtonContainer"]
+[node name="ExitGame" type="Button" parent="Game/ButtonContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 20)
 layout_mode = 2
