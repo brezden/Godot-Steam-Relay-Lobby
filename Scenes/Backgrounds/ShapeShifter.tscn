@@ -13,8 +13,6 @@ grow_vertical = 2
 script = ExtResource("1_jqrf6")
 BackgroundColorRectPath = NodePath("ColorRect")
 TransitionLayerPath = NodePath("ShapeTransition")
-TransitionSpeed = 0.25
-WaitTime = 4.0
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
