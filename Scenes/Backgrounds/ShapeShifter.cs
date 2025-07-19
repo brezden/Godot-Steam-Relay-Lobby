@@ -17,23 +17,22 @@ public partial class ShapeShifter : Control
 
     private readonly Color[] _backgroundColors = new Color[]
     {
-        new Color(0.96f, 0.80f, 0.80f), // Soft Rose
-        new Color(0.99f, 0.87f, 0.73f), // Warm Apricot
-        new Color(0.98f, 0.95f, 0.75f), // Butter Yellow
-        new Color(0.85f, 0.96f, 0.78f), // Pale Green
-        new Color(0.75f, 0.95f, 0.89f), // Mint Cream
-        new Color(0.76f, 0.89f, 0.98f), // Powder Blue
-        new Color(0.83f, 0.83f, 0.98f), // Lavender Mist
-        new Color(0.90f, 0.78f, 0.98f), // Soft Lilac
-        new Color(0.98f, 0.80f, 0.90f), // Blush Pink
-        new Color(0.94f, 0.94f, 0.94f), // Light Gray
-        new Color(0.90f, 0.96f, 0.92f), // Pale Mint
-        new Color(0.98f, 0.92f, 0.92f), // Cloud Pink
+        new Color(0.15f, 0.15f, 0.15f), // Dark charcoal
+        new Color(0.18f, 0.18f, 0.20f), // Graphite gray
+        new Color(0.22f, 0.23f, 0.25f), // Slate gray
+        new Color(0.18f, 0.22f, 0.24f), // Deep blue-gray
+        new Color(0.20f, 0.20f, 0.24f), // Midnight gray-blue
+        new Color(0.24f, 0.21f, 0.24f), // Desaturated eggplant
+        new Color(0.25f, 0.22f, 0.20f), // Warm dark taupe
+        new Color(0.20f, 0.24f, 0.22f), // Muted forest gray
+        new Color(0.17f, 0.20f, 0.20f), // Cool gray-green
+        new Color(0.16f, 0.18f, 0.21f), // Steel navy
+        new Color(0.13f, 0.14f, 0.16f), // Dim night
     };
 
     public override void _Ready()
     {
-        _colorIndex = _rng.RandiRange(0, _backgroundColors.Length - 1);
+        _colorIndex = 0; 
         
         _backgroundColor = GetNode<ColorRect>(BackgroundColorRectPath);
         _transitionLayer = GetNode<ShapeTransition>(TransitionLayerPath);
