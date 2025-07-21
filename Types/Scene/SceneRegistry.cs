@@ -13,7 +13,7 @@ public static class SceneRegistry
 
     public static readonly Dictionary<int, string> ScenePaths = new()
     {
-        { MainMenu.Home, "res://Scenes/MainMenu/main.tscn" },
+        { MainMenu.Home, "res://Scenes/MainMenu/MainMenu.tscn" },
         { Lobby.OnlineLobby, "res://Scenes/Lobby/Online/Lobby.tscn" },
         { TankBattle.Game, "res://Games/TankBattle/Game.tscn" }
     };

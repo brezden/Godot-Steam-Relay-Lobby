@@ -1,5 +1,5 @@
 using Godot;
-using GodotPeer2PeerSteamCSharp.Core.Lobby;
+using GodotPeer2PeerSteamCSharp.Modules.Lobby;
 using GodotPeer2PeerSteamCSharp.Types.Lobby;
 
 public partial class LobbyChat : Node

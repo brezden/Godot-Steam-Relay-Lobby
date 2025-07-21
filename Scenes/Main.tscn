@@ -17,15 +17,17 @@ grow_vertical = 2
 theme = ExtResource("1_eeixe")
 
 [node name="BackgroundLayer" type="CanvasLayer" parent="."]
-unique_name_in_owner = true
-layer = 0
 
-[node name="GameLayer" type="CanvasLayer" parent="."]
+[node name="MainLayer" type="CanvasLayer" parent="."]
+layer = 2
 
 [node name="UILayer" type="CanvasLayer" parent="."]
-layer = 2
+layer = 3
 
 [node name="MainMenu" parent="UILayer" instance=ExtResource("3_a3vaq")]
 
 [node name="OverlayLayer" type="CanvasLayer" parent="."]
-layer = 3
+layer = 4
+
+[node name="TransitionLayer" type="CanvasLayer" parent="."]
+layer = 5

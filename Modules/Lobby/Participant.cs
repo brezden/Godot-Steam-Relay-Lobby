@@ -1,7 +1,6 @@
-using System;
 using GodotPeer2PeerSteamCSharp.Types.Scene;
 
-namespace GodotPeer2PeerSteamCSharp.Core.Lobby;
+namespace GodotPeer2PeerSteamCSharp.Modules.Lobby;
 
 public partial class LobbyManager
 {
@@ -14,7 +13,7 @@ public partial class LobbyManager
     public static void ErrorJoiningLobby()
     {
         Logger.Error("Error joining lobby");
-        SceneManager.Instance.ModalManager.RenderInformationModal(
+        UIManager.Instance.ModalManager.RenderInformationModal(
             "[ERR-005] Failed to join lobby",
             InformationModalType.Error,
             "An error occurred while trying to join the lobby. Please try again");

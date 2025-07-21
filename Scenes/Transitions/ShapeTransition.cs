@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class ShapeTransition : CanvasLayer
+public partial class ShapeTransition : Control
 {
     [Export] public Color ShapeColor { get; set; } = new Color(1, 0, 0);
     [Export] public float SpeedScale { get; set; } = 1.0f;

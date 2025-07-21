@@ -25,4 +25,5 @@ grow_vertical = 2
 color = Color(1, 1, 1, 0)
 
 [node name="ShapeTransition" parent="." instance=ExtResource("2_bjqea")]
-ShapeColor = Color(1, 1, 1, 1)
+layout_mode = 1
+ShapeColor = Color(1, 1, 1, 0)

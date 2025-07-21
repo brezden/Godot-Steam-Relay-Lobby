@@ -1,7 +1,7 @@
 using System;
 using GodotPeer2PeerSteamCSharp.Types.Scene;
 
-namespace GodotPeer2PeerSteamCSharp.Core.Lobby;
+namespace GodotPeer2PeerSteamCSharp.Modules.Lobby;
 
 public partial class LobbyManager
 {
@@ -14,7 +14,7 @@ public partial class LobbyManager
     {
         try
         {
-            SceneManager.Instance.ModalManager.RenderInformationModal(
+            UIManager.Instance.ModalManager.RenderInformationModal(
                 "Creating lobby",
                 InformationModalType.Loading);
             await _lobbyService.StartHost();
@@ -23,7 +23,7 @@ public partial class LobbyManager
         catch (Exception ex)
         {
             Logger.Error($"[ERR-001] Exception creating lobby: {ex.Message}");
-            SceneManager.Instance.ModalManager.RenderInformationModal(
+            UIManager.Instance.ModalManager.RenderInformationModal(
                 "[ERR-001] Failed to create lobby",
                 InformationModalType.Error,
                 "An unexpected error occurred while creating the lobby. Please try again");

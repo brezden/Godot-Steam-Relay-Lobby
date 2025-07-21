@@ -1,5 +1,5 @@
 using Godot;
-using GodotPeer2PeerSteamCSharp.Core.Lobby;
+using GodotPeer2PeerSteamCSharp.Modules.Lobby;
 
 public partial class InviteMemberModal : Panel
 {
@@ -40,6 +40,6 @@ public partial class InviteMemberModal : Panel
 
     private void OnCloseButtonPressed()
     {
-        SceneManager.Instance.ModalManager.CloseModal();
+        UIManager.Instance.ModalManager.CloseModal();
     }
 }

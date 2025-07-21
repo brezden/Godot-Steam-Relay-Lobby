@@ -15,6 +15,7 @@ offset_bottom = 40.0
 script = ExtResource("1_xm572")
 
 [node name="Blur" type="CanvasLayer" parent="."]
+layer = 4
 
 [node name="ColorRect" type="ColorRect" parent="Blur"]
 material = SubResource("ShaderMaterial_fgkc4")

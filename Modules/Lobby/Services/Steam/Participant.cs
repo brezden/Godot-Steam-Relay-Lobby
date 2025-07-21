@@ -1,5 +1,5 @@
 using System;
-using GodotPeer2PeerSteamCSharp.Core.Lobby;
+using GodotPeer2PeerSteamCSharp.Modules.Lobby;
 using GodotPeer2PeerSteamCSharp.Types.Scene;
 using Steamworks;
 
