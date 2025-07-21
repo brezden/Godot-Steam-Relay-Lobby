@@ -7,14 +7,14 @@ public partial class SceneManager : Node
     private string _pendingScenePath;
     private AnimationPlayer _transitionAnimPlayer;
     private Node _transitionScene;
+    
+    private CanvasLayer _backgroundLayer;
+    private CanvasLayer _mainLayer;
+    private CanvasLayer _uiLayer;
+    private CanvasLayer _overlayLayer;
+    private CanvasLayer _transitionLayer;
 
     public static SceneManager Instance
-    {
-        get;
-        private set;
-    }
-
-    public ModalManager ModalManager
     {
         get;
         private set;
@@ -30,16 +30,52 @@ public partial class SceneManager : Node
 
         Instance = this;
 
-        ModalManager = new ModalManager();
-        AddChild(ModalManager);
         Viewport root = GetTree().Root;
         _currentScene = root.GetChild(root.GetChildCount() - 1);
+        GatherLayers();
+    }
+    
+    private void GatherLayers()
+    {
+        _backgroundLayer = GetTree().Root.GetNode<CanvasLayer>("Main/BackgroundLayer");
+        _mainLayer = GetTree().Root.GetNode<CanvasLayer>("Main/MainLayer");
+        _uiLayer = GetTree().Root.GetNode<CanvasLayer>("Main/UILayer");
+        _overlayLayer = GetTree().Root.GetNode<CanvasLayer>("Main/OverlayLayer");
+        _transitionLayer = GetTree().Root.GetNode<CanvasLayer>("Main/TransitionLayer");
+        
+        if (_backgroundLayer == null || _mainLayer == null || _uiLayer == null ||_overlayLayer == null || _transitionLayer == null)
+        {
+            GD.PrintErr("One or more layers not found in the scene tree.");
+        }
+    }
+    
+    private void ClearLayers()
+    {
+        foreach (var child in _backgroundLayer.GetChildren())
+        {
+            child.QueueFree();
+        }
+        
+        foreach (var child in _mainLayer.GetChildren())
+        {
+            child.QueueFree();
+        }
+        
+        foreach (var child in _uiLayer.GetChildren())
+        {
+            child.QueueFree();
+        }
+        
+        foreach (var child in _overlayLayer.GetChildren())
+        {
+            child.QueueFree();
+        }
     }
 
     public async void GotoScene(int sceneId,
         SceneRegistry.SceneAnimation animationName = SceneRegistry.SceneAnimation.FadeInOut)
     {
-        await ModalManager.CloseModal();
+        await UIManager.Instance.ModalManager.CloseModal();
 
         var path = SceneRegistry.GetScenePath(sceneId);
         _pendingScenePath = path;
@@ -47,10 +83,10 @@ public partial class SceneManager : Node
         var animationScene = GD.Load<PackedScene>(SceneRegistry.SceneAnimationMapping.GetScene(animationName));
         var animationSceneInstance = animationScene.Instantiate();
         _transitionScene = animationSceneInstance;
-
-        GetTree().Root.AddChild(animationSceneInstance);
-
         var animPlayer = animationSceneInstance.GetNode<AnimationPlayer>("AnimationPlayer");
+        animPlayer.Autoplay = "";
+
+        _transitionLayer.AddChild(animationSceneInstance);
         _transitionAnimPlayer = animPlayer;
 
         animPlayer.Play("start");
@@ -61,6 +97,7 @@ public partial class SceneManager : Node
     {
         if (animationName == "start")
         {
+            ClearLayers();
             DeferredGotoScene(_pendingScenePath);
             _transitionAnimPlayer?.Play("end");
         }
@@ -74,10 +111,13 @@ public partial class SceneManager : Node
 
     private void DeferredGotoScene(string path)
     {
-        _currentScene.Free();
         var nextScene = GD.Load<PackedScene>(path);
         _currentScene = nextScene.Instantiate();
-        GetTree().Root.AddChild(_currentScene);
-        GetTree().CurrentScene = _currentScene;
+        if (_currentScene == null)
+        {
+            GD.PrintErr($"Failed to load scene at path: {path}");
+            return;
+        }
+        _mainLayer.AddChild(_currentScene);
     }
 }

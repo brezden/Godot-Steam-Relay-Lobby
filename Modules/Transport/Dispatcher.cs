@@ -1,7 +1,7 @@
 using System;
 using GodotPeer2PeerSteamCSharp.Routers;
 
-namespace GodotPeer2PeerSteamCSharp.Core;
+namespace GodotPeer2PeerSteamCSharp.Modules;
 
 public partial class TransportManager
 {

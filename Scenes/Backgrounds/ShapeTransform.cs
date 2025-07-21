@@ -40,6 +40,9 @@ public partial class ShapeTransform : Control
         
         _transitionLayer.SetSpeedScale(TransitionSpeed);
         
+        _animPlayer.Stop();
+        _animPlayer.Seek(0, true); // reset to first frame of the transition
+        
         _backgroundColor.Color = _backgroundColors[_colorIndex];
         _colorIndex = (_colorIndex + 1) % _backgroundColors.Length; 
         

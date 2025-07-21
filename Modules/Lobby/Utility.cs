@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using GodotPeer2PeerSteamCSharp.Types.Lobby;
 using GodotPeer2PeerSteamCSharp.Types.Scene;
 
-namespace GodotPeer2PeerSteamCSharp.Core.Lobby;
+namespace GodotPeer2PeerSteamCSharp.Modules.Lobby;
 
 public partial class LobbyManager 
 {

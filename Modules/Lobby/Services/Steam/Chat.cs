@@ -1,4 +1,4 @@
-using GodotPeer2PeerSteamCSharp.Core.Lobby;
+using GodotPeer2PeerSteamCSharp.Modules.Lobby;
 using Steamworks;
 
 namespace GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;

@@ -1,8 +1,8 @@
 using System;
 using System.Buffers.Binary;
 using Godot;
-using GodotPeer2PeerSteamCSharp.Core;
-using GodotPeer2PeerSteamCSharp.Core.Lobby;
+using GodotPeer2PeerSteamCSharp.Modules;
+using GodotPeer2PeerSteamCSharp.Modules.Lobby;
 using GodotPeer2PeerSteamCSharp.Types.Scene;
 
 public partial class LobbyButtons : Node
@@ -28,7 +28,7 @@ public partial class LobbyButtons : Node
 
     private void InviteLobby()
     {
-        SceneManager.Instance.ModalManager.ShowModal(ModalType.InvitePlayer);
+        UIManager.Instance.ModalManager.ShowModal(ModalType.InvitePlayer);
     }
 
     private void SendReliableServerPacket()

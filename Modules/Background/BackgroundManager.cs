@@ -47,9 +47,9 @@ public partial class BackgroundManager: Node
     
     private void ClearBackground()
     {
-        if (_backgroundLayer.GetChildCount() > 0)
+        foreach (var child in _backgroundLayer.GetChildren())
         {
-            _backgroundLayer.GetChild(0).QueueFree();
+            child.QueueFree();
         }
     }
 }

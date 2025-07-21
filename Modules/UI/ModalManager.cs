@@ -12,6 +12,8 @@ public partial class ModalManager : Node
 
     private Node currentModalInstance;
     private SceneTreeTimer modalMinTimeTimer;
+    
+    private CanvasLayer _overlayLayer;
 
     public Dictionary<ModalType, string> Modals
     {
@@ -28,6 +30,8 @@ public partial class ModalManager : Node
             { ModalType.Information, $"{modalSceneDirectory}/Information/Modal.tscn" },
             { ModalType.InvitePlayer, $"{modalSceneDirectory}/InviteMembers/Modal.tscn" }
         };
+        
+        _overlayLayer = GetTree().Root.GetNode<CanvasLayer>("Main/OverlayLayer");
     }
 
     public void ShowModal(ModalType modalType)
@@ -58,7 +62,7 @@ public partial class ModalManager : Node
         modalContent.Name = "Modal";
         container.AddChild(modalContent);
 
-        GetTree().Root.AddChild(modalBaseInstance);
+        _overlayLayer.AddChild(modalBaseInstance);
         currentModalInstance = modalBaseInstance;
         modalMinTimeTimer = GetTree().CreateTimer(minimumTimeModal);
     }
@@ -88,7 +92,7 @@ public partial class ModalManager : Node
     {
         if (modalMinTimeTimer != null && modalMinTimeTimer.TimeLeft > 0)
             await ToSignal(modalMinTimeTimer, SceneTreeTimer.SignalName.Timeout);
-
+        
         EventBus.UI.OnCloseModal();
         modalMinTimeTimer = null;
     }

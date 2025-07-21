@@ -1,8 +1,8 @@
 using System;
 using System.Runtime.InteropServices.ComTypes;
-using GodotPeer2PeerSteamCSharp.Core.Lobby;
+using GodotPeer2PeerSteamCSharp.Modules.Lobby;
 
-namespace GodotPeer2PeerSteamCSharp.Core;
+namespace GodotPeer2PeerSteamCSharp.Modules;
 
 public partial class TransportManager
 {

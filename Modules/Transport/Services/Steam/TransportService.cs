@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
-using GodotPeer2PeerSteamCSharp.Core;
-using GodotPeer2PeerSteamCSharp.Core.Lobby;
+using GodotPeer2PeerSteamCSharp.Modules;
+using GodotPeer2PeerSteamCSharp.Modules.Lobby;
 using Steamworks;
 using Steamworks.Data;
 

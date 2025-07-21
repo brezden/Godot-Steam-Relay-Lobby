@@ -2,7 +2,7 @@ using Godot;
 using GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
 using GodotPeer2PeerSteamCSharp.Types.Lobby;
 
-namespace GodotPeer2PeerSteamCSharp.Core.Lobby;
+namespace GodotPeer2PeerSteamCSharp.Modules.Lobby;
 
 public partial class LobbyManager : Node
 {
