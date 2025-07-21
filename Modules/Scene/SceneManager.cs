@@ -3,6 +3,8 @@ using GodotPeer2PeerSteamCSharp.Types.Scene;
 
 public partial class SceneManager : Node
 {
+    public CanvasLayer UICanvasLayer;
+    
     private Node _currentScene;
     private string _pendingScenePath;
     private AnimationPlayer _transitionAnimPlayer;
@@ -29,6 +31,8 @@ public partial class SceneManager : Node
         }
 
         Instance = this;
+        
+        UICanvasLayer = GetNode<CanvasLayer>("UICanvasLayer");
 
         ModalManager = new ModalManager();
         AddChild(ModalManager);
