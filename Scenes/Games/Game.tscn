@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://bayxy2p0vlckn"]
 
-[ext_resource type="Texture2D" uid="uid://b0pxytbl7pa2r" path="res://Assets/Map.Png" id="1_16xei"]
-[ext_resource type="PackedScene" uid="uid://bh21abwq7yrd0" path="res://Scenes/Tank.tscn" id="1_dmisb"]
+[ext_resource type="Texture2D" uid="uid://dpn4ofaucikpv" path="res://Assets/Map.Png" id="1_16xei"]
+[ext_resource type="PackedScene" uid="uid://bh21abwq7yrd0" path="res://Scenes/Games/Tank.tscn" id="1_dmisb"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pvoke"]
 texture = ExtResource("1_16xei")

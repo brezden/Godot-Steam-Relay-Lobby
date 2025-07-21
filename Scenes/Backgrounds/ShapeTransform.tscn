@@ -1,18 +1,19 @@
 [gd_scene load_steps=3 format=3 uid="uid://eg0ek83bmyb6"]
 
-[ext_resource type="Script" path="res://Scenes/Backgrounds/ShapeShifter.cs" id="1_jqrf6"]
-[ext_resource type="PackedScene" uid="uid://cde7ftl5q641v" path="res://Scenes/Transitions/ShapeTransition.tscn" id="2_b0ca2"]
+[ext_resource type="Script" path="res://Scenes/Backgrounds/ShapeTransform.cs" id="1_kjxmb"]
+[ext_resource type="PackedScene" uid="uid://cde7ftl5q641v" path="res://Scenes/Transitions/ShapeTransition.tscn" id="2_bjqea"]
 
-[node name="ShapeShifter" type="Control"]
+[node name="ShapeTransform" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_jqrf6")
+script = ExtResource("1_kjxmb")
 BackgroundColorRectPath = NodePath("ColorRect")
 TransitionLayerPath = NodePath("ShapeTransition")
+TransitionSpeed = 0.25
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -23,5 +24,5 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 1, 1, 0)
 
-[node name="ShapeTransition" parent="." instance=ExtResource("2_b0ca2")]
+[node name="ShapeTransition" parent="." instance=ExtResource("2_bjqea")]
 ShapeColor = Color(1, 1, 1, 1)
