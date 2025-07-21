@@ -1,0 +1,80 @@
+[gd_scene load_steps=5 format=3 uid="uid://clj86wal5eo6v"]
+
+[ext_resource type="Theme" uid="uid://dlpp8hpy0ciue" path="res://UI/Themes/Main.tres" id="1_r06oa"]
+[ext_resource type="Script" path="res://Scenes/MainMenu/MainMenu.cs" id="1_xght1"]
+[ext_resource type="Script" path="res://Scenes/MainMenu/MainMenuButtons.cs" id="2_hq0sl"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_fhvly"]
+font_size = 54
+outline_size = 8
+outline_color = Color(0.351563, 0.351563, 0.351563, 1)
+shadow_size = 16
+shadow_color = Color(0, 0, 0, 0.0352941)
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_xght1")
+
+[node name="Logo Container" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 183.5
+offset_top = 52.5
+offset_right = 1057.5
+offset_bottom = 142.5
+grow_horizontal = 2
+theme = ExtResource("1_r06oa")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Logo Container"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Logo Container/VBoxContainer"]
+layout_mode = 2
+text = "Godot Steam Lobby & Relay Server Multiplayer"
+label_settings = SubResource("LabelSettings_fhvly")
+horizontal_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="Logo Container/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="LinkButton" parent="Logo Container/VBoxContainer/CenterContainer"]
+layout_mode = 2
+text = "https://github.com/brezden/Godot-Steam-Relay-Lobby"
+uri = "https://github.com/brezden/Godot-Steam-Relay-Lobby"
+text_direction = 3
+
+[node name="ButtonContainer" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.95
+anchor_right = 0.5
+anchor_bottom = 0.95
+offset_left = 316.0
+offset_top = 596.0
+offset_right = 924.0
+offset_bottom = 646.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+script = ExtResource("2_hq0sl")
+
+[node name="HostOnline" type="Button" parent="ButtonContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Create Online Lobby"
+
+[node name="ExitGame" type="Button" parent="ButtonContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Exit Game"

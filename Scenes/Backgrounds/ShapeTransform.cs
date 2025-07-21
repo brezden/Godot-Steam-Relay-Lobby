@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class ShapeShifter : Control
+public partial class ShapeTransform : Control
 {
     [Export] public NodePath BackgroundColorRectPath;
     [Export] public NodePath TransitionLayerPath;

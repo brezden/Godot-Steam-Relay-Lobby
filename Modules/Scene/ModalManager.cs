@@ -58,7 +58,7 @@ public partial class ModalManager : Node
         modalContent.Name = "Modal";
         container.AddChild(modalContent);
 
-        .AddChild(modalBaseInstance);
+        GetTree().Root.AddChild(modalBaseInstance);
         currentModalInstance = modalBaseInstance;
         modalMinTimeTimer = GetTree().CreateTimer(minimumTimeModal);
     }
