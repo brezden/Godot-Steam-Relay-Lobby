@@ -1,0 +1,193 @@
+[gd_scene load_steps=10 format=3 uid="uid://ca45xvvoiidvn"]
+
+[ext_resource type="Script" path="res://Scenes/MainMenu/SplashScreen/SplashScreen.cs" id="1_r0jit"]
+[ext_resource type="Texture2D" uid="uid://1h56o0c22dpn" path="res://Assets/Sprites/Dog.png" id="1_sif53"]
+[ext_resource type="Theme" uid="uid://dlpp8hpy0ciue" path="res://UI/Themes/Main.tres" id="2_fr0xk"]
+[ext_resource type="Shader" path="res://Scenes/MainMenu/SplashScreen/SplashScreen.gdshader" id="4_a787n"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_fgvoa"]
+font_size = 56
+outline_size = 1
+outline_color = Color(0.637843, 0.637843, 0.637843, 1)
+shadow_size = 6
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b15k0"]
+shader = ExtResource("4_a787n")
+shader_parameter/crt_curve = 0.069
+shader_parameter/crt_scan_line_color = 0.15
+shader_parameter/aperture_grille_rate = 0.0
+shader_parameter/rf_switch_esque_blur = 0.0
+shader_parameter/white_noise_rate = 0.177
+
+[sub_resource type="Animation" id="Animation_ynln3"]
+resource_name = "Animation"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect2:material:shader_parameter/crt_curve")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.533333, 0.733333),
+"transitions": PackedFloat32Array(0.57435, 3.13834, 3.13834, 1),
+"update": 0,
+"values": [0.069, 0.03, 0.116, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect2:material:shader_parameter/crt_scan_line_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.666667, 0.733333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.15, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ColorRect2:material:shader_parameter/white_noise_rate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.666667, 0.733333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.177, 0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ColorRect2:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.733333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_6rwsp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect2:material:shader_parameter/crt_curve")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.069]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect2:material:shader_parameter/crt_scan_line_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.15]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ColorRect2:material:shader_parameter/white_noise_rate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.177]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ColorRect2:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3ur3c"]
+_data = {
+"Animation": SubResource("Animation_ynln3"),
+"RESET": SubResource("Animation_6rwsp")
+}
+
+[node name="SplashScreen" type="CanvasLayer"]
+script = ExtResource("1_r0jit")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -182.0
+offset_top = -72.0
+offset_right = 182.0
+offset_bottom = 72.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Control2" type="Control" parent="CenterContainer/HBoxContainer"]
+custom_minimum_size = Vector2(144, 144)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Control" type="Sprite2D" parent="CenterContainer/HBoxContainer/Control2"]
+position = Vector2(72, 71)
+scale = Vector2(4.5, 4.5)
+texture = ExtResource("1_sif53")
+hframes = 5
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_fr0xk")
+text = "Created By
+Cal1um
+"
+label_settings = SubResource("LabelSettings_fgvoa")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_b15k0")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_3ur3c")
+}
+speed_scale = 0.6
