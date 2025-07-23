@@ -6,10 +6,10 @@
 [ext_resource type="Shader" path="res://Scenes/MainMenu/SplashScreen/SplashScreen.gdshader" id="4_a787n"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_fgvoa"]
-font_size = 56
-outline_size = 1
-outline_color = Color(0.637843, 0.637843, 0.637843, 1)
-shadow_size = 6
+font_size = 38
+shadow_size = 0
+shadow_color = Color(0.0846899, 0.0846899, 0.0846899, 1)
+shadow_offset = Vector2(2, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_b15k0"]
 shader = ExtResource("4_a787n")
@@ -164,7 +164,7 @@ size_flags_vertical = 4
 
 [node name="Control" type="Sprite2D" parent="CenterContainer/HBoxContainer/Control2"]
 position = Vector2(72, 71)
-scale = Vector2(4.5, 4.5)
+scale = Vector2(3, 3)
 texture = ExtResource("1_sif53")
 hframes = 5
 
@@ -190,4 +190,5 @@ grow_vertical = 2
 libraries = {
 "": SubResource("AnimationLibrary_3ur3c")
 }
+autoplay = "Animation"
 speed_scale = 0.6
