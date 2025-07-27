@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=7 format=3 uid="uid://dlpp8hpy0ciue"]
 
-[ext_resource type="FontFile" uid="uid://66qvjrpg5o54" path="res://Assets/Fonts/Jersey10-Regular.ttf" id="1_vvsmd"]
+[ext_resource type="FontFile" uid="uid://tqtdvkpoh4kw" path="res://Assets/Fonts/Rubik-Regular.ttf" id="1_xkvap"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7776e"]
 content_margin_left = 4.0
@@ -48,20 +48,16 @@ corner_radius_bottom_left = 3
 corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x4pnh"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
 bg_color = Color(0.121569, 0.121569, 0.121569, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.190762, 0.190762, 0.190762, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
 corner_detail = 5
 shadow_color = Color(0, 0, 0, 0.498039)
 shadow_size = 5
@@ -81,8 +77,8 @@ corner_radius_bottom_left = 3
 corner_detail = 5
 
 [resource]
-default_font = ExtResource("1_vvsmd")
-default_font_size = 24
+default_font = ExtResource("1_xkvap")
+default_font_size = 12
 Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
 Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
 Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)

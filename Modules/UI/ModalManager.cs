@@ -7,30 +7,23 @@ public partial class ModalManager : Node
 {
     private const float minimumTimeModal = 0.75f;
 
-    private readonly string modalSceneDirectory = "res://Scenes/Components/Modal";
-    private string baseScenePath;
+    private static readonly string modalSceneDirectory = "res://Scenes/Components/Modal";
+    private static string baseScenePath = $"{modalSceneDirectory}/ModalBase.tscn";
 
     private Node currentModalInstance;
     private SceneTreeTimer modalMinTimeTimer;
     
     private CanvasLayer _overlayLayer;
 
-    public Dictionary<ModalType, string> Modals
-    {
-        get;
-        private set;
-    }
+    public Dictionary<ModalType, string> Modals = new Dictionary<ModalType, string>
+        {
+            { ModalType.Information, $"{modalSceneDirectory}/Information/Modal.tscn" },
+            { ModalType.InvitePlayer, $"{modalSceneDirectory}/InviteMembers/Modal.tscn" },
+            { ModalType.Settings, $"{modalSceneDirectory}/Settings/Modal.tscn" }
+        };
 
     public override void _Ready()
     {
-        baseScenePath = $"{modalSceneDirectory}/ModalBase.tscn";
-
-        Modals = new Dictionary<ModalType, string>
-        {
-            { ModalType.Information, $"{modalSceneDirectory}/Information/Modal.tscn" },
-            { ModalType.InvitePlayer, $"{modalSceneDirectory}/InviteMembers/Modal.tscn" }
-        };
-        
         _overlayLayer = GetTree().Root.GetNode<CanvasLayer>("Main/OverlayLayer");
     }
 
