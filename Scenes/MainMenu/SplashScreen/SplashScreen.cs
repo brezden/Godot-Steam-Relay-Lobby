@@ -1,15 +1,19 @@
 using Godot;
 using System;
+using GodotPeer2PeerSteamCSharp.Types.Scene;
 
 public partial class SplashScreen : CanvasLayer
 {
-	// Called when the node enters the scene tree for the first time.
+    private AnimationPlayer animationPlayer;
+    
 	public override void _Ready()
 	{
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
+        animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+        animationPlayer.AnimationFinished += (_) => OnSplashScreenCompleted();
+    }
+    
+    private void OnSplashScreenCompleted()
+    {
+        SceneManager.Instance.GotoScene(SceneRegistry.MainMenu.Home);
+    }
 }

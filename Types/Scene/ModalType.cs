@@ -3,7 +3,8 @@ namespace GodotPeer2PeerSteamCSharp.Types.Scene;
 public enum ModalType
 {
     Information,
-    InvitePlayer
+    InvitePlayer,
+    Settings
 }
 
 public enum InformationModalType
