@@ -6,7 +6,8 @@
 font_size = 12
 
 [node name="Settings" type="Panel"]
-anchors_preset = 15
+custom_minimum_size = Vector2(560, 300)
+anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -78,7 +79,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 10
 text = "Confirm"
 
-[node name="Button2" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="Close" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 10
