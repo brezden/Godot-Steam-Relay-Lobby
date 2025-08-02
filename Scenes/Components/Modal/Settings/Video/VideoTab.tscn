@@ -1,14 +1,14 @@
 [gd_scene load_steps=3 format=3 uid="uid://cjv0qy65wg5y3"]
 
-[ext_resource type="Script" path="res://Scenes/Components/Modal/Settings/VideoSettings.cs" id="1_1umdl"]
+[ext_resource type="Script" path="res://Scenes/Components/Modal/Settings/Video/VideoTab.cs" id="1_w4dt5"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_g5fni"]
 font_size = 12
 
-[node name="VideoSettings" type="Control"]
+[node name="VideoTab" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_1umdl")
+script = ExtResource("1_w4dt5")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
