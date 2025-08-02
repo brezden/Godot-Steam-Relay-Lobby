@@ -26,7 +26,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include=".editorconfig"/>
         <Content Include="Assets\Shaders\blur.gdshader" />
         <Content Include="steam_api.dll" Condition="$([MSBuild]::IsOSPlatform('Windows'))">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
