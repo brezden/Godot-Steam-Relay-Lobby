@@ -32,18 +32,18 @@ public partial class VideoSettings: Control
         new Resolution(2560, 1600, "16:10"),
         new Resolution(3440, 1440, "21:9"),
     };
-
     
     public override void _Ready()
     {
         initializeVideoSettings();
-        SetUINodesToVariables();
-        PopulateUINodes();
+        BindUINodesToVariables();
+        ConfigureUINodes();
     }
 
     private void initializeVideoSettings()
     {
         SetResolutionSettings();
+        SetFullscreenSettings();
     }
 
     private void SetResolutionSettings()
@@ -59,17 +59,42 @@ public partial class VideoSettings: Control
         FilterResolutionsByMaxSize();
     }
     
-    private void SetUINodesToVariables()
+    private void SetFullscreenSettings()
+    {
+        IsFullscreen = DisplayServer.WindowGetMode() == DisplayServer.WindowMode.Fullscreen;
+    }
+    
+    private void BindUINodesToVariables()
     {
         _resolutionOptionButton = GetNode<OptionButton>("%Resolution");
         _resolutionOptionButton.Select(_availableResolutions
             .ToList()
             .FindIndex(res => res.Width == ResolutionWidth && res.Height == ResolutionHeight));
-        
     }
 
-    private void PopulateUINodes()
+    private void ConfigureUINodes()
     {
+        ConfigureResolutionOptionButton();
+    }
+    
+    private void ConfigureResolutionOptionButton()
+    {
+        int currentResolutionIndex = _availableResolutions
+            .ToList()
+            .FindIndex(res => res.Width == ResolutionWidth && res.Height == ResolutionHeight);
+        
+        if (currentResolutionIndex == -1)
+        {
+            Logger.Game($"Current resolution {ResolutionWidth}x{ResolutionHeight} not found in available resolutions.");
+            _resolutionOptionButton.AddItem("${ResolutionWidth}x${ResolutionHeight} (Custom)");
+        }
+        else
+        {
+            _resolutionOptionButton.AddItem(_availableResolutions[currentResolutionIndex].ToString());
+        }
+        
+        _resolutionOptionButton.AddSeparator();
+        
         foreach (var resolution in _availableResolutions)
         {
             _resolutionOptionButton.AddItem(resolution.ToString());
@@ -100,5 +125,12 @@ public partial class VideoSettings: Control
         {
             return $"{Width}x{Height} ({AspectRatio})";
         }
+    }
+
+    public void SaveSettings(ConfigFile configFile)
+    {
+        configFile.Set("video", "resolution_width", ResolutionWidth);
+        configFile.Set("video", "resolution_height", ResolutionHeight);
+        configFile.Set("video", "fullscreen", IsFullscreen);
     }
 }
