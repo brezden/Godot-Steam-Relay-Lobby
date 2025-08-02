@@ -1,74 +1,37 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using GodotPeer2PeerSteamCSharp.Scenes.Components.Modal.Settings;
 
 public partial class Modal : Panel
 {
     private Button _confirmButton;
-    private OptionButton _resolutionDropdown;
-
-    private int _userResolutionWidth;
-    private int _userResolutionHeight;
     
-    private const int DEFAULT_WINDOW_WIDTH = 1280;
-    private const int DEFAULT_WINDOW_HEIGHT = 720;
-
-    private Dictionary<string, Resolution> _availableResolutions = new() {};
+    private VideoSettings _videoSettings;
 
     public override void _Ready()
     {
         _confirmButton = GetNode<Button>("%Confirm");
-        _confirmButton.Pressed += OnConfirmButtonPressed;
-        _resolutionDropdown = GetNode<OptionButton>("%Resolution");
+        _confirmButton.Pressed += SaveSettings;
         
-        IntializeResolutionSettings();
+        _videoSettings = GetNode<VideoSettings>("%VideoSettings");
+    }
 
-        foreach (var res in _availableResolutions)
+    private void SaveSettings()
+    {
+        var config = new ConfigFile();
+        
+        _videoSettings.SaveSettings(config);
+        
+        Error errorResult = config.Save("user://settings.cfg");
+        
+        if (errorResult != Error.Ok)
         {
-            _resolutionDropdown.AddItem($"{res.Width}x{res.Height}");
+            Logger.Error($"Failed to save settings: {errorResult}");
         }
-    }
-
-    private void OnConfirmButtonPressed()
-    {
-        var selected = _resolutionDropdown.GetSelectedId();
-        var res = _availableResolutions[selected];
-        DisplayServer.WindowSetSize(new Vector2I(res.Width, res.Height));
-    }
-
-    private void IntializeResolutions()
-    {
-        PopulateFullscreenSettings();
-        
-        
-        
-        GetUsersResolution();
-        
-        var modes = DisplayServer.
-    }
-    
-    private void PopulateFullscreenSettings()
-    {
-        // TODO: GET USERS WINDOW HEIGHT and ASCEPT RATIO
-        // FILTER RESOLUTIONS BASED ON THAT
-        // SHOW FULLSCREEN AND ASPECT RATIO OPTIONS
-        // POPULATE THOSE BASED ON THE FILTERD RESOLUTIONS
-    }
-    
-    private Resolution getAvailableResolutions(int index)
-    {
-        return _availableResolutions[index];
-    }
-    
-    public class Resolution
-    {
-        public int Width { get; }
-        public int Height { get; }
-
-        public Resolution(int width, int height)
+        else
         {
-            Width = width;
-            Height = height;
+            Logger.Game("Settings saved successfully.");
         }
     }
 }

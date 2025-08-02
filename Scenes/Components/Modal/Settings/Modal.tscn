@@ -1,14 +1,12 @@
 [gd_scene load_steps=5 format=3 uid="uid://c2w2wj8r5dic8"]
 
 [ext_resource type="Script" path="res://Scenes/Components/Modal/Settings/Modal.cs" id="1_qm5fi"]
+[ext_resource type="PackedScene" uid="uid://cjv0qy65wg5y3" path="res://Scenes/Components/Modal/Settings/VideoSettings.tscn" id="2_wx8pc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_54awh"]
 bg_color = Color(0.151276, 0.151276, 0.151276, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_uu3k7"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_g5fni"]
-font_size = 12
 
 [node name="Settings" type="Panel"]
 custom_minimum_size = Vector2(560, 300)
@@ -49,32 +47,9 @@ grow_vertical = 2
 text = "Settings"
 label_settings = SubResource("LabelSettings_uu3k7")
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 100
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 100
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer"]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-text = "Resolution"
-label_settings = SubResource("LabelSettings_g5fni")
-
-[node name="Resolution" type="OptionButton" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="VideoSettings" parent="VBoxContainer" instance=ExtResource("2_wx8pc")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 10
-item_count = 2
-popup/item_0/text = "1280x720"
-popup/item_1/text = "1920x1080"
-popup/item_1/id = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
