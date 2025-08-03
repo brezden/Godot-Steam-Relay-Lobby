@@ -12,8 +12,6 @@ public partial class VideoSettings : Node
     public int MaxResolutionHeight { get; private set; }
     public int ResolutionWidth { get; private set; }
     public int ResolutionHeight { get; private set; }
-    public int PreviousWindowWidth { get; private set; }
-    public int PreviousWindowHeight { get; private set; }
     public WindowModeOption WindowMode { get; private set; }
     
     private readonly Resolution[] _availableResolutions = new[]
@@ -49,12 +47,27 @@ public partial class VideoSettings : Node
     public VideoSettings()
     {
         initializeVideoSettings();
+        
+        ApplySettings();
     }
     
     private void initializeVideoSettings()
     {
-        SetResolution();
-        SetWindowMode();
+        var resolutionWidth = (int)ConfigManager.Instance._configFile.GetValue("Video", "ResolutionWidth", 0);
+        var resolutionHeight = (int)ConfigManager.Instance._configFile.GetValue("Video", "ResolutionHeight", 0);
+        var windowModeString = ConfigManager.Instance._configFile.GetValue("Video", "WindowMode", WindowModeOption.Window.ToString()).ToString();
+
+        SetResolution(resolutionWidth, resolutionHeight);
+
+        if (Enum.TryParse(windowModeString, out WindowModeOption parsedMode))
+        {
+            SetWindowMode(parsedMode);
+        }
+        else
+        {
+            Logger.Game($"Invalid WindowMode value '{windowModeString}' in config. Defaulting to Window.");
+            SetWindowMode(WindowModeOption.Window);
+        }
     }
     
     public void ApplySettings()
@@ -62,13 +75,21 @@ public partial class VideoSettings : Node
         ApplyResolutionAndWindowModeSettings();
     }
 
+    public void SaveSettings()
+    {
+        ConfigManager.Instance._configFile.SetValue("Video", "ResolutionWidth", ResolutionWidth);
+        ConfigManager.Instance._configFile.SetValue("Video", "ResolutionHeight", ResolutionHeight);
+        ConfigManager.Instance._configFile.SetValue("Video", "WindowMode", WindowMode.ToString());
+    }
+    
     public void SetResolution(int? width = null, int? height = null)
     {
         Vector2I maxResolution = DisplayServer.ScreenGetSize();
         MaxResoltionWidth = maxResolution.X;
         MaxResolutionHeight = maxResolution.Y;
         
-        if (width.HasValue && height.HasValue) 
+        if (width.HasValue && height.HasValue &&
+            width.Value > 0 && height.Value > 0) 
         {
             ResolutionWidth = width.Value;
             ResolutionHeight = height.Value;
@@ -144,10 +165,9 @@ public partial class VideoSettings : Node
     // This method also solves the issue when the control nodes are not redrawn after changing the resolution.
     private void CenterWindow()
     {
-        int screenId = DisplayServer.WindowGetCurrentScreen();
-        Vector2I screenSize = DisplayServer.ScreenGetSize(screenId);
-        Vector2I centeredPos = (screenSize - new Vector2I(ResolutionWidth, ResolutionHeight)) / 2;
-        DisplayServer.WindowSetPosition(centeredPos);
+        Vector2I centreScreen = DisplayServer.ScreenGetPosition() + DisplayServer.ScreenGetSize() / 2;
+        Vector2I windowSize = DisplayServer.WindowGetSizeWithDecorations();
+        DisplayServer.WindowSetPosition(centreScreen - windowSize / 2);
     }
     
     public Resolution[] GetFilteredResolutions()
