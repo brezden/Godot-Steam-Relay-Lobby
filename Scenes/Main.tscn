@@ -27,6 +27,7 @@ layer = 3
 [node name="SplashScreen" parent="UILayer" instance=ExtResource("2_xc147")]
 
 [node name="OverlayLayer" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
 layer = 4
 
 [node name="TransitionLayer" type="CanvasLayer" parent="."]

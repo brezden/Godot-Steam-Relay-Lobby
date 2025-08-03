@@ -1,16 +1,20 @@
+using System;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Godot;
 
 namespace GodotPeer2PeerSteamCSharp.Modules.Config.Video;
 
-public class VideoSettings
+public partial class VideoSettings : Node
 {
     public int MaxResoltionWidth { get; private set; }
     public int MaxResolutionHeight { get; private set; }
     public int ResolutionWidth { get; private set; }
     public int ResolutionHeight { get; private set; }
-    public bool IsFullscreen { get; private set; }
+    public int PreviousWindowWidth { get; private set; }
+    public int PreviousWindowHeight { get; private set; }
+    public WindowModeOption WindowMode { get; private set; }
     
     private readonly Resolution[] _availableResolutions = new[]
     {
@@ -32,7 +36,15 @@ public class VideoSettings
         new Resolution(3440, 1440, "21:9"),
     };
 
-    private Resolution[] _filteredResolutions; 
+    private Resolution[] _filteredResolutions;
+
+    public enum WindowModeOption
+    {
+        Window,
+        Fullscreen,
+        BorderlessWindow,
+        BorderlessFullscreen
+    }
     
     public VideoSettings()
     {
@@ -41,37 +53,111 @@ public class VideoSettings
     
     private void initializeVideoSettings()
     {
-        SetResolutionSettings();
-        SetFullscreenSettings();
+        SetResolution();
+        SetWindowMode();
+    }
+    
+    public void ApplySettings()
+    {
+        ApplyResolutionAndWindowModeSettings();
     }
 
-    private void SetResolutionSettings()
+    public void SetResolution(int? width = null, int? height = null)
     {
         Vector2I maxResolution = DisplayServer.ScreenGetSize();
         MaxResoltionWidth = maxResolution.X;
         MaxResolutionHeight = maxResolution.Y;
         
-        Vector2I currentResolution = DisplayServer.WindowGetSize();
-        ResolutionWidth = currentResolution.X;
-        ResolutionHeight = currentResolution.Y;
+        if (width.HasValue && height.HasValue) 
+        {
+            ResolutionWidth = width.Value;
+            ResolutionHeight = height.Value;
+        }
+        else
+        {
+            Vector2I currentResolution = DisplayServer.WindowGetSize();
+            ResolutionWidth = currentResolution.X;
+            ResolutionHeight = currentResolution.Y;
+        }
         
         FilterResolutionsByMaxSize();
+    }
+
+    public void SetWindowMode(WindowModeOption? windowMode = null)
+    {
+        if (windowMode == null)
+        {
+            DisplayServer.WindowMode currentMode = DisplayServer.WindowGetMode();
+            bool isBorderless = DisplayServer.WindowGetFlag(DisplayServer.WindowFlags.Borderless);
+            
+            if (currentMode == DisplayServer.WindowMode.Windowed)
+            {
+                WindowMode = isBorderless ? WindowModeOption.BorderlessWindow : WindowModeOption.Window;
+            }
+            else if (currentMode == DisplayServer.WindowMode.Fullscreen)
+            {
+                WindowMode = isBorderless ? WindowModeOption.BorderlessFullscreen : WindowModeOption.Fullscreen;
+            }
+            else
+            {
+                WindowMode = WindowModeOption.Window;
+            }
+
+            return;
+        }
+        
+        Logger.Game($"Setting window mode to: {windowMode.Value}");
+        
+        WindowMode = windowMode.Value;
+    }
+    
+    private void ApplyResolutionAndWindowModeSettings()
+    {
+        switch (WindowMode)
+        {
+            case WindowModeOption.Window:
+                DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
+                DisplayServer.WindowSetFlag(DisplayServer.WindowFlags.Borderless, false);
+                DisplayServer.WindowSetSize(new Vector2I(ResolutionWidth, ResolutionHeight));
+                CenterWindow();
+                break;
+            case WindowModeOption.Fullscreen:
+                DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
+                DisplayServer.WindowSetFlag(DisplayServer.WindowFlags.Borderless, false);
+                break;
+            case WindowModeOption.BorderlessWindow:
+                DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
+                DisplayServer.WindowSetFlag(DisplayServer.WindowFlags.Borderless, true);
+                DisplayServer.WindowSetSize(new Vector2I(ResolutionWidth, ResolutionHeight));
+                CenterWindow();
+                break;
+            case WindowModeOption.BorderlessFullscreen:
+                DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
+                DisplayServer.WindowSetFlag(DisplayServer.WindowFlags.Borderless, true);
+                break;
+            default:
+                Logger.Error("Invalid window mode option.");
+                break;
+        }
+    }
+
+    // This method also solves the issue when the control nodes are not redrawn after changing the resolution.
+    private void CenterWindow()
+    {
+        int screenId = DisplayServer.WindowGetCurrentScreen();
+        Vector2I screenSize = DisplayServer.ScreenGetSize(screenId);
+        Vector2I centeredPos = (screenSize - new Vector2I(ResolutionWidth, ResolutionHeight)) / 2;
+        DisplayServer.WindowSetPosition(centeredPos);
     }
     
     public Resolution[] GetFilteredResolutions()
     {
-        SetResolutionSettings(); // For the edge case the user has changed their display settings
         if (_filteredResolutions == null || _filteredResolutions.Length == 0)
         {
             return _availableResolutions;
         }
         
         return _filteredResolutions;
-    }
-    
-    private void SetFullscreenSettings()
-    {
-        IsFullscreen = DisplayServer.WindowGetMode() == DisplayServer.WindowMode.Fullscreen;
     }
     
     private void FilterResolutionsByMaxSize()

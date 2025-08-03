@@ -22,16 +22,30 @@ theme_override_constants/margin_right = 100
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="Resolution" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Resolution"]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Resolution"
 label_settings = SubResource("LabelSettings_g5fni")
 
-[node name="Resolution" type="OptionButton" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Resolution" type="OptionButton" parent="MarginContainer/VBoxContainer/Resolution"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="WindowMode" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/WindowMode"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Window Mode"
+label_settings = SubResource("LabelSettings_g5fni")
+
+[node name="WindowMode" type="OptionButton" parent="MarginContainer/VBoxContainer/WindowMode"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
