@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Godot;
 using GodotPeer2PeerSteamCSharp.Modules.Config.Video;
 
@@ -23,5 +24,10 @@ public partial class ConfigManager: Node
 
         Instance = this;
         VideoSettings = new VideoSettings();
+    }
+    
+    public void ApplySettings()
+    {
+        VideoSettings.ApplySettings();
     }
 }
