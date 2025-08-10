@@ -8,14 +8,25 @@ using GodotPeer2PeerSteamCSharp.Scenes.Components.Modal.Settings;
 public partial class Modal : Panel
 {
     private Button _confirmButton;
+    private Button _closeButton;
     private VideoTab _videoTab;
 
     public override void _Ready()
     {
         _confirmButton = GetNode<Button>("%Confirm");
-        _confirmButton.Pressed += () =>
-        {
-            ConfigManager.Instance.ApplySettings();
-        };
+        _closeButton = GetNode<Button>("%Close");
+
+        _confirmButton.Pressed += OnConfirmButtonPressed;
+        _closeButton.Pressed += OnCloseButtonPressed;
+    }
+    
+    private void OnConfirmButtonPressed()
+    {
+        ConfigManager.Instance.ApplySettings();
+    }
+    
+    private void OnCloseButtonPressed()
+    {
+        UIManager.Instance.ModalManager.CloseModal();
     }
 }

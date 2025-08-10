@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Godot;
 
 public partial class ModalBase : Node
@@ -6,16 +7,13 @@ public partial class ModalBase : Node
     private Panel _modalPanel;
 
     private ShaderMaterial _shaderMaterial;
+    
     [Export] public float blurAmount = 1.75f;
-    [Export] public float blurInDuration = 0.25f;
-    [Export] public float blurOutDuration = 0.25f;
     [Export] public float modalInDuration = 0.25f;
     [Export] public float modalOutDuration = 0.25f;
 
-    public override void _Ready()
+    public override void _EnterTree()
     {
-        EventBus.UI.CloseModal += (_, _) => AnimationOut();
-
         var shaderCanvasLayer = GetNode<CanvasLayer>("Blur");
         _shaderMaterial = (ShaderMaterial) shaderCanvasLayer.GetNode<ColorRect>("ColorRect").Material;
         _shaderMaterial.SetShaderParameter("lod", 0f);
@@ -23,59 +21,47 @@ public partial class ModalBase : Node
         var modalContainer = shaderCanvasLayer.GetNode<CenterContainer>("ModalContainer");
         _modalPanel = modalContainer.GetNode<Panel>("Modal");
         _modalPanel.Modulate = new Color(1, 1, 1, 0.0f);
-        AnimationIn();
     }
 
-    public override void _ExitTree()
+    public async Task AnimationIn()
     {
-        EventBus.UI.CloseModal -= (_, _) => AnimationOut();
-    }
-
-    public void AnimationIn()
-    {
-        BlurIn();
-        ModalAnimationIn();
-    }
-
-    public void AnimationOut()
-    {
-        BlurOut();
-        ModalAnimationOut();
-    }
-
-    private void BlurIn()
-    {
-        var tween = CreateTween();
-        tween.TweenProperty(_shaderMaterial, "shader_parameter/lod", blurAmount, blurInDuration)
+        if (_shaderMaterial == null || _modalPanel == null)
+        {
+            return;
+        }
+        
+        var shaderTween = CreateTween();
+        shaderTween.TweenProperty(_shaderMaterial, "shader_parameter/lod", blurAmount, modalInDuration)
             .SetTrans(Tween.TransitionType.Sine)
             .SetEase(Tween.EaseType.Out);
-    }
-
-    public void ModalAnimationIn()
-    {
-        var tween = CreateTween();
-        tween.TweenProperty(_modalPanel, "modulate", new Color(1, 1, 1), modalInDuration)
+        
+        var modalTween = CreateTween();
+        modalTween.TweenProperty(_modalPanel, "modulate", new Color(1, 1, 1), modalInDuration)
             .SetTrans(Tween.TransitionType.Sine)
             .SetEase(Tween.EaseType.Out);
+
+        await ToSignal(modalTween, Tween.SignalName.Finished);
+        await ToSignal(shaderTween, Tween.SignalName.Finished);
     }
 
-    private void BlurOut()
+    public async Task AnimationOut()
     {
-        var tween = CreateTween();
-        tween.TweenProperty(_shaderMaterial, "shader_parameter/lod", 0, blurOutDuration)
+        if (_modalPanel == null || _shaderMaterial == null)
+        {
+            return;
+        }
+        
+        var shaderTween = CreateTween();
+        shaderTween.TweenProperty(_shaderMaterial, "shader_parameter/lod", 0, modalOutDuration)
             .SetTrans(Tween.TransitionType.Sine)
             .SetEase(Tween.EaseType.In);
 
-        tween.TweenCallback(Callable.From(() => QueueFree()));
-    }
-
-    public void ModalAnimationOut()
-    {
-        var tween = CreateTween();
-        tween.TweenProperty(_modalPanel, "modulate", new Color(1, 1, 1, 0.0f), modalOutDuration)
+        var modalTween = CreateTween();
+        modalTween.TweenProperty(_modalPanel, "modulate", new Color(1, 1, 1, 0.0f), modalOutDuration)
             .SetTrans(Tween.TransitionType.Sine)
             .SetEase(Tween.EaseType.In);
 
-        tween.TweenCallback(Callable.From(() => QueueFree()));
+        await ToSignal(shaderTween, Tween.SignalName.Finished);
+        await ToSignal(modalTween, Tween.SignalName.Finished);
     }
 }

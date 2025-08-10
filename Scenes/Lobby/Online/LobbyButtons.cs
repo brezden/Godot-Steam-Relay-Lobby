@@ -28,7 +28,7 @@ public partial class LobbyButtons : Node
 
     private void InviteLobby()
     {
-        UIManager.Instance.ModalManager.ShowModal(ModalType.InvitePlayer);
+        UIManager.Instance.ModalManager.RenderModal(ModalType.InvitePlayer);
     }
 
     private void SendReliableServerPacket()
