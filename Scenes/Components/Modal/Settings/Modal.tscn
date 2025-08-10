@@ -1,12 +1,11 @@
 [gd_scene load_steps=5 format=3 uid="uid://c2w2wj8r5dic8"]
 
 [ext_resource type="Script" path="res://Scenes/Components/Modal/Settings/Modal.cs" id="1_qm5fi"]
-[ext_resource type="PackedScene" uid="uid://cjv0qy65wg5y3" path="res://Scenes/Components/Modal/Settings/Video/VideoTab.tscn" id="2_4xncj"]
+[ext_resource type="PackedScene" uid="uid://cjv0qy65wg5y3" path="res://Scenes/Components/Modal/Settings/Video/Tab.tscn" id="2_4xncj"]
+[ext_resource type="PackedScene" uid="uid://1rl1ay4p5usp" path="res://Scenes/Components/Modal/Settings/Game/Tab.tscn" id="3_2em38"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_54awh"]
 bg_color = Color(0.151276, 0.151276, 0.151276, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_uu3k7"]
 
 [node name="Settings" type="Panel"]
 custom_minimum_size = Vector2(560, 300)
@@ -26,28 +25,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Header" type="ColorRect" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 30)
+[node name="TabBar" type="TabBar" parent="VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
-color = Color(0.10748, 0.10748, 0.10748, 1)
-
-[node name="Label" type="Label" parent="VBoxContainer/Header"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -31.0
-offset_top = -11.5
-offset_right = 31.0
-offset_bottom = 11.5
-grow_horizontal = 2
-grow_vertical = 2
-text = "Settings"
-label_settings = SubResource("LabelSettings_uu3k7")
+current_tab = 0
+tab_count = 2
+tab_0/title = "Video"
+tab_1/title = "Game"
 
 [node name="VideoTab" parent="VBoxContainer" instance=ExtResource("2_4xncj")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="GameTab" parent="VBoxContainer" instance=ExtResource("3_2em38")]
+unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
