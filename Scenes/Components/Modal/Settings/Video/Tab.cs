@@ -5,9 +5,9 @@ using Godot;
 using GodotPeer2PeerSteamCSharp.Modules.Config;
 using GodotPeer2PeerSteamCSharp.Modules.Config.Video;
 
-namespace GodotPeer2PeerSteamCSharp.Scenes.Components.Modal.Settings;
+namespace GodotPeer2PeerSteamCSharp.Scenes.Components.Modal.Settings.Video;
 
-public partial class VideoTab: Control
+public partial class Tab: Control
 {
     private OptionButton _resolutionOptionButton;
     private OptionButton _windowModeOptionButton;
