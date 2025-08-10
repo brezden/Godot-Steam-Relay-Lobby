@@ -75,7 +75,10 @@ public partial class SceneManager : Node
     public async void GotoScene(int sceneId,
         SceneRegistry.SceneAnimation animationName = SceneRegistry.SceneAnimation.FadeInOut)
     {
-        await UIManager.Instance.ModalManager.CloseModal();
+        if (UIManager.Instance.ModalManager.IsModalShowing())
+        {
+            await UIManager.Instance.ModalManager.CloseModal();
+        }
 
         var path = SceneRegistry.GetScenePath(sceneId);
         _pendingScenePath = path;

@@ -9,6 +9,6 @@ public partial class CloseModalButton : Button
 
     private void CloseModal()
     {
-        EventBus.UI.OnCloseModal();
+        UIManager.Instance.ModalManager.CloseModal();
     }
 }

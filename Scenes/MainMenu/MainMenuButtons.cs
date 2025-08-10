@@ -22,7 +22,7 @@ public partial class MainMenuButtons : Node
     
     private void ShowSettings()
     {
-        UIManager.Instance.ModalManager.ShowModal(ModalType.Settings);
+        UIManager.Instance.ModalManager.RenderModal(ModalType.Settings);
     }
 
     private void ExitGame()

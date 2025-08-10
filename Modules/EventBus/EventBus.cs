@@ -4,16 +4,6 @@ using GodotPeer2PeerSteamCSharp.Types.Lobby;
 
 public partial class EventBus : Node
 {
-    public static class UI
-    {
-        public static event EventHandler CloseModal;
-
-        public static void OnCloseModal()
-        {
-            CloseModal?.Invoke(null, EventArgs.Empty);
-        }
-    }
-
     public static class Lobby
     {
         public static event EventHandler<ConnectionType> StartHost;
