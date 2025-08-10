@@ -6,7 +6,7 @@ using Godot;
 
 namespace GodotPeer2PeerSteamCSharp.Modules.Config.Video;
 
-public partial class VideoSettings : Node
+public partial class VideoSettings : Node, Settings
 {
     public int MaxResoltionWidth { get; private set; }
     public int MaxResolutionHeight { get; private set; }
@@ -46,12 +46,11 @@ public partial class VideoSettings : Node
     
     public VideoSettings()
     {
-        initializeVideoSettings();
-        
+        InitializeSettings();
         ApplySettings();
     }
     
-    private void initializeVideoSettings()
+    public void InitializeSettings()
     {
         var resolutionWidth = (int)ConfigManager.Instance._configFile.GetValue("Video", "ResolutionWidth", 0);
         var resolutionHeight = (int)ConfigManager.Instance._configFile.GetValue("Video", "ResolutionHeight", 0);

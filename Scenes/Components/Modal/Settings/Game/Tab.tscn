@@ -17,16 +17,16 @@ offset_top = 9.0
 offset_right = 540.0
 offset_bottom = 53.0
 
-[node name="SplashScreen" type="HBoxContainer" parent="VBoxContainer"]
+[node name="SkipIntroScreen" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/SplashScreen"]
+[node name="Label" type="Label" parent="VBoxContainer/SkipIntroScreen"]
 layout_mode = 2
 size_flags_horizontal = 0
-text = "Skip Splash Screen"
+text = "Skip Intro"
 label_settings = SubResource("LabelSettings_g5fni")
 
-[node name="Resolution" type="CheckButton" parent="VBoxContainer/SplashScreen"]
+[node name="SkipIntro" type="CheckButton" parent="VBoxContainer/SkipIntroScreen"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
