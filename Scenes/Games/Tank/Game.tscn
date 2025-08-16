@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://db0qam0ymhgq8"]
+
+[ext_resource type="Texture2D" uid="uid://c3f3cg2r72m6c" path="res://Assets/Sprites/TankMapTilesheet.png" id="1_yfo4g"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rvpuw"]
+texture = ExtResource("1_yfo4g")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+1:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_rlqls"]
+tile_size = Vector2i(32, 32)
+sources/1 = SubResource("TileSetAtlasSource_rvpuw")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7jom1"]
+atlas = ExtResource("1_yfo4g")
+region = Rect2(32, 0, 32, 32)
+
+[node name="Game" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_rlqls")
+format = 2
+layer_0/tile_data = PackedInt32Array(0, 1, 0, 1, 1, 0, 2, 1, 0, 3, 1, 0, 4, 1, 0, 5, 1, 0, 6, 1, 0, 7, 1, 0, 8, 1, 0, 9, 1, 0, 65536, 65537, 1, 65537, 65537, 1, 65538, 65537, 1, 131075, 65537, 1, 131076, 65537, 1, 131077, 65537, 1, 65541, 65537, 1, 65542, 65537, 1, 65540, 65537, 1, 65539, 65537, 1, 65543, 65537, 1, 65544, 65537, 1, 65545, 65537, 1, 131081, 65537, 1, 196617, 65537, 1, 262153, 65537, 1, 327689, 65537, 1, 131078, 65537, 1, 131079, 65537, 1, 131080, 65537, 1, 196616, 65537, 1, 262152, 65537, 1, 327688, 65537, 1, 327686, 65537, 1, 262150, 65537, 1, 196614, 65537, 1, 196615, 65537, 1, 262151, 65537, 1, 327687, 65537, 1, 262149, 65537, 1, 327685, 65537, 1, 327684, 65537, 1, 262148, 65537, 1, 196612, 65537, 1, 262147, 65537, 1, 196611, 65537, 1, 262146, 65537, 1, 196610, 65537, 1, 131074, 65537, 1, 131073, 65537, 1, 131072, 65537, 1, 196608, 65537, 1, 262144, 65537, 1, 262145, 65537, 1, 327681, 65537, 1, 327682, 65537, 1, 327683, 65537, 1, 327680, 65537, 1, 196609, 65537, 1, 196613, 65537, 1)
+layer_1/name = "Layer1"
+layer_1/tile_data = PackedInt32Array(65536, 1, 1, 65537, 1, 1, 65538, 1, 1, 65539, 1, 1, 65540, 1, 1, 65541, 1, 1, 65542, 1, 1, 65543, 1, 1, 65544, 1, 1, 65545, 1, 1)
+
+[node name="Cloud" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-16, 0)
+texture = SubResource("AtlasTexture_7jom1")
+
+[node name="CloudTimer" type="Timer" parent="."]
