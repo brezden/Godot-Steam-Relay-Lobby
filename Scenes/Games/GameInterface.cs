@@ -2,7 +2,7 @@ using GodotPeer2PeerSteamCSharp.Types.Games;
 
 namespace GodotPeer2PeerSteamCSharp.Games;
 
-public interface IGame
+public interface GameInterface
 {
     string GameName
     {
