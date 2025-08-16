@@ -11,6 +11,8 @@ public partial class Game : Node, GameInterface
     [Export] private int CloudSpawnDelay = 3;       // seconds between spawns
     [Export] private int InitialCloudCount = 5;     // how many to pre-spawn
 
+    private int baseAndCloudWidth = 360; // Adding some padding for cloud width
+    
     public string GameName => "Tank Battle";
     public GameType GameType => GameType.FreeForAll;
     
@@ -31,13 +33,11 @@ public partial class Game : Node, GameInterface
         _cloudSpawnTimer.Timeout += OnCloudSpawnTimeout;
         _cloudSpawnTimer.Start();
 
-        // Pre-spawn clouds spread across the width
-        float skyWidth = 180f; // replace with your actual sky width in pixels
+        float skyWidth = 320f;
         float spacing = skyWidth / (InitialCloudCount + 1);
 
         for (int i = 0; i < InitialCloudCount; i++)
         {
-            // Evenly space them, then add small jitter
             float baseX = spacing * (i + 1);
             float jitterX = (float)GD.RandRange(-10, 10); // small offset
             float x = Mathf.Round(baseX + jitterX);
@@ -63,7 +63,7 @@ public partial class Game : Node, GameInterface
         cloud.Position = start;
         AddChild(cloud);
 
-        var target = new Vector2(Mathf.Round(start.X + 180), start.Y);
+        var target = new Vector2(Mathf.Round(start.X + baseAndCloudWidth), start.Y);
         float duration = Mathf.Max(0.5f, CloudSpeed + (float)GD.RandRange(-1.0, 1.0));
 
         var tween = GetTree().CreateTween()
