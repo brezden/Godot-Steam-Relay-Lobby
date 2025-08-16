@@ -1,5 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://db0qam0ymhgq8"]
+[gd_scene load_steps=6 format=3 uid="uid://db0qam0ymhgq8"]
 
+[ext_resource type="Script" path="res://Scenes/Games/Tank/Game.cs" id="1_wbl5e"]
 [ext_resource type="Texture2D" uid="uid://c3f3cg2r72m6c" path="res://Assets/Sprites/TankMapTilesheet.png" id="1_yfo4g"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rvpuw"]
@@ -16,9 +17,11 @@ sources/1 = SubResource("TileSetAtlasSource_rvpuw")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7jom1"]
 atlas = ExtResource("1_yfo4g")
-region = Rect2(32, 0, 32, 32)
+region = Rect2(42, 12, 12, 8)
 
 [node name="Game" type="Node2D"]
+script = ExtResource("1_wbl5e")
+InitialCloudCount = 3
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_rlqls")
@@ -27,9 +30,10 @@ layer_0/tile_data = PackedInt32Array(0, 1, 0, 1, 1, 0, 2, 1, 0, 3, 1, 0, 4, 1, 0
 layer_1/name = "Layer1"
 layer_1/tile_data = PackedInt32Array(65536, 1, 1, 65537, 1, 1, 65538, 1, 1, 65539, 1, 1, 65540, 1, 1, 65541, 1, 1, 65542, 1, 1, 65543, 1, 1, 65544, 1, 1, 65545, 1, 1)
 
+[node name="CloudSpawnTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+
 [node name="Cloud" type="Sprite2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(-16, 0)
+position = Vector2(-6, -1)
 texture = SubResource("AtlasTexture_7jom1")
-
-[node name="CloudTimer" type="Timer" parent="."]
