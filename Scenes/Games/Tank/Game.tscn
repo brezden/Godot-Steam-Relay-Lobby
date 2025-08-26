@@ -21,6 +21,8 @@ region = Rect2(42, 12, 12, 8)
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_wbl5e")
+CloudSpeed = 20.0
+CloudSpawnDelay = 6
 InitialCloudCount = 3
 
 [node name="TileMap" type="TileMap" parent="."]
