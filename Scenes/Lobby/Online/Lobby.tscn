@@ -17,90 +17,49 @@ script = ExtResource("1_pw7u0")
 
 [node name="LobbyChat" type="VBoxContainer" parent="."]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 200.0
+offset_bottom = 110.0
 script = ExtResource("1_7dbfh")
 
 [node name="ChatBox" type="TextEdit" parent="LobbyChat"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(300, 100)
+custom_minimum_size = Vector2(235, 50)
 layout_mode = 2
 
 [node name="ChatInput" type="LineEdit" parent="LobbyChat"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(300, 25)
 layout_mode = 2
 placeholder_text = "Chat Message"
 clear_button_enabled = true
 
 [node name="SendLobbyMessage" type="Button" parent="LobbyChat"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(125, 25)
 layout_mode = 2
+theme_override_font_sizes/font_size = 9
 text = "Send Lobby Message"
 
 [node name="ButtonContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -150.0
-offset_top = 25.0
-offset_right = -25.0
-offset_bottom = 56.0
+anchor_left = 0.97
+anchor_top = 0.03
+anchor_right = 0.985
+anchor_bottom = 0.054
+offset_left = -75.0
+offset_bottom = 52.0
 grow_horizontal = 0
 script = ExtResource("2_2bxjq")
 
 [node name="InviteMembers" type="Button" parent="ButtonContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(125, 25)
 layout_mode = 2
+theme_override_font_sizes/font_size = 11
 text = "Invite"
-
-[node name="Server" type="Label" parent="ButtonContainer"]
-layout_mode = 2
-text = "Server"
-horizontal_alignment = 1
-
-[node name="SendReliableServerPacket" type="Button" parent="ButtonContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(125, 25)
-layout_mode = 2
-text = "Reliable Packet"
-
-[node name="SendUnreliableServerPacket" type="Button" parent="ButtonContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(125, 25)
-layout_mode = 2
-text = "Unreliable Packet"
-
-[node name="SendChangeScenePacket" type="Button" parent="ButtonContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(125, 25)
-layout_mode = 2
-text = "Change Scene"
-
-[node name="Client" type="Label" parent="ButtonContainer"]
-layout_mode = 2
-text = "Client"
-horizontal_alignment = 1
-
-[node name="SendReliableClientPacket" type="Button" parent="ButtonContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(125, 25)
-layout_mode = 2
-text = "Reliable Packet"
-
-[node name="SendUnreliableClientPacket" type="Button" parent="ButtonContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(125, 25)
-layout_mode = 2
-text = "Unreliable Packet"
 
 [node name="LeaveLobby" type="Button" parent="ButtonContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(125, 25)
 layout_mode = 2
+theme_override_font_sizes/font_size = 11
 text = "Leave Lobby"
 
 [node name="LobbyMemberContainer" type="HBoxContainer" parent="."]

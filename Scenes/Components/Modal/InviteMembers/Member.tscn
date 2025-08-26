@@ -6,7 +6,7 @@
 font_size = 8
 
 [node name="Panel" type="Panel"]
-custom_minimum_size = Vector2(400, 65)
+custom_minimum_size = Vector2(300, 65)
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_a4a23")
@@ -45,7 +45,7 @@ label_settings = SubResource("LabelSettings_tyadq")
 
 [node name="InviteButton" type="Button" parent="."]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(80, 0)
+custom_minimum_size = Vector2(40, 0)
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.95

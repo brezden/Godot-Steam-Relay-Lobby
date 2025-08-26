@@ -1,16 +1,18 @@
-[gd_scene load_steps=5 format=3 uid="uid://dqxus7qgt7eiq"]
+[gd_scene load_steps=6 format=3 uid="uid://dqxus7qgt7eiq"]
 
 [ext_resource type="Script" path="res://Scenes/Components/Modal/InviteMembers/InviteMemberModal.cs" id="1_7l4cy"]
 [ext_resource type="PackedScene" uid="uid://cia5cmlhsmh4k" path="res://Scenes/Components/Modal/CloseModalButton.tscn" id="2_um4a7"]
+[ext_resource type="PackedScene" uid="uid://beck30d51ft" path="res://Scenes/Components/Modal/InviteMembers/Member.tscn" id="3_vnd8u"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_op8dr"]
 bg_color = Color(0.121569, 0.121569, 0.121569, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_nw664"]
+font_size = 9
 font_color = Color(1, 1, 1, 0.231373)
 
 [node name="Modal" type="Panel"]
-custom_minimum_size = Vector2(400, 600)
+custom_minimum_size = Vector2(300, 325)
 offset_right = 40.0
 offset_bottom = 40.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_op8dr")
@@ -25,7 +27,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Panel" type="Panel" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 
 [node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/Panel"]
@@ -48,6 +50,13 @@ horizontal_alignment = 1
 [node name="CloseButton" parent="VBoxContainer/Panel" instance=ExtResource("2_um4a7")]
 unique_name_in_owner = true
 layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -24.0
+offset_right = 0.0
+offset_bottom = 24.0
+grow_horizontal = 0
 
 [node name="Panel2" type="Panel" parent="VBoxContainer"]
 layout_mode = 2
@@ -65,9 +74,11 @@ grow_vertical = 2
 unique_name_in_owner = true
 layout_mode = 2
 
+[node name="Panel" parent="VBoxContainer/Panel2/ScrollContainer/FriendContainer" instance=ExtResource("3_vnd8u")]
+layout_mode = 2
+
 [node name="NoMemberLabel" type="Label" parent="."]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

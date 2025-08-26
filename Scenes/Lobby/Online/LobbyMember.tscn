@@ -12,12 +12,19 @@ script = ExtResource("1_mputd")
 
 [node name="NameLabel" type="Label" parent="."]
 layout_mode = 2
+theme_override_font_sizes/font_size = 11
 text = "Unknown"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ProfilePicture" type="TextureRect" parent="."]
+[node name="CenterContainer" type="CenterContainer" parent="."]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="ProfilePicture" type="TextureRect" parent="CenterContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+expand_mode = 2
