@@ -5,11 +5,8 @@
 [ext_resource type="Theme" uid="uid://dlpp8hpy0ciue" path="res://UI/Themes/Main.tres" id="2_fr0xk"]
 [ext_resource type="Shader" path="res://Scenes/MainMenu/SplashScreen/SplashScreen.gdshader" id="4_a787n"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_fgvoa"]
+[sub_resource type="LabelSettings" id="LabelSettings_sgqrr"]
 font_size = 39
-shadow_size = 0
-shadow_color = Color(0.0846899, 0.0846899, 0.0846899, 1)
-shadow_offset = Vector2(2, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_b15k0"]
 shader = ExtResource("4_a787n")
@@ -174,7 +171,7 @@ theme = ExtResource("2_fr0xk")
 text = "Created By
 Cal1um
 "
-label_settings = SubResource("LabelSettings_fgvoa")
+label_settings = SubResource("LabelSettings_sgqrr")
 horizontal_alignment = 1
 vertical_alignment = 1
 
