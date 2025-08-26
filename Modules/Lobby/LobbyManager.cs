@@ -21,11 +21,11 @@ public partial class LobbyManager : Node
     {
         Instance = this;
 
-        _lobbyService = new LobbyService();
-        _lobbyService.Initialize();
-
         RegisterHostCallbacks();
         RegisterGuestCallbacks();
+        
+        _lobbyService = new LobbyService();
+        _lobbyService.Initialize();
     }
 
     public override void _Process(double delta)

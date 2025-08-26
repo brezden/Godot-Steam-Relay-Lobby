@@ -11,9 +11,9 @@ public partial class ModalManager : Node
     private static readonly string modalSceneDirectory = "res://Scenes/Components/Modal";
     private static string baseScenePath = $"{modalSceneDirectory}/ModalBase.tscn";
 
+    private PackedScene modalBaseScene;
     private ModalBase modalBaseInstance;
-    private CenterContainer modalBaseContainer;
-    private Node currentModalInstance;
+    private Node modalInstance;
     
     private SceneTreeTimer modalMinTimeTimer;
     private CanvasLayer _overlayLayer;
@@ -27,9 +27,7 @@ public partial class ModalManager : Node
     public override void _Ready()
     {
         _overlayLayer = GetTree().Root.GetNode<CanvasLayer>("Main/OverlayLayer");
-        var modalBaseScene = GD.Load<PackedScene>(baseScenePath);
-        modalBaseInstance = (ModalBase) modalBaseScene.Instantiate();
-        modalBaseContainer = modalBaseInstance.GetNode<CenterContainer>("%ModalContainer");
+        modalBaseScene = GD.Load<PackedScene>(baseScenePath);
     }
     
     /** Renders a modal of the specified type.
@@ -58,8 +56,7 @@ public partial class ModalManager : Node
     {
         if (IsModalShowing())
         {
-            var existingModalScene = currentModalInstance.GetNode<CenterContainer>("%ModalContainer").GetChild(0);
-            if (existingModalScene is InformationModal informationModal)
+            if (modalInstance is InformationModal informationModal)
             {
                 informationModal.UpdateModal(HeaderName, type, description);
                 return;
@@ -85,19 +82,27 @@ public partial class ModalManager : Node
         
         modalMinTimeTimer = null;
         await modalBaseInstance.AnimationOut();
-        modalBaseContainer.GetChild(0).QueueFree();
-        _overlayLayer.RemoveChild(modalBaseInstance);
+        
+        modalBaseInstance.QueueFree();
+        modalInstance.QueueFree();
+        modalBaseInstance = null;
+        modalInstance = null;
     }
     
     public bool IsModalShowing()
     {
-        return IsInstanceValid(currentModalInstance);
+        return IsInstanceValid(modalInstance);
     }
     
     private void DisplayModal(Node modalContent)
     {
         modalContent.Name = "Modal";
+        modalBaseInstance = (ModalBase) modalBaseScene.Instantiate();
+        modalInstance = modalContent;
+        
+        var modalBaseContainer = modalBaseInstance.GetNode<CenterContainer>("%ModalContainer");
         modalBaseContainer.AddChild(modalContent);
+        
         _overlayLayer.AddChild(modalBaseInstance);
         modalMinTimeTimer = GetTree().CreateTimer(minimumTimeModal);
         modalBaseInstance.AnimationIn();
