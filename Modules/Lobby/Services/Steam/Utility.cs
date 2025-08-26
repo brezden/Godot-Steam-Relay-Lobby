@@ -59,7 +59,7 @@ public partial class LobbyService
 
     private static async Task<ImageTexture?> GetProfilePictureAsync(SteamId steamId)
     {
-        var steamImage = await SteamFriends.GetMediumAvatarAsync(steamId);
+        var steamImage = await SteamFriends.GetLargeAvatarAsync(steamId);
         if (steamImage == null)
             return null;
 

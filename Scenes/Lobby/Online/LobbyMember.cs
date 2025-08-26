@@ -22,7 +22,7 @@ public partial class LobbyMember : Control
     public override void _Ready()
     {
         _nameLabel = GetNodeOrNull<Label>("NameLabel");
-        _profilePicture = GetNodeOrNull<TextureRect>("ProfilePicture");
+        _profilePicture = GetNodeOrNull<TextureRect>("%ProfilePicture");
 
         if (_nameLabel == null)
         {
