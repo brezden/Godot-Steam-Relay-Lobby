@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=7 format=3 uid="uid://dlpp8hpy0ciue"]
 
-[ext_resource type="FontFile" uid="uid://tqtdvkpoh4kw" path="res://Assets/Fonts/Rubik-Regular.ttf" id="1_xkvap"]
+[ext_resource type="FontFile" uid="uid://cop6edn7x60rc" path="res://Assets/Fonts/Cozette/cozette.fnt" id="1_p2iqu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7776e"]
 content_margin_left = 4.0
@@ -77,7 +77,7 @@ corner_radius_bottom_left = 3
 corner_detail = 5
 
 [resource]
-default_font = ExtResource("1_xkvap")
+default_font = ExtResource("1_p2iqu")
 default_font_size = 12
 Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
 Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)

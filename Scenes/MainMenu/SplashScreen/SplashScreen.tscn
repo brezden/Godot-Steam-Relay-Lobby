@@ -6,7 +6,7 @@
 [ext_resource type="Shader" path="res://Scenes/MainMenu/SplashScreen/SplashScreen.gdshader" id="4_a787n"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_fgvoa"]
-font_size = 38
+font_size = 39
 shadow_size = 0
 shadow_color = Color(0.0846899, 0.0846899, 0.0846899, 1)
 shadow_offset = Vector2(2, 0)
