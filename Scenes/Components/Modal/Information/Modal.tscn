@@ -88,15 +88,15 @@ script = ExtResource("1_o0rcg")
 
 [node name="CloseButton" parent="." instance=ExtResource("2_mdpb7")]
 unique_name_in_owner = true
-visible = false
-layout_direction = 3
 layout_mode = 1
-anchors_preset = 0
-anchor_left = 0.0
-anchor_right = 0.0
-offset_left = 0.0
-offset_right = 40.0
-grow_horizontal = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -24.0
+offset_right = 0.0
+offset_bottom = 24.0
+grow_horizontal = 0
+icon_alignment = 2
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="."]
 layout_mode = 1

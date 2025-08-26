@@ -7,17 +7,12 @@ colors = PackedColorArray(1, 0.501961, 0.435294, 1, 1, 0.5023, 0.43551, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_vfxbn"]
 gradient = SubResource("Gradient_k3ovt")
-width = 32
-height = 32
+width = 16
+height = 16
 
 [node name="CloseButton" type="Button"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
+offset_right = 32.0
+offset_bottom = 32.0
 icon = SubResource("GradientTexture2D_vfxbn")
 flat = true
-icon_alignment = 1
 script = ExtResource("1_bj66p")
