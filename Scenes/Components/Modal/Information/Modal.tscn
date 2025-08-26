@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bminvyl36ago5"]
+[gd_scene load_steps=17 format=3 uid="uid://bminvyl36ago5"]
 
 [ext_resource type="Texture2D" uid="uid://bq7uvnehx1hup" path="res://Assets/loading-sheet.png" id="1_bhssf"]
 [ext_resource type="Script" path="res://Scenes/Components/Modal/Information/InformationModal.cs" id="1_o0rcg"]
@@ -6,11 +6,19 @@
 [ext_resource type="Script" path="res://Scenes/Components/Modal/Information/LoadingSpinner.cs" id="3_vdh6u"]
 [ext_resource type="Texture2D" uid="uid://b3gicaxw4xx82" path="res://Assets/error.png" id="5_rvxfa"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m1ndq"]
+bg_color = Color(0.13, 0.13, 0.13, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+corner_detail = 12
+
 [sub_resource type="LabelSettings" id="LabelSettings_v2crg"]
-font_size = 19
+font_size = 11
 
 [sub_resource type="LabelSettings" id="LabelSettings_4f2sp"]
-font_size = 11
+font_size = 6
 font_color = Color(1, 1, 1, 0.588235)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_olxbv"]
@@ -71,8 +79,11 @@ animations = [{
 }]
 
 [node name="Panel" type="Panel"]
-custom_minimum_size = Vector2(450, 100)
+custom_minimum_size = Vector2(300, 50)
+offset_right = 300.0
+offset_bottom = 50.0
 size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_m1ndq")
 script = ExtResource("1_o0rcg")
 
 [node name="CloseButton" parent="." instance=ExtResource("2_mdpb7")]
@@ -87,16 +98,26 @@ offset_left = 0.0
 offset_right = 40.0
 grow_horizontal = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.1
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -69.5
+offset_top = -22.5
+offset_right = 69.5
+offset_bottom = 22.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Header" type="Label" parent="VBoxContainer"]
+[node name="Text" type="VBoxContainer" parent="VBoxContainer2"]
+layout_mode = 2
+theme_override_constants/separation = -1
+alignment = 1
+
+[node name="Header" type="Label" parent="VBoxContainer2/Text"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -104,53 +125,39 @@ size_flags_vertical = 1
 text = "Header"
 label_settings = SubResource("LabelSettings_v2crg")
 
-[node name="Description" type="Label" parent="VBoxContainer"]
+[node name="Description" type="Label" parent="VBoxContainer2/Text"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 1
 text = "Make sure that Steam is connected and running"
 label_settings = SubResource("LabelSettings_4f2sp")
 
-[node name="LoadingIcon" type="Control" parent="VBoxContainer"]
+[node name="LoadingIcon" type="MarginContainer" parent="VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_vertical = 6
 
-[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/LoadingIcon"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="VBoxContainer/LoadingIcon/CenterContainer"]
-scale = Vector2(3.5, 3.5)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="VBoxContainer2/LoadingIcon"]
+position = Vector2(69, 0)
+scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_fje64")
 frame_progress = 0.766122
 script = ExtResource("3_vdh6u")
 
-[node name="ErrorIcon" type="Control" parent="VBoxContainer"]
+[node name="ErrorIcon" type="CenterContainer" parent="VBoxContainer2"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
-[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/ErrorIcon"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/ErrorIcon/CenterContainer"]
-custom_minimum_size = Vector2(28, 28)
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer2/ErrorIcon"]
+custom_minimum_size = Vector2(12, 12)
 layout_mode = 2
 texture = ExtResource("5_rvxfa")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0

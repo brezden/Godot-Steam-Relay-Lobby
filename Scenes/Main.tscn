@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bnsdhe30786fb"]
 
 [ext_resource type="Theme" uid="uid://dlpp8hpy0ciue" path="res://UI/Themes/Main.tres" id="1_eeixe"]
-[ext_resource type="PackedScene" uid="uid://6rlsaagt0cvp" path="res://Scenes/Games/GameContainer.tscn" id="2_wkh23"]
+[ext_resource type="PackedScene" uid="uid://ca45xvvoiidvn" path="res://Scenes/MainMenu/SplashScreen/SplashScreen.tscn" id="2_g5ym0"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -21,10 +21,10 @@ theme = ExtResource("1_eeixe")
 [node name="MainLayer" type="CanvasLayer" parent="."]
 layer = 2
 
-[node name="SubViewportContainer" parent="MainLayer" instance=ExtResource("2_wkh23")]
-
 [node name="UILayer" type="CanvasLayer" parent="."]
 layer = 3
+
+[node name="SplashScreen" parent="UILayer" instance=ExtResource("2_g5ym0")]
 
 [node name="OverlayLayer" type="CanvasLayer" parent="."]
 unique_name_in_owner = true
