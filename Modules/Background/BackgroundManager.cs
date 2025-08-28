@@ -25,6 +25,25 @@ public partial class BackgroundManager: Node
         _backgroundLayer = GetTree().Root.GetNode<CanvasLayer>("Main/BackgroundLayer");
     }
     
+    /**
+     * Loads a solid color background.
+     *
+     * @param Color The color to fill the background with.
+     */
+    public void LoadColourBackground(Color color)
+    {
+        ClearBackground();
+        var colorRect = new ColorRect
+        {
+            Color = color,
+        };
+        colorRect.SetAnchorsPreset(Control.LayoutPreset.FullRect);
+        _backgroundLayer.AddChild(colorRect);
+    }
+    
+    /**
+     * Loads the ShapeTransform background.
+     */
     public void LoadShapeTransform()
     {
         ClearBackground();
