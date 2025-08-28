@@ -3,7 +3,7 @@
 [resource]
 content_margin_top = 4.0
 content_margin_bottom = 4.0
-bg_color = Color(0.140564, 0.466669, 0.781806, 1)
+bg_color = Color(0.11176, 0.419229, 0.711968, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -15,7 +15,7 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 corner_detail = 20
 shadow_color = Color(0, 0, 0, 0.482353)
-shadow_size = 1
-shadow_offset = Vector2(0, 2.37)
+shadow_size = 2
+shadow_offset = Vector2(0, 2.75)
 anti_aliasing = false
 anti_aliasing_size = 0.128

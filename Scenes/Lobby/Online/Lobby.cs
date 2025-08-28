@@ -6,6 +6,6 @@ public partial class Lobby : Control
 {
 	public override void _Ready()
 	{
-        BackgroundManager.Instance.LoadShapeTransform();
+        BackgroundManager.Instance.LoadColourBackground(new Color("#1f1f1f"));
 	}
 }

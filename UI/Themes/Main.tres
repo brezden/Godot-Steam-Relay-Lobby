@@ -1,12 +1,33 @@
-[gd_resource type="Theme" load_steps=3 format=3 uid="uid://dlpp8hpy0ciue"]
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://dlpp8hpy0ciue"]
 
 [ext_resource type="StyleBox" uid="uid://8tvsugbcwqkn" path="res://UI/Styles/Buttons/Default.tres" id="1_2ukk6"]
 [ext_resource type="FontFile" uid="uid://c7276blab6run" path="res://Assets/Fonts/Cozette/cozette_13.fnt" id="2_x7mym"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_11m2h"]
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.0592367, 0.2934, 0.512805, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.896497, 0.946526, 0.990911, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 20
+shadow_color = Color(0, 0, 0, 0.482353)
+shadow_size = 1
+shadow_offset = Vector2(0, 2.105)
+anti_aliasing = false
+anti_aliasing_size = 0.128
 
 [resource]
 default_font = ExtResource("2_x7mym")
 default_font_size = 13
 Button/font_sizes/font_size = 23
+Button/styles/hover = SubResource("StyleBoxFlat_11m2h")
 Button/styles/normal = ExtResource("1_2ukk6")
 Label/font_sizes/font_size = 13
 LargeButton/base_type = &"Button"

@@ -13,7 +13,8 @@ grow_vertical = 2
 script = ExtResource("1_kjxmb")
 BackgroundColorRectPath = NodePath("ColorRect")
 TransitionLayerPath = NodePath("ShapeTransition")
-TransitionSpeed = 0.25
+TransitionSpeed = 0.1
+WaitTime = 2.0
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
