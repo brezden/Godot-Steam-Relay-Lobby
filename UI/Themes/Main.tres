@@ -1,7 +1,25 @@
-[gd_resource type="Theme" load_steps=4 format=3 uid="uid://dlpp8hpy0ciue"]
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://dlpp8hpy0ciue"]
 
 [ext_resource type="StyleBox" uid="uid://8tvsugbcwqkn" path="res://UI/Styles/Buttons/Default.tres" id="1_2ukk6"]
 [ext_resource type="FontFile" uid="uid://c7276blab6run" path="res://Assets/Fonts/Cozette/cozette_13.fnt" id="2_x7mym"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ao40e"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1136, 0.42174, 0.71, 0.0980392)
+border_color = Color(0.896497, 0.946526, 0.990911, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 20
+shadow_color = Color(0, 0, 0, 0.482353)
+shadow_size = 2
+shadow_offset = Vector2(0, 2.75)
+anti_aliasing = false
+anti_aliasing_size = 0.128
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_11m2h"]
 content_margin_top = 4.0
@@ -23,12 +41,47 @@ shadow_offset = Vector2(0, 2.105)
 anti_aliasing = false
 anti_aliasing_size = 0.128
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f1f86"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.11176, 0.419229, 0.711968, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.896497, 0.946526, 0.990911, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 20
+shadow_color = Color(0, 0, 0, 0.482353)
+shadow_size = 2
+shadow_offset = Vector2(0, 2.75)
+anti_aliasing = false
+anti_aliasing_size = 0.128
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_87sc3"]
+bg_color = Color(0.13, 0.13, 0.13, 0.933333)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+corner_detail = 11
+shadow_size = 5
+shadow_offset = Vector2(0, 2.945)
+anti_aliasing = false
+
 [resource]
 default_font = ExtResource("2_x7mym")
 default_font_size = 13
 Button/font_sizes/font_size = 23
+Button/styles/disabled = SubResource("StyleBoxFlat_ao40e")
 Button/styles/hover = SubResource("StyleBoxFlat_11m2h")
 Button/styles/normal = ExtResource("1_2ukk6")
+CheckButton/styles/pressed = SubResource("StyleBoxFlat_f1f86")
 Label/font_sizes/font_size = 13
 LargeButton/base_type = &"Button"
 LargeButton/font_sizes/font_size = 26
@@ -36,3 +89,5 @@ LargeLabel/base_type = &"Label"
 LargeLabel/font_sizes/font_size = 39
 MediumLabel/base_type = &"Label"
 MediumLabel/font_sizes/font_size = 26
+SettingsPanel/base_type = &"Panel"
+SettingsPanel/styles/panel = SubResource("StyleBoxFlat_87sc3")
