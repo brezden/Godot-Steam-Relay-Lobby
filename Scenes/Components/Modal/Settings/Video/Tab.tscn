@@ -11,11 +11,14 @@ anchors_preset = 0
 script = ExtResource("1_iyiel")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 2
-offset_left = 100.0
-offset_top = 9.0
-offset_right = 540.0
-offset_bottom = 53.0
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -220.0
+offset_right = 220.0
+offset_bottom = 44.0
+grow_horizontal = 2
 
 [node name="Resolution" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
@@ -30,6 +33,7 @@ label_settings = SubResource("LabelSettings_g5fni")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
+alignment = 1
 
 [node name="WindowMode" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
@@ -44,3 +48,4 @@ label_settings = SubResource("LabelSettings_g5fni")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
+alignment = 1

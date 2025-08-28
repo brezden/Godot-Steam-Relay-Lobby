@@ -1,11 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://c2w2wj8r5dic8"]
+[gd_scene load_steps=4 format=3 uid="uid://c2w2wj8r5dic8"]
 
 [ext_resource type="Script" path="res://Scenes/Components/Modal/Settings/Modal.cs" id="1_qm5fi"]
 [ext_resource type="PackedScene" uid="uid://cjv0qy65wg5y3" path="res://Scenes/Components/Modal/Settings/Video/Tab.tscn" id="2_4xncj"]
 [ext_resource type="PackedScene" uid="uid://1rl1ay4p5usp" path="res://Scenes/Components/Modal/Settings/Game/Tab.tscn" id="3_2em38"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_54awh"]
-bg_color = Color(0.151276, 0.151276, 0.151276, 1)
 
 [node name="Settings" type="Panel"]
 custom_minimum_size = Vector2(560, 300)
@@ -14,20 +11,23 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_54awh")
+theme_type_variation = &"SettingsPanel"
 script = ExtResource("1_qm5fi")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = -1
+anchor_left = 0.08
+anchor_right = 0.926
+anchor_bottom = 0.95
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 8
 
 [node name="TabBar" type="TabBar" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_constants/outline_size = 0
 current_tab = 0
 tab_count = 2
 tab_0/title = "Video"
@@ -36,6 +36,7 @@ tab_1/title = "Game"
 [node name="VideoTab" parent="VBoxContainer" instance=ExtResource("2_4xncj")]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 4
 
 [node name="GameTab" parent="VBoxContainer" instance=ExtResource("3_2em38")]
 unique_name_in_owner = true
@@ -44,8 +45,8 @@ layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
 size_flags_vertical = 10
+alignment = 1
 
 [node name="Confirm" type="Button" parent="VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
