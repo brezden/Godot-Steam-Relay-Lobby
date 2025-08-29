@@ -11,6 +11,7 @@ public partial class Tab: Control
 {
     private OptionButton _resolutionOptionButton;
     private OptionButton _windowModeOptionButton;
+    private OptionButton _uiScaleOptionButton;
     
     public override void _Ready()
     {
@@ -24,12 +25,59 @@ public partial class Tab: Control
         _resolutionOptionButton.ItemSelected += OnResolutionChanged;
         _windowModeOptionButton = GetNode<OptionButton>("%WindowMode");
         _windowModeOptionButton.ItemSelected += OnWindowModeChanged;
+        _uiScaleOptionButton = GetNode<OptionButton>("%UIScale");
+        _uiScaleOptionButton.ItemSelected += OnUIScaleChanged;
     }
 
     private void PopulateUINodes()
     {
         PopulateWindowMode();
         PopulateResolution();
+    }
+    
+    private void PopulateResolution()
+    {
+        VideoSettings.WindowModeOption windowMode = ConfigManager.Instance.VideoSettings.WindowMode;
+        _resolutionOptionButton.Disabled = false;
+        _resolutionOptionButton.Clear();
+        
+        if (windowMode == VideoSettings.WindowModeOption.Fullscreen ||
+            windowMode == VideoSettings.WindowModeOption.BorderlessFullscreen)
+        {
+            _resolutionOptionButton.AddItem($"{ConfigManager.Instance.VideoSettings.MaxResoltionWidth}x{ConfigManager.Instance.VideoSettings.MaxResolutionHeight} (Max)");
+            _resolutionOptionButton.Select(0);
+            _resolutionOptionButton.Disabled = true;
+            return;
+        }
+        
+        VideoSettings.Resolution[] _filteredResolutions = ConfigManager.Instance.VideoSettings.GetFilteredResolutions();
+        
+        // check if current resolution is in the filtered resolutions by checking in the array for the current resolution
+        int currentResolutionIndex = _filteredResolutions
+            .ToList()
+            .FindIndex(resolution => 
+                resolution.Width == ConfigManager.Instance.VideoSettings.ResolutionWidth && 
+                resolution.Height == ConfigManager.Instance.VideoSettings.ResolutionHeight);
+        
+        if (currentResolutionIndex == -1)
+        {
+            Logger.Game($"Current resolution {ConfigManager.Instance.VideoSettings.ResolutionWidth}x{ConfigManager.Instance.VideoSettings.ResolutionHeight} not found in available resolutions.");
+            _resolutionOptionButton.AddItem($"{ConfigManager.Instance.VideoSettings.ResolutionWidth}x{ConfigManager.Instance.VideoSettings.ResolutionHeight} (Custom");
+        }
+        else
+        {
+            _resolutionOptionButton.AddItem(_filteredResolutions[currentResolutionIndex].ToString());
+            ConfigManager.Instance.VideoSettings.SetResolution(
+                _filteredResolutions[currentResolutionIndex].Width, 
+                _filteredResolutions[currentResolutionIndex].Height);
+        }
+        
+        _resolutionOptionButton.AddSeparator();
+        
+        foreach (var resolution in _filteredResolutions)
+        {
+            _resolutionOptionButton.AddItem(resolution.ToString());
+        }
     }
     
     private void PopulateWindowMode()
@@ -84,48 +132,25 @@ public partial class Tab: Control
         PopulateResolution();
     }
     
-    private void PopulateResolution()
+    private void OnUIScaleChanged(long index)
     {
-        VideoSettings.WindowModeOption windowMode = ConfigManager.Instance.VideoSettings.WindowMode;
-        _resolutionOptionButton.Disabled = false;
-        _resolutionOptionButton.Clear();
-        
-        if (windowMode == VideoSettings.WindowModeOption.Fullscreen ||
-            windowMode == VideoSettings.WindowModeOption.BorderlessFullscreen)
+        if (index < 0 || index >= _uiScaleOptionButton.GetItemCount())
         {
-            _resolutionOptionButton.AddItem($"{ConfigManager.Instance.VideoSettings.MaxResoltionWidth}x{ConfigManager.Instance.VideoSettings.MaxResolutionHeight} (Max)");
-            _resolutionOptionButton.Select(0);
-            _resolutionOptionButton.Disabled = true;
+            Logger.Error($"Invalid UI scale index selected. {index}");
             return;
         }
-        
-        VideoSettings.Resolution[] _filteredResolutions = ConfigManager.Instance.VideoSettings.GetFilteredResolutions();
-        
-        // check if current resolution is in the filtered resolutions by checking in the array for the current resolution
-        int currentResolutionIndex = _filteredResolutions
-            .ToList()
-            .FindIndex(resolution => 
-                resolution.Width == ConfigManager.Instance.VideoSettings.ResolutionWidth && 
-                resolution.Height == ConfigManager.Instance.VideoSettings.ResolutionHeight);
-        
-        if (currentResolutionIndex == -1)
+    
+        // Get the selected UI scale string
+        string selectedUIScaleText = _uiScaleOptionButton.GetItemText((int)index);
+    
+        // Parse the UI scale value
+        if (float.TryParse(selectedUIScaleText.Replace("x", "").Trim(), out float uiScale))
         {
-            Logger.Game($"Current resolution {ConfigManager.Instance.VideoSettings.ResolutionWidth}x{ConfigManager.Instance.VideoSettings.ResolutionHeight} not found in available resolutions.");
-            _resolutionOptionButton.AddItem($"{ConfigManager.Instance.VideoSettings.ResolutionWidth}x{ConfigManager.Instance.VideoSettings.ResolutionHeight} (Custom");
+            Logger.Game("Setting UI scale to: " + uiScale);
         }
         else
         {
-            _resolutionOptionButton.AddItem(_filteredResolutions[currentResolutionIndex].ToString());
-            ConfigManager.Instance.VideoSettings.SetResolution(
-                _filteredResolutions[currentResolutionIndex].Width, 
-                _filteredResolutions[currentResolutionIndex].Height);
-        }
-        
-        _resolutionOptionButton.AddSeparator();
-        
-        foreach (var resolution in _filteredResolutions)
-        {
-            _resolutionOptionButton.AddItem(resolution.ToString());
+            Logger.Error($"Failed to parse UI scale: {selectedUIScaleText}");
         }
     }
 }
