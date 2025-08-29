@@ -24,9 +24,10 @@ public partial class LobbyManager
         {
             Logger.Error($"[ERR-001] Exception creating lobby: {ex.Message}");
             UIManager.Instance.ModalManager.RenderInformationModal(
-                "[ERR-001] Failed to create lobby",
+                "Failed to create lobby",
                 InformationModalType.Error,
-                "An unexpected error occurred while creating the lobby. Please try again");
+                "An unexpected error occurred while creating the lobby. Please try again",
+                001);
             LeaveLobbyAndTransport();
         }
     }

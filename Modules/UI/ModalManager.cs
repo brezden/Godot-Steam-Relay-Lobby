@@ -51,14 +51,15 @@ public partial class ModalManager : Node
      * @param HeaderName The title of the modal.
      * @param type The type of information modal to display.
      * @param description Optional description text for the modal.
+     * @param errorCode Optional error code to display in the modal.
      */
-    public void RenderInformationModal(string HeaderName, InformationModalType type, string description = null)
+    public void RenderInformationModal(string HeaderName, InformationModalType type, string description = null, int errorCode = -1)
     {
         if (IsModalShowing())
         {
             if (modalInstance is InformationModal informationModal)
             {
-                informationModal.UpdateModal(HeaderName, type, description);
+                informationModal.UpdateModal(HeaderName, type, description, errorCode);
                 return;
             }
         }
@@ -68,7 +69,7 @@ public partial class ModalManager : Node
 
         var modalScene = GD.Load<PackedScene>(path);
         var modalSceneInstance = modalScene.Instantiate<InformationModal>();
-        modalSceneInstance.prepareModal(HeaderName, type, description);
+        modalSceneInstance.prepareModal(HeaderName, type, description, errorCode);
         DisplayModal(modalSceneInstance);
     }
 

@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=7 format=3 uid="uid://dlpp8hpy0ciue"]
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://dlpp8hpy0ciue"]
 
 [ext_resource type="StyleBox" uid="uid://8tvsugbcwqkn" path="res://UI/Styles/Buttons/Default.tres" id="1_2ukk6"]
 [ext_resource type="FontFile" uid="uid://c7276blab6run" path="res://Assets/Fonts/Cozette/cozette_13.fnt" id="2_x7mym"]
@@ -63,6 +63,16 @@ shadow_offset = Vector2(0, 2.75)
 anti_aliasing = false
 anti_aliasing_size = 0.128
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fc6vx"]
+bg_color = Color(0.114356, 0.130608, 0.15819, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.133333)
+shadow_size = 2
+shadow_offset = Vector2(0, 1.615)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_87sc3"]
 bg_color = Color(0.13, 0.13, 0.13, 0.933333)
 corner_radius_top_left = 50
@@ -82,6 +92,8 @@ Button/styles/disabled = SubResource("StyleBoxFlat_ao40e")
 Button/styles/hover = SubResource("StyleBoxFlat_11m2h")
 Button/styles/normal = ExtResource("1_2ukk6")
 CheckButton/styles/pressed = SubResource("StyleBoxFlat_f1f86")
+InformationModal/base_type = &"Panel"
+InformationModal/styles/panel = SubResource("StyleBoxFlat_fc6vx")
 Label/font_sizes/font_size = 13
 LargeButton/base_type = &"Button"
 LargeButton/font_sizes/font_size = 26

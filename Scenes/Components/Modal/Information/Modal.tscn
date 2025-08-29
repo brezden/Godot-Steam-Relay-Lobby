@@ -4,21 +4,13 @@
 [ext_resource type="Script" path="res://Scenes/Components/Modal/Information/InformationModal.cs" id="1_o0rcg"]
 [ext_resource type="PackedScene" uid="uid://cia5cmlhsmh4k" path="res://Scenes/Components/Modal/CloseModalButton.tscn" id="2_mdpb7"]
 [ext_resource type="Script" path="res://Scenes/Components/Modal/Information/LoadingSpinner.cs" id="3_vdh6u"]
-[ext_resource type="Texture2D" uid="uid://b3gicaxw4xx82" path="res://Assets/error.png" id="5_rvxfa"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m1ndq"]
-bg_color = Color(0.13, 0.13, 0.13, 1)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
-corner_detail = 12
+[ext_resource type="Texture2D" uid="uid://cjglg4ws6gk1w" path="res://Assets/error.png" id="5_rvxfa"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_v2crg"]
-font_size = 11
+font_size = 26
 
 [sub_resource type="LabelSettings" id="LabelSettings_4f2sp"]
-font_size = 6
+font_size = 13
 font_color = Color(1, 1, 1, 0.588235)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_olxbv"]
@@ -78,86 +70,98 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="LabelSettings" id="LabelSettings_q25q8"]
+font_size = 13
+font_color = Color(1, 1, 1, 0.0784314)
+
 [node name="Panel" type="Panel"]
-custom_minimum_size = Vector2(300, 50)
-offset_right = 300.0
-offset_bottom = 50.0
+custom_minimum_size = Vector2(450, 100)
+offset_right = 400.0
+offset_bottom = 75.0
 size_flags_horizontal = 4
-theme_override_styles/panel = SubResource("StyleBoxFlat_m1ndq")
+theme_type_variation = &"InformationModal"
 script = ExtResource("1_o0rcg")
 
-[node name="CloseButton" parent="." instance=ExtResource("2_mdpb7")]
-unique_name_in_owner = true
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
+anchors_preset = -1
 anchor_right = 1.0
-offset_left = -24.0
-offset_right = 0.0
-offset_bottom = 24.0
-grow_horizontal = 0
-icon_alignment = 2
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -69.5
-offset_top = -22.5
-offset_right = 69.5
-offset_bottom = 22.5
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 5
 
-[node name="Text" type="VBoxContainer" parent="VBoxContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = -1
+theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Header" type="Label" parent="VBoxContainer2/Text"]
+[node name="Text" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 40)
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Header" type="Label" parent="MarginContainer/VBoxContainer/Text"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 1
+size_flags_vertical = 10
 text = "Header"
 label_settings = SubResource("LabelSettings_v2crg")
 
-[node name="Description" type="Label" parent="VBoxContainer2/Text"]
+[node name="Description" type="Label" parent="MarginContainer/VBoxContainer/Text"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(375, 15)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 1
-text = "Make sure that Steam is connected and running"
+text = "Description"
 label_settings = SubResource("LabelSettings_4f2sp")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+justification_flags = 128
 
-[node name="LoadingIcon" type="MarginContainer" parent="VBoxContainer2"]
+[node name="LoadingIcon" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 6
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="VBoxContainer2/LoadingIcon"]
-position = Vector2(69, 0)
-scale = Vector2(1.5, 1.5)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MarginContainer/VBoxContainer/LoadingIcon"]
+scale = Vector2(2.5, 2.5)
 sprite_frames = SubResource("SpriteFrames_fje64")
 frame_progress = 0.766122
 script = ExtResource("3_vdh6u")
 
-[node name="ErrorIcon" type="CenterContainer" parent="VBoxContainer2"]
+[node name="ErrorIcon" type="CenterContainer" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_vertical = 6
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer2/ErrorIcon"]
-custom_minimum_size = Vector2(12, 12)
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/ErrorIcon"]
+custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 texture = ExtResource("5_rvxfa")
 
-[node name="TextureRect" type="TextureRect" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="ErrorCode" type="Label" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "Error Code: 01"
+label_settings = SubResource("LabelSettings_q25q8")
+
+[node name="CloseButton" parent="MarginContainer" instance=ExtResource("2_mdpb7")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+ignore_texture_size = true

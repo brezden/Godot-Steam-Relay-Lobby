@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class CloseModalButton : Button
+public partial class CloseModalButton : TextureButton
 {
     public override void _Ready()
     {
