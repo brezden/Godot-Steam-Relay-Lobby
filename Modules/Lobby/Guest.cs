@@ -27,9 +27,10 @@ public partial class LobbyManager
     {
         Logger.Error($"[ERR-002] Exception joining lobby: {ex.Message}");
         UIManager.Instance.ModalManager.RenderInformationModal(
-            "[ERR-002] Failed to join lobby",
+            "Failed to join lobby",
             InformationModalType.Error,
-            "An unexpected error occurred while joining the lobby. Please try again");
+            "An unexpected error occurred while joining the lobby. Please try again",
+            002);
         LeaveLobbyAndTransport();
     }
 

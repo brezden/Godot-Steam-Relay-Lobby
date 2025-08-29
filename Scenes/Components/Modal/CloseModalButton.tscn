@@ -1,18 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://cia5cmlhsmh4k"]
+[gd_scene load_steps=3 format=3 uid="uid://cia5cmlhsmh4k"]
 
 [ext_resource type="Script" path="res://Scenes/Components/Modal/CloseModalButton.cs" id="1_bj66p"]
+[ext_resource type="Texture2D" uid="uid://b3gicaxw4xx82" path="res://Assets/close.png" id="1_duuc0"]
 
-[sub_resource type="Gradient" id="Gradient_k3ovt"]
-colors = PackedColorArray(1, 0.501961, 0.435294, 1, 1, 0.5023, 0.43551, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_vfxbn"]
-gradient = SubResource("Gradient_k3ovt")
-width = 16
-height = 16
-
-[node name="CloseButton" type="Button"]
-offset_right = 32.0
-offset_bottom = 32.0
-icon = SubResource("GradientTexture2D_vfxbn")
-flat = true
+[node name="CloseButton" type="TextureButton"]
+custom_minimum_size = Vector2(8, 8)
+offset_right = 7.0
+offset_bottom = 7.0
+texture_normal = ExtResource("1_duuc0")
+stretch_mode = 0
 script = ExtResource("1_bj66p")
