@@ -49,3 +49,25 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 alignment = 1
+
+[node name="UIScale" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/UIScale"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "UI Scale"
+label_settings = SubResource("LabelSettings_g5fni")
+
+[node name="UIScale" type="OptionButton" parent="VBoxContainer/UIScale"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+alignment = 1
+selected = 0
+item_count = 3
+popup/item_0/text = "1.0x"
+popup/item_1/text = "1.25x"
+popup/item_1/id = 1
+popup/item_2/text = "1.5x"
+popup/item_2/id = 2
