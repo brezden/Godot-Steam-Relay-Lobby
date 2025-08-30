@@ -14,6 +14,8 @@ public partial class SceneManager : Node
     private CanvasLayer _overlayLayer;
     private CanvasLayer _transitionLayer;
 
+    private Control _uiControlLayer;
+
     public static SceneManager Instance
     {
         get;
@@ -40,6 +42,7 @@ public partial class SceneManager : Node
         _backgroundLayer = GetTree().Root.GetNode<CanvasLayer>("Main/BackgroundLayer");
         _mainLayer = GetTree().Root.GetNode<CanvasLayer>("Main/MainLayer");
         _uiLayer = GetTree().Root.GetNode<CanvasLayer>("Main/UILayer");
+        _uiControlLayer = _uiLayer.GetNode<Control>("UIControlLayer");
         _overlayLayer = GetTree().Root.GetNode<CanvasLayer>("Main/OverlayLayer");
         _transitionLayer = GetTree().Root.GetNode<CanvasLayer>("Main/TransitionLayer");
         
@@ -121,6 +124,6 @@ public partial class SceneManager : Node
             GD.PrintErr($"Failed to load scene at path: {path}");
             return;
         }
-        _mainLayer.AddChild(_currentScene);
+        _uiControlLayer.AddChild(_currentScene);
     }
 }
