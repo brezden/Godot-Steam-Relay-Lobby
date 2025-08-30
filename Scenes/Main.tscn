@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bnsdhe30786fb"]
 
 [ext_resource type="Theme" uid="uid://dlpp8hpy0ciue" path="res://UI/Themes/Main.tres" id="1_eeixe"]
-[ext_resource type="PackedScene" uid="uid://ca45xvvoiidvn" path="res://Scenes/MainMenu/SplashScreen/SplashScreen.tscn" id="2_g5ym0"]
+[ext_resource type="PackedScene" uid="uid://clj86wal5eo6v" path="res://Scenes/MainMenu/MainMenu.tscn" id="2_wpuwe"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -24,7 +24,16 @@ layer = 2
 [node name="UILayer" type="CanvasLayer" parent="."]
 layer = 3
 
-[node name="SplashScreen" parent="UILayer" instance=ExtResource("2_g5ym0")]
+[node name="UIControlLayer" type="Control" parent="UILayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainMenu" parent="UILayer/UIControlLayer" instance=ExtResource("2_wpuwe")]
+layout_mode = 1
 
 [node name="OverlayLayer" type="CanvasLayer" parent="."]
 unique_name_in_owner = true

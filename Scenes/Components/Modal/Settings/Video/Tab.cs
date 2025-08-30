@@ -147,6 +147,7 @@ public partial class Tab: Control
         if (float.TryParse(selectedUIScaleText.Replace("x", "").Trim(), out float uiScale))
         {
             Logger.Game("Setting UI scale to: " + uiScale);
+            UIManager.Instance.ApplyUiScale(uiScale);
         }
         else
         {
