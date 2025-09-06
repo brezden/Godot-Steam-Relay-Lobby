@@ -2,15 +2,23 @@ name: Release candidate (stage)
 on:
   push:
     branches: [stage]
+  pull_request:
+    branches: [stage]      # optional CI on PRs into stage
+  workflow_dispatch: {}     # manual run for debugging
+
 permissions:
   contents: write
+
 jobs:
   rc:
-    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
+      - run: |
+          echo "event=${{ github.event_name }}"
+          echo "ref=${{ github.ref }}"
+          echo "actor=${{ github.actor }}"
       - name: Configure git
         run: |
           git config user.name  "version-bot"
@@ -20,10 +28,9 @@ jobs:
           TAG=$(./scripts/bump_version.sh prerc | tail -n1)
           echo "TAG=$TAG" >> $GITHUB_ENV
       - name: Push version commit + tag
+        if: github.event_name == 'push'   # don't mutate PR/manual runs
         run: |
           git tag -a "$TAG" -m "$TAG"
           git push && git push --tags
-      - name: Create GitHub prerelease
-        env: { GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} }
-        run: gh release create "$TAG" --prerelease --title "$TAG" --notes "Release candidate from stage"
+      # If you don't want notifications, remove any release creation step.
 
