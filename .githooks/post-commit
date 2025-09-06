@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+case "$branch" in
+  dev|stage)
+    V="v$(tr -d '\n' < VERSION)"
+    # move/create annotated tag to this commit
+    git tag -a -f "$V" -m "$V" >/dev/null 2>&1 || true
+    ;;
+  *)
+    ;;
+esac
+
