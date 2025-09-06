@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://clj86wal5eo6v"]
+[gd_scene load_steps=4 format=3 uid="uid://clj86wal5eo6v"]
 
 [ext_resource type="Script" path="res://Scenes/MainMenu/MainMenu.cs" id="1_xght1"]
 [ext_resource type="Script" path="res://Scenes/MainMenu/MainMenuButtons.cs" id="2_hq0sl"]
+[ext_resource type="Script" path="res://Scenes/MainMenu/VersionLabel.cs" id="3_pt7dm"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -87,3 +88,17 @@ custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Exit Game"
+
+[node name="Label" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0.368627)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.005
+anchor_top = 0.995
+anchor_right = 0.005
+anchor_bottom = 0.995
+offset_top = -13.0
+offset_right = 42.0
+grow_vertical = 0
+text = "v"
+script = ExtResource("3_pt7dm")

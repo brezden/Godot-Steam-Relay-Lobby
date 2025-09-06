@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Skip for merge commits
+git rev-parse -q --verify MERGE_HEAD >/dev/null && exit 0
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+
+case "$branch" in
+  dev)
+    NEXT=$(./scripts/bump_version.sh prealpha --print-only)
+    echo "$NEXT" > VERSION
+    git add VERSION
+    ;;
+  stage)
+    NEXT=$(./scripts/bump_version.sh prerc --print-only)
+    echo "$NEXT" > VERSION
+    git add VERSION
+    ;;
+  *)
+    # do nothing on other branches (e.g., main)
+    ;;
+esac
+
