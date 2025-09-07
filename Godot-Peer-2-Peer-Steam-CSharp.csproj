@@ -27,6 +27,7 @@
 
     <ItemGroup>
         <Content Include="Assets\Shaders\blur.gdshader" />
+        <Content Include="Scripts\commit.sh" />
         <Content Include="steam_api.dll" Condition="$([MSBuild]::IsOSPlatform('Windows'))">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>

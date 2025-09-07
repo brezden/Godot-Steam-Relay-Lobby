@@ -78,4 +78,3 @@ Following these steps should allow Steam API initialization to succeed without m
 ```bash
 dotnet format Godot-Peer-2-Peer-Steam-CSharp.csproj
 ```
-test
