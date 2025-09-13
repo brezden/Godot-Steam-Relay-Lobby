@@ -13,6 +13,6 @@ public partial class VersionLabel : Label
             v = f.GetAsText().Trim();   // trims \n/\r\n
         }
 
-        Text = $"v{v}";
+        Text = $"vPreRelease";
     }
 }
