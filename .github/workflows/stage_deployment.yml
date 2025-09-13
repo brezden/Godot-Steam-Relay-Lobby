@@ -15,15 +15,39 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: export game (.NET/C#)
+      - name: Export game (Linux, C#)
         id: export
         uses: firebelley/godot-export@v7.0.0
         with:
           godot_executable_download_url: https://github.com/godotengine/godot-builds/releases/download/4.3-stable/Godot_v4.3-stable_mono_linux_x86_64.zip
           godot_export_templates_download_url: https://github.com/godotengine/godot-builds/releases/download/4.3-stable/Godot_v4.3-stable_mono_export_templates.tpz
           relative_project_path: ./
-          archive_output: true
+          archive_output: false
           cache: true
+
+      - name: Find Linux export dir
+        id: findlinux
+        run: |
+          set -e
+          BUILD_DIR="${{ steps.export.outputs.build_directory }}"
+          LINUX_DIR="$(find "$BUILD_DIR" -type f -name '*.x86_64' -printf '%h\n' | sort -u | head -n1)"
+          test -n "$LINUX_DIR" || { echo "Linux export dir not found"; exit 1; }
+          echo "LINUX_DIR=$LINUX_DIR" >> "$GITHUB_ENV"
+          echo "Linux dir: $LINUX_DIR"
+          ls -l "$LINUX_DIR"
+
+      - name: Add run.sh as the launcher
+        run: |
+          set -euo pipefail
+          cp -v run.sh "$LINUX_DIR/"
+
+          # (Optional but helpful for Steam libs if you didn't embed them)
+          # export LD_LIBRARY_PATH in the script:
+          # sed -i '3i export LD_LIBRARY_PATH="$base_path:${LD_LIBRARY_PATH:-}"' "$LINUX_DIR/run.sh"
+
+          # Make sure both the script and the binary are executable
+          chmod +x "$LINUX_DIR/run.sh"
+          chmod +x "$LINUX_DIR/"*.x86_64 || true
 
       - name: Show export paths (debug)
         run: |
