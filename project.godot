@@ -13,6 +13,10 @@ config_version=5
 config/name="Godot-Peer-2-Peer-Steam-CSharp"
 run/main_scene="res://Scenes/Main.tscn"
 config/features=PackedStringArray("4.3", "C#", "Forward Plus")
+boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/show_image=false
+boot_splash/fullsize=false
+boot_splash/use_filter=false
 config/icon="res://icon.svg"
 
 [autoload]

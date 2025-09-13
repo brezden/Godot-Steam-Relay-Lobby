@@ -46,6 +46,14 @@ jobs:
           DEPOT_DIR="$GITHUB_WORKSPACE/build/StandaloneLinux64"
           mkdir -p "$DEPOT_DIR"
           rsync -a --delete "$LINUX_DIR/." "$DEPOT_DIR/"
+          
+          # Move libsteam_api.so to the root of the depot
+          SOURCE_DIR="$LINUX_DIR/data_Godot-Peer-2-Peer-Steam-CSharp_linuxbsd_x86_64"
+          if [ -d "$SOURCE_DIR" ]; then
+            mv "$SOURCE_DIR/libsteam_api.so" "$DEPOT_DIR/" || true
+          fi
+          
+          echo "${{ secrets.STEAM_APP_ID }}" > $DEPOT_DIR/steam_appid.txt
 
           # Add your launcher and ensure execute bits
           chmod +x "$DEPOT_DIR/"*.x86_64 || true
