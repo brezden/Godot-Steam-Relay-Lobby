@@ -4,7 +4,7 @@ on:
       - dev
 
 jobs:
-  export_game:
+  export_linux:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -15,53 +15,67 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Export game (Linux, C#)
+      - name: Export game (Windows + Linux, C#)
         id: export
         uses: firebelley/godot-export@v7.0.0
         with:
           godot_executable_download_url: https://github.com/godotengine/godot-builds/releases/download/4.3-stable/Godot_v4.3-stable_mono_linux_x86_64.zip
           godot_export_templates_download_url: https://github.com/godotengine/godot-builds/releases/download/4.3-stable/Godot_v4.3-stable_mono_export_templates.tpz
           relative_project_path: ./
+          presets_to_export: Linux
+          use_preset_export_path: false
           archive_output: false
           cache: true
 
-      - name: Find Linux export dir
-        id: findlinux
+      - name: Prepare Linux depot (robust)
         run: |
-          set -e
+          set -euxo pipefail
           BUILD_DIR="${{ steps.export.outputs.build_directory }}"
-          LINUX_DIR="$(find "$BUILD_DIR" -type f -name '*.x86_64' -printf '%h\n' | sort -u | head -n1)"
-          test -n "$LINUX_DIR" || { echo "Linux export dir not found"; exit 1; }
-          echo "LINUX_DIR=$LINUX_DIR" >> "$GITHUB_ENV"
-          echo "Linux dir: $LINUX_DIR"
-          ls -l "$LINUX_DIR"
+          echo "BUILD_DIR=$BUILD_DIR"
 
-      - name: Add run.sh as the launcher
-        run: |
-          set -euo pipefail
-          cp -v run.sh "$LINUX_DIR/"
+          # Find the folder that contains the exported Linux binary
+          LINUX_DIR="$(find "$BUILD_DIR" -type f -name '*.x86_64' -printf '%h\n' | sort -u | head -n1 || true)"
+          if [ -z "$LINUX_DIR" ]; then
+            echo "No Linux binary found under $BUILD_DIR. Contents:"
+            find "$BUILD_DIR" -maxdepth 3 -type f -printf '%P\n' | sort
+            exit 1
+          fi
+          echo "Found Linux export at: $LINUX_DIR"
 
-          # (Optional but helpful for Steam libs if you didn't embed them)
-          # export LD_LIBRARY_PATH in the script:
-          # sed -i '3i export LD_LIBRARY_PATH="$base_path:${LD_LIBRARY_PATH:-}"' "$LINUX_DIR/run.sh"
+          # Create the Steam depot folder and mirror files into it
+          DEPOT_DIR="$GITHUB_WORKSPACE/build/StandaloneLinux64"
+          mkdir -p "$DEPOT_DIR"
+          rsync -a --delete "$LINUX_DIR/." "$DEPOT_DIR/"
 
-          # Make sure both the script and the binary are executable
-          chmod +x "$LINUX_DIR/run.sh"
-          chmod +x "$LINUX_DIR/"*.x86_64 || true
+          # Add your launcher and ensure execute bits
+          chmod +x "$DEPOT_DIR/"*.x86_64 || true
 
-      - name: Show export paths (debug)
-        run: |
-          echo "archives: ${{ steps.export.outputs.archive_directory }}"
-          echo "builds:   ${{ steps.export.outputs.build_directory }}"
-      
-      - name: Upload archives
+          echo "DEPOT_DIR=$DEPOT_DIR" >> "$GITHUB_ENV"
+          echo "Linux depot contents:"
+          find "$DEPOT_DIR" -maxdepth 1 -type f -printf "%f\n" | sort
+
+      - name: Upload depot as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: game-${{ github.ref_name }}-archives
-          path: ${{ steps.export.outputs.archive_directory }}/*
-      
-      - name: Upload raw builds
-        uses: actions/upload-artifact@v4
+          name: steam-linux
+          path: build
+
+  deployToSteam:
+    needs: export_linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
         with:
-          name: game-${{ github.ref_name }}-builds
-          path: ${{ steps.export.outputs.build_directory }}/*
+          name: steam-linux
+          path: build
+
+      - name: Upload Linux depot to Steam (prerelease)
+        uses: game-ci/steam-deploy@v3
+        with:
+          username: ${{ secrets.STEAM_USERNAME }}
+          configVdf: ${{ secrets.STEAM_CONFIG_VDF }}
+          appId: ${{ secrets.STEAM_APP_ID }}
+          buildDescription: ${{ github.sha }}
+          rootPath: build
+          depot1Path: StandaloneLinux64
+          releaseBranch: prerelease

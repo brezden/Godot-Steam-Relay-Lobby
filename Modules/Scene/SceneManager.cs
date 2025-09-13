@@ -42,7 +42,7 @@ public partial class SceneManager : Node
         _backgroundLayer = GetTree().Root.GetNode<CanvasLayer>("Main/BackgroundLayer");
         _mainLayer = GetTree().Root.GetNode<CanvasLayer>("Main/MainLayer");
         _uiLayer = GetTree().Root.GetNode<CanvasLayer>("Main/UILayer");
-        _uiControlLayer = _uiLayer.GetNode<Control>("UIControlLayer");
+        _uiControlLayer = _uiLayer.GetNode<Control>("%UIControlLayer");
         _overlayLayer = GetTree().Root.GetNode<CanvasLayer>("Main/OverlayLayer");
         _transitionLayer = GetTree().Root.GetNode<CanvasLayer>("Main/TransitionLayer");
         
@@ -64,7 +64,7 @@ public partial class SceneManager : Node
             child.QueueFree();
         }
         
-        foreach (var child in _uiLayer.GetChildren())
+        foreach (var child in _uiControlLayer.GetChildren())
         {
             child.QueueFree();
         }
