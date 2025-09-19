@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://db0qam0ymhgq8"]
 
-[ext_resource type="Script" path="res://Scenes/Games/Tank/Game.cs" id="1_wbl5e"]
+[ext_resource type="Script" path="res://Scenes/Games/TankBattle/Game.cs" id="1_wbl5e"]
 [ext_resource type="Texture2D" uid="uid://c3f3cg2r72m6c" path="res://Assets/Sprites/TankMapTilesheet.png" id="1_yfo4g"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rvpuw"]

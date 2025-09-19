@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://6rlsaagt0cvp"]
 
-[ext_resource type="PackedScene" uid="uid://db0qam0ymhgq8" path="res://Scenes/Games/Tank/Game.tscn" id="1_0jvrx"]
+[ext_resource type="PackedScene" uid="uid://db0qam0ymhgq8" path="res://Scenes/Games/TankBattle/Game.tscn" id="1_0jvrx"]
 [ext_resource type="Script" path="res://Scenes/Games/GameContainer.cs" id="1_sfmge"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_7gg57"]
