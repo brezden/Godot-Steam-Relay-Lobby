@@ -15,7 +15,7 @@ public static class SceneRegistry
     {
         { MainMenu.Home, "res://Scenes/MainMenu/MainMenu.tscn" },
         { Lobby.OnlineLobby, "res://Scenes/Lobby/Online/Lobby.tscn" },
-        { TankBattle.Game, "res://Games/TankBattle/Game.tscn" }
+        { TankBattle.Game, "res://Scenes/Games/GameContainer.tscn" }
     };
 
     public static string GetScenePath(int sceneId)

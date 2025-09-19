@@ -38,11 +38,4 @@ public partial class LobbyManager
     {
         _lobbyService.EnterLobbyScene();
     }
-    
-    public string GetServerId()
-    {
-        string serverId = _lobbyService.GetServerId();
-        Logger.Lobby($"Retrieved server ID: {serverId}");
-        return serverId;
-    }
 }

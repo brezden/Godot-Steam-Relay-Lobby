@@ -5,8 +5,8 @@ namespace GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
 
 public partial class LobbyService : ILobbyService
 {
+    public SteamId _lobbyId;
     private Steamworks.Data.Lobby _lobby;
-    private SteamId _lobbyId;
 
     public void Initialize()
     {
