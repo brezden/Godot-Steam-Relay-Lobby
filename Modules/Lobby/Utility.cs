@@ -26,4 +26,18 @@ public partial class LobbyManager
             return Task.FromResult(new List<PlayerInvite>());
         }
     }
+    
+    public static bool OpenedInviteOverlay()
+    {
+        try
+        {
+            _lobbyService.OpenInviteOverlay();
+            return true;
+        }
+        catch (Exception e)
+        {
+            Logger.Error($"Failed to open invite overlay. {e.Message}");
+            return false;
+        }
+    }
 }

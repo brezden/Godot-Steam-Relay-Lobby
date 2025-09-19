@@ -84,4 +84,10 @@ public partial class LobbyService
         steamId.Value = steamIdValue;
         return steamId;
     }
+    
+    public bool OpenInviteOverlay()
+    {
+        SteamFriends.OpenGameInviteOverlay(_lobbyId);
+        return true;
+    }
 }

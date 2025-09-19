@@ -8,33 +8,44 @@ public partial class GameContainer : Control
 
     public override void _Ready()
     {
+        // SubViewport
         SubVp.Size = BaseSize;
+        SubVp.RenderTargetUpdateMode = SubViewport.UpdateMode.Always;
+        SubVp.RenderTargetClearMode = SubViewport.ClearMode.Always;
+        SubVp.CanvasItemDefaultTextureFilter = Viewport.DefaultCanvasItemTextureFilter.Nearest;
+        SubVp.CanvasItemDefaultTextureRepeat = Viewport.DefaultCanvasItemTextureRepeat.Disabled;
+        SubVp.Snap2DTransformsToPixel = true;
+        SubVp.Snap2DVerticesToPixel = true;
+
+        // TextureRect
         Output.Texture = SubVp.GetTexture();
         Output.StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered;
         Output.TextureFilter = CanvasItem.TextureFilterEnum.Nearest;
+
         ResizeOutput();
     }
 
     public override void _Notification(int what)
     {
-        if (what == NotificationResized)
-            ResizeOutput();
+        if (what == NotificationResized) ResizeOutput();
     }
 
     private void ResizeOutput()
     {
-        var win = GetViewportRect().Size;
+        // integer window size
+        Vector2 winF = GetViewportRect().Size;
+        Vector2I win = new(Mathf.FloorToInt(winF.X), Mathf.FloorToInt(winF.Y));
 
-        // biggest integer scale that fits in both axes
-        int fitX = Mathf.FloorToInt(win.X / (float)BaseSize.X);
-        int fitY = Mathf.FloorToInt(win.Y / (float)BaseSize.Y);
-        int scale = Mathf.Max(1, Mathf.Min(fitX, fitY));
+        // biggest integer scale that fits
+        int sx = win.X / BaseSize.X;
+        int sy = win.Y / BaseSize.Y;
+        int k = Mathf.Max(1, Mathf.Min(sx, sy));
 
-        Vector2 size = new Vector2(BaseSize.X * scale, BaseSize.Y * scale);
+        Vector2I outSize = new(BaseSize.X * k, BaseSize.Y * k);
+        Vector2I outPos = (win - outSize) / 2; // integer center
 
-        // Center the scaled output
-        Output.CustomMinimumSize = size;
-        Output.Size = size;
-        Output.Position = (win - size) * 0.5f;
+        Output.CustomMinimumSize = (Vector2)outSize;
+        Output.Size = (Vector2)outSize;
+        Output.Position = (Vector2)outPos; // whole pixels
     }
 }

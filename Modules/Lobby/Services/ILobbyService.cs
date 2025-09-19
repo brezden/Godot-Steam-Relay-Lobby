@@ -17,4 +17,5 @@ public interface ILobbyService
     Task<PlayerInfo> GetPlayerInfo(string playerId);
     Task<LobbyMembersData> GatherLobbyMembersData();
     Task<List<PlayerInvite>> GetInGameFriends();
+    bool OpenInviteOverlay();
 }

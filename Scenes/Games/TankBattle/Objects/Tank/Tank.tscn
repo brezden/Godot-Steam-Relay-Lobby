@@ -8,8 +8,6 @@
 size = Vector2(16, 16)
 
 [node name="Tank" type="CharacterBody2D"]
-position = Vector2(354, 120)
-scale = Vector2(4, 4)
 script = ExtResource("1_m06cv")
 Speed = 80.0
 Accel = 110.0

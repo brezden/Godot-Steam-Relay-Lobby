@@ -8,10 +8,12 @@ public partial class MainMenuButtons : Node
     {
         var hostOnlineButton = GetNode<Button>("HostOnline");
         var settingsButton = GetNode<Button>("Settings");
+        var testGameButton = GetNode<Button>("TestGame");
         var exitButton = GetNode<Button>("ExitGame");
 
         hostOnlineButton.Pressed += HostOnline;
         settingsButton.Pressed += ShowSettings;
+        testGameButton.Pressed += () => SceneManager.Instance.GotoScene(SceneRegistry.TankBattle.Game);
         exitButton.Pressed += ExitGame;
     }
 
