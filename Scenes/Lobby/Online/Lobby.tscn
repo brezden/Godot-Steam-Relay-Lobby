@@ -1,10 +1,32 @@
-[gd_scene load_steps=6 format=3 uid="uid://qsoslr654lwv"]
+[gd_scene load_steps=7 format=3 uid="uid://qsoslr654lwv"]
 
 [ext_resource type="Script" path="res://Scenes/Lobby/Online/LobbyChat.cs" id="1_7dbfh"]
 [ext_resource type="Script" path="res://Scenes/Lobby/Online/Lobby.cs" id="1_pw7u0"]
 [ext_resource type="Script" path="res://Scenes/Lobby/Online/LobbyButtons.cs" id="2_2bxjq"]
 [ext_resource type="Script" path="res://Scenes/Lobby/Online/LobbyMemberContainer.cs" id="3_gklqx"]
 [ext_resource type="PackedScene" uid="uid://s8d6qytpgyqq" path="res://Scenes/Lobby/Online/LobbyMember.tscn" id="4_8mcj3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h7gqm"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.119167, 0.65, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.896497, 0.946526, 0.990911, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 20
+shadow_color = Color(0, 0, 0, 0.482353)
+shadow_size = 2
+shadow_offset = Vector2(0, 2.75)
+anti_aliasing = false
+anti_aliasing_size = 0.128
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -49,6 +71,14 @@ offset_left = -75.0
 offset_bottom = 52.0
 grow_horizontal = 0
 script = ExtResource("2_2bxjq")
+
+[node name="StartGame" type="Button" parent="ButtonContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_h7gqm")
+disabled = true
+text = "Start Game"
 
 [node name="InviteMembers" type="Button" parent="ButtonContainer"]
 unique_name_in_owner = true

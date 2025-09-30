@@ -9,22 +9,28 @@ using Steamworks;
 
 public partial class LobbyButtons : Node
 {
+    
+    Button startGameButton;
+    Button inviteLobbyButton;
+    Button leaveLobbyButton;
+    
     public override void _Ready()
     {
-        var inviteLobbyButton = GetNode<Button>("InviteMembers");
-        var leaveLobbyButton = GetNode<Button>("LeaveLobby");
+        EventBus.Lobby.LobbyMemberJoined += (_, _) => CheckPlayGameState();
+        EventBus.Lobby.LobbyMemberLeft += (_, _) => CheckPlayGameState();
+        
+        startGameButton = GetNode<Button>("%StartGame");
+        inviteLobbyButton = GetNode<Button>("%InviteMembers");
+        leaveLobbyButton = GetNode<Button>("%LeaveLobby");
 
         inviteLobbyButton.Pressed += InviteLobby;
         leaveLobbyButton.Pressed += LeaveLobby;
+        startGameButton.Pressed += StartGame;
     }
 
     private void InviteLobby()
     {
-        if (LobbyManager.OpenedInviteOverlay())
-        {
-            return;
-        }
-        
+        LobbyManager.OpenedInviteOverlay();
         UIManager.Instance.ModalManager.RenderModal(ModalType.InvitePlayer);
     }
 
@@ -32,5 +38,22 @@ public partial class LobbyButtons : Node
     {
         LobbyManager.LeaveLobbyAndTransport();
         SceneManager.Instance.GotoScene(SceneRegistry.MainMenu.Home);
+    }
+
+    private void StartGame()
+    {
+        Logger.Game("Game is starting...");   
+    }
+
+    private void CheckPlayGameState()
+    {
+        if (LobbyManager.LobbyMembersData.Players.Count >= 2)
+        {
+            startGameButton.Disabled = false;
+        }
+        else
+        {
+            startGameButton.Disabled = true;
+        }
     }
 }

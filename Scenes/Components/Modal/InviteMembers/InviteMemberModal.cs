@@ -6,10 +6,12 @@ public partial class InviteMemberModal : Panel
     public override async void _Ready()
     {
         var inGameFriends = await LobbyManager.GetInGameFriends();
+        
+        Logger.Game($"In-game friends found: {inGameFriends.Count}");
 
         var friendListContainer = GetNode<VBoxContainer>("%FriendContainer");
         var noMemberLabel = GetNode<Label>("%NoMemberLabel");
-        var closeButton = GetNode<Button>("%CloseButton");
+        var closeButton = GetNode<CloseModalButton>("%CloseButton");
         var memberPanelScene = GD.Load<PackedScene>("res://Scenes/Components/Modal/InviteMembers/Member.tscn");
 
         closeButton.Pressed += OnCloseButtonPressed;

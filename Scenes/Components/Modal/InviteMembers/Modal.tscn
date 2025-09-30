@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://dqxus7qgt7eiq"]
+[gd_scene load_steps=5 format=3 uid="uid://dqxus7qgt7eiq"]
 
 [ext_resource type="Script" path="res://Scenes/Components/Modal/InviteMembers/InviteMemberModal.cs" id="1_7l4cy"]
 [ext_resource type="PackedScene" uid="uid://cia5cmlhsmh4k" path="res://Scenes/Components/Modal/CloseModalButton.tscn" id="2_um4a7"]
-[ext_resource type="PackedScene" uid="uid://beck30d51ft" path="res://Scenes/Components/Modal/InviteMembers/Member.tscn" id="3_vnd8u"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_op8dr"]
 bg_color = Color(0.121569, 0.121569, 0.121569, 1)
@@ -72,9 +71,6 @@ grow_vertical = 2
 
 [node name="FriendContainer" type="VBoxContainer" parent="VBoxContainer/Panel2/ScrollContainer"]
 unique_name_in_owner = true
-layout_mode = 2
-
-[node name="Panel" parent="VBoxContainer/Panel2/ScrollContainer/FriendContainer" instance=ExtResource("3_vnd8u")]
 layout_mode = 2
 
 [node name="NoMemberLabel" type="Label" parent="."]
