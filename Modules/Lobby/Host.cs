@@ -19,6 +19,7 @@ public partial class LobbyManager
             UIManager.Instance.ModalManager.RenderInformationModal(
                 "Creating lobby",
                 InformationModalType.Loading);
+            await _lobbyService.StartHost();
             _lobbyService.EnterLobbyScene();
         }
         catch (Exception ex)
