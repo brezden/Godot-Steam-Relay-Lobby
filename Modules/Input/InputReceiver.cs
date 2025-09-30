@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using System.Buffers.Binary;
+using GodotPeer2PeerSteamCSharp.Autoload;
 
 public partial class InputReceiver : Node
 {
@@ -35,17 +36,32 @@ public partial class InputReceiver : Node
         Logger.Game("InputReceiver Turned Off");
     }
 
-    public byte[] BuildPacket()
+    public byte[] BuildClientPacket(double delta)
     {
         Vector2 mv = Input.GetVector(L, R, U, D);
+        InputManager.CurrentInputHandler.ProcessPositionalInput(0, mv, delta);
+        sbyte qx = QuantizeToI8(mv.X);
+        sbyte qy = QuantizeToI8(mv.Y);
+
+        var buf = new byte[2];
+        buf[0] = unchecked((byte)qx);
+        buf[1] = unchecked((byte)qy);
+        return buf;
+    }
+
+    public byte[] BuildServerPacket(double delta)
+    {
+        Vector2 mv = Input.GetVector(L, R, U, D);
+        InputManager.CurrentInputHandler.ProcessPositionalInput(0, mv, delta);
         sbyte qx = QuantizeToI8(mv.X);
         sbyte qy = QuantizeToI8(mv.Y);
 
         var buf = new byte[4];
-        BinaryPrimitives.WriteUInt16LittleEndian(buf.AsSpan(0,2), _tick);
+        BinaryPrimitives.WriteUInt16LittleEndian(buf.AsSpan(0, 2), _tick);
         buf[2] = unchecked((byte)qx);
         buf[3] = unchecked((byte)qy);
         return buf;
+        
     }
 
     private static sbyte QuantizeToI8(float x)
