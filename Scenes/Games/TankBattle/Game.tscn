@@ -21,9 +21,6 @@ size = Vector2(20, 320)
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_wbl5e")
-CloudSpeed = 20.0
-CloudSpawnDelay = 6
-InitialCloudCount = 3
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_rlqls")
@@ -32,8 +29,14 @@ layer_0/tile_data = PackedInt32Array(0, 1, 0, 1, 1, 0, 2, 1, 0, 3, 1, 0, 4, 1, 0
 layer_1/name = "Layer1"
 layer_1/tile_data = PackedInt32Array(65536, 1, 1, 65537, 1, 1, 65538, 1, 1, 65539, 1, 1, 65540, 1, 1, 65541, 1, 1, 65542, 1, 1, 65543, 1, 1, 65544, 1, 1, 65545, 1, 1)
 
-[node name="Tank" parent="." instance=ExtResource("3_r3do1")]
-position = Vector2(27, 61)
+[node name="PlayerOne" parent="." instance=ExtResource("3_r3do1")]
+unique_name_in_owner = true
+position = Vector2(22, 58)
+
+[node name="PlayerOne2" parent="." instance=ExtResource("3_r3do1")]
+unique_name_in_owner = true
+modulate = Color(0.670833, 1, 0.21, 1)
+position = Vector2(272, 91)
 
 [node name="Area2D" type="StaticBody2D" parent="."]
 

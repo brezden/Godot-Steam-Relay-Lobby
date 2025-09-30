@@ -19,9 +19,8 @@ public partial class Tank : CharacterBody2D
         _tankCollision = GetNode<CollisionShape2D>("%CollisionShape2D");
     }
 
-    public override void _PhysicsProcess(double delta)
+    public void ProcessInput(Vector2 input, double delta)
     {
-        Vector2 input = Input.GetVector("move_left_0","move_right_0","move_up_0","move_down_0");
         Vector2 targetVel = input * Speed;
 
         if (input != Vector2.Zero)
