@@ -1,27 +1,37 @@
 ﻿using Godot;
+using Godot.NativeInterop;
 using GodotPeer2PeerSteamCSharp.Games;
+using GodotPeer2PeerSteamCSharp.Modules.Input;
 using Steamworks.Data;
 
 namespace GodotPeer2PeerSteamCSharp.Autoload;
 
 public partial class InputManager : Node
 {
-    private static IInputManager _currentInputManager;
-    private static SendType _inputDefaultSendType;
-
-    public static void SetInputManager(IInputManager inputManager)
+   public static IInputHandler CurrentInputHandler;
+   private static InputReceiver _inputReceiver;
+   
+   public override void _Ready()
+   {
+     _inputReceiver = new InputReceiver();
+     AddChild(_inputReceiver);
+   }
+   
+   public void SetInputHandler(IInputHandler handler)
+   {
+       CurrentInputHandler = handler;
+       StartReceivingInput();
+   }
+   
+   public void StartReceivingInput()
+   {
+       _inputReceiver.TurnOn();
+       SetProcess(true);
+   }
+   
+    public void StopReceivingInput()
     {
-        _currentInputManager = inputManager;
-        _inputDefaultSendType = inputManager.InputDefaultSendType;
-    }
-
-    public void ProcessPositionalInput(int playerIndex, float x, float y)
-    {
-        _currentInputManager.ProcessPositionalInput(playerIndex, x, y);
-    }
-
-    public void ProcessActionInput(int playerIndex, string action)
-    {
-        _currentInputManager.ProcessActionInput(playerIndex, action);
+         _inputReceiver.TurnOff();
+         SetProcess(false);
     }
 }
