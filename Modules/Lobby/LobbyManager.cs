@@ -1,5 +1,6 @@
 using Godot;
-using GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
+using GodotPeer2PeerSteamCSharp.Modules.Lobby;
+using GodotPeer2PeerSteamCSharp.Modules.Lobby.Services;
 using GodotPeer2PeerSteamCSharp.Types.Lobby;
 
 namespace GodotPeer2PeerSteamCSharp.Modules.Lobby;
@@ -23,7 +24,7 @@ public partial class LobbyManager : Node
 
         RegisterHostCallbacks();
         RegisterGuestCallbacks();
-        
+
         _lobbyService = new LobbyService();
         _lobbyService.Initialize();
     }

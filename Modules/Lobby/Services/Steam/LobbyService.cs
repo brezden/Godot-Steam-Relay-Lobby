@@ -1,12 +1,13 @@
 using System;
-using Steamworks;
+using Godot;
+using GodotSteam;
 
-namespace GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
+namespace GodotPeer2PeerSteamCSharp.Modules.Lobby.Services;
 
 public partial class LobbyService : ILobbyService
 {
-    public SteamId _lobbyId;
-    private Steamworks.Data.Lobby _lobby;
+    private static string appId = "3485870";
+    private ulong _lobbyId;
 
     public void Initialize()
     {
@@ -18,20 +19,22 @@ public partial class LobbyService : ILobbyService
 
     public void Update()
     {
-        SteamClient.RunCallbacks();
+        Steam.RunCallbacks();
     }
 
     private static void InitializeSteam()
     {
         try
         {
-            SteamClient.Init(3485870);
+            OS.SetEnvironment("SteamAppId", appId);
+            OS.SetEnvironment("SteamGameId", appId); 
+            Steam.SteamInit();
         }
         catch (Exception ex)
         {
             Logger.Error($"Steam initialization error: {ex.Message}");
         }
 
-        Logger.Network($"Steam initialized successfully! User: {SteamClient.Name}");
+        Logger.Network($"Steam initialized successfully! User: {Steam.GetFriendPersonaName(Steam.GetSteamID())}");
     }
 }

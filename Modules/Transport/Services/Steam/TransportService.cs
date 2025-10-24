@@ -2,8 +2,6 @@ using System;
 using System.Runtime.InteropServices;
 using GodotPeer2PeerSteamCSharp.Modules;
 using GodotPeer2PeerSteamCSharp.Modules.Lobby;
-using Steamworks;
-using Steamworks.Data;
 
 public class TransportService : ITransportService
 {

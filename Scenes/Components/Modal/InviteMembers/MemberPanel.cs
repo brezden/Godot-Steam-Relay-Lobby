@@ -3,7 +3,7 @@ using GodotPeer2PeerSteamCSharp.Modules.Lobby;
 
 public partial class MemberPanel : Panel
 {
-    public string PlayerId
+    public ulong PlayerId
     {
         get;
         set;
@@ -33,7 +33,7 @@ public partial class MemberPanel : Panel
         inviteButton.Pressed += OnInviteButtonPressed;
     }
 
-    public void Setup(string playerId, string playerName, ImageTexture playerPicture, string playerStatus)
+    public void Setup(ulong playerId, string playerName, ImageTexture playerPicture, string playerStatus)
     {
         PlayerId = playerId;
         PlayerName = playerName;

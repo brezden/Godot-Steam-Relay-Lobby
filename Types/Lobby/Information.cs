@@ -4,6 +4,13 @@ using Godot;
 
 namespace GodotPeer2PeerSteamCSharp.Types.Lobby;
 
+public enum LobbyType
+{
+    Public,
+    FriendsOnly,
+    Private
+}
+
 public enum ConnectionType
 {
     Local,
@@ -13,7 +20,7 @@ public enum ConnectionType
 
 public struct PlayerInfo
 {
-    public string PlayerId;
+    public ulong PlayerId;
     public string Name;
     public ImageTexture? ProfilePicture;
     public bool IsReady;

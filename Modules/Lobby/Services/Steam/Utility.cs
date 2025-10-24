@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
 using GodotPeer2PeerSteamCSharp.Types.Lobby;
+using GodotSteam;
 using Steamworks;
 
-namespace GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
+namespace GodotPeer2PeerSteamCSharp.Modules.Lobby.Services;
 
 public partial class LobbyService
 {
@@ -23,7 +24,7 @@ public partial class LobbyService
         return lobbyMembersData;
     }
 
-    public async Task<PlayerInfo> GetPlayerInfo(string playerId)
+    public async Task<PlayerInfo> GetPlayerInfo(ulong playerId)
     {
         var friend = new Friend(ConvertStringToSteamId(playerId));
         var profilePicture = GetProfilePictureAsync(friend.Id).Result;
@@ -57,7 +58,7 @@ public partial class LobbyService
         return inGameFriends;
     }
 
-    private static async Task<ImageTexture?> GetProfilePictureAsync(SteamId steamId)
+    private static async Task<ImageTexture?> GetProfilePictureAsync(ulong steamId)
     {
         var steamImage = await SteamFriends.GetLargeAvatarAsync(steamId);
         if (steamImage == null)
@@ -75,19 +76,5 @@ public partial class LobbyService
         texture.SetImage(newImage);
 
         return texture;
-    }
-
-    private static SteamId ConvertStringToSteamId(string playerId)
-    {
-        ulong.TryParse(playerId, out var steamIdValue);
-        var steamId = new SteamId();
-        steamId.Value = steamIdValue;
-        return steamId;
-    }
-    
-    public bool OpenInviteOverlay()
-    {
-        SteamFriends.OpenGameInviteOverlay(_lobbyId);
-        return true;
     }
 }

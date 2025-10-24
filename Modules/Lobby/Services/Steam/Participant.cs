@@ -1,22 +1,34 @@
 using System;
-using GodotPeer2PeerSteamCSharp.Modules.Lobby;
+using GodotSteam;
 using GodotPeer2PeerSteamCSharp.Types.Scene;
-using Steamworks;
 
-namespace GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
+namespace GodotPeer2PeerSteamCSharp.Modules.Lobby.Services;
 
 public partial class LobbyService
 {
+    private Steam.LobbyJoinedEventHandler _onLobbyJoinedHandler;
+    
+    private void RegisterParticipantCallbacks()
+    {
+        _onLobbyJoinedHandler += OnLobbyJoined;
+        Steam.LobbyJoined += _onLobbyJoinedHandler;
+        
+        SteamMatchmaking.OnLobbyEntered += OnLobbyEnteredCallback;
+        SteamMatchmaking.OnLobbyMemberJoined += OnLobbyMemberJoinedCallback;
+        SteamMatchmaking.OnLobbyMemberDisconnected += OnLobbyMemberLeft;
+        SteamMatchmaking.OnLobbyMemberLeave += OnLobbyMemberLeft;
+    }
+    
     public void EnterLobbyScene()
     {
         SceneManager.Instance.GotoScene(SceneRegistry.Lobby.OnlineLobby);
     }
     
-    public void InvitePlayer(string playerId)
+    public void InvitePlayer(ulong playerId)
     {
         try
         {
-            _lobby.InviteFriend(ConvertStringToSteamId(playerId));
+            Steam.InviteUserToLobby(_lobbyId, playerId);
         }
         catch (Exception ex)
         {
@@ -35,17 +47,11 @@ public partial class LobbyService
         _lobbyId = 0;
     }
 
-    private void RegisterParticipantCallbacks()
-    {
-        SteamMatchmaking.OnLobbyEntered += OnLobbyEnteredCallback;
-        SteamMatchmaking.OnLobbyMemberJoined += OnLobbyMemberJoinedCallback;
-        SteamMatchmaking.OnLobbyMemberDisconnected += OnLobbyMemberLeft;
-        SteamMatchmaking.OnLobbyMemberLeave += OnLobbyMemberLeft;
-    }
 
-    private void OnLobbyEnteredCallback(Steamworks.Data.Lobby lobby)
+
+    private static void OnLobbyJoined(ulong lobby, long permissions, bool locked, long response)
     {
-        _lobby = lobby;
+        Logger.Lobby($"Joined lobby: {lobby} with response code: {response}");
     }
 
     private void OnLobbyMemberJoinedCallback(Steamworks.Data.Lobby lobby, Friend friend)
@@ -56,21 +62,5 @@ public partial class LobbyService
     private static void OnLobbyMemberLeft(Steamworks.Data.Lobby lobby, Friend friend)
     {
         LobbyManager.RemovePlayer(friend.Id.ToString());
-    }
-
-    public string GetServerId()
-    {
-        uint ip = 0;
-        ushort port = 0;
-        SteamId serverId = default;
-
-        bool hasServer = _lobby.GetGameServer(ref ip, ref port, ref serverId);
-
-        if (hasServer && serverId != 0)
-        {
-            return serverId.ToString();
-        }
-        
-        throw new Exception("Unable to get server ID");
     }
 }

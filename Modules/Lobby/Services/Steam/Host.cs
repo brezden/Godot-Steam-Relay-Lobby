@@ -1,35 +1,41 @@
 using System;
 using System.Threading.Tasks;
+using Godot;
 using GodotPeer2PeerSteamCSharp.Modules;
 using GodotPeer2PeerSteamCSharp.Modules.Lobby;
+using GodotPeer2PeerSteamCSharp.Types.Lobby;
+using GodotSteam;
 using Steamworks;
 
-namespace GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
+namespace GodotPeer2PeerSteamCSharp.Modules.Lobby.Services;
 
 public partial class LobbyService
 {
+    private long RESULT_OK = 1;
+    
     public async Task StartHost()
     {
-        await CreateLobby();
-        TransportManager.Server.CreateServer();
+        CreateLobby();
         await LobbyManager.GatherLobbyMembers();
     }
     
-    private async Task CreateLobby()
+    private void CreateLobby(LobbyType lobbyType = LobbyType.Private, int maxMembers = 4)
     {
-        var lobby = await SteamMatchmaking.CreateLobbyAsync(4);
-        if (!lobby.HasValue)
-            throw new Exception();
-
-        _lobby = lobby.Value;
-        _lobbyId = _lobby.Id;
-        lobby.Value.SetPrivate();
-        lobby.Value.SetJoinable(true);
-        Logger.Lobby($"Lobby created ({_lobbyId})");
+        var steamType = lobbyType switch
+        {
+            LobbyType.Private     => Steam.LobbyType.Private,
+            LobbyType.FriendsOnly => Steam.LobbyType.FriendsOnly,
+            LobbyType.Public      => Steam.LobbyType.Public,
+            _                     => Steam.LobbyType.Private
+        };
+        Steam.CreateLobby(steamType, maxMembers);
     }
-
-    public void SetServerId(string serverId)
+    
+    private void OnLobbyCreated(long connectionStatusCode, ulong lobbyId)
     {
-        _lobby.SetGameServer(ConvertStringToSteamId(serverId));
+        if (connectionStatusCode == RESULT_OK)
+        {
+            Logger.Lobby($"Lobby created successfully with ID: {lobbyId}");
+        }
     }
 }

@@ -2,15 +2,17 @@ using System;
 using System.Threading.Tasks;
 using GodotPeer2PeerSteamCSharp.Modules;
 using GodotPeer2PeerSteamCSharp.Modules.Lobby;
+using GodotSteam;
 using Steamworks;
 
-namespace GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
+namespace GodotPeer2PeerSteamCSharp.Modules.Lobby.Services;
 
 public partial class LobbyService 
 {
     private static void RegisterGuestCallbacks()
     {
-        SteamFriends.OnGameLobbyJoinRequested += OnGameLobbyJoinRequested;
+        Steam.LobbyJoined += OnGameLobbyJoinRequested()
+            Steam.LobbyJoinedEventHandler
     }
     
     public async Task StartGuest(string lobbyId)

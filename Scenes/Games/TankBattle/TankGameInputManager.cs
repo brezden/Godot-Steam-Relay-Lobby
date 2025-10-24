@@ -1,14 +1,12 @@
 ﻿using Godot;
 using GodotPeer2PeerSteamCSharp.Modules.Input;
 using GodotPeer2PeerSteamCSharp.Scenes.Games.TankBattle;
-using Steamworks.Data;
 
 namespace GodotPeer2PeerSteamCSharp.Games.TankBattle;
 
 public partial class TankGameInputManager : Node, IInputHandler
 {
     public Game currentGame { get; }
-    public SendType InputDefaultSendType => SendType.Unreliable;
 
     public TankGameInputManager (Game game)
     {

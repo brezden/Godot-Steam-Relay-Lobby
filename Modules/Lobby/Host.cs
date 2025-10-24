@@ -1,7 +1,5 @@
 using System;
-using GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
 using GodotPeer2PeerSteamCSharp.Types.Scene;
-using Steamworks;
 
 namespace GodotPeer2PeerSteamCSharp.Modules.Lobby;
 
@@ -32,18 +30,5 @@ public partial class LobbyManager
                 001);
             LeaveLobbyAndTransport();
         }
-    }
-
-    public void SetServerId(string serverId)
-    {
-        _lobbyService.SetServerId(serverId);
-        Logger.Lobby($"ServerId has been set: {serverId}");
-    }
-    
-    public string GetServerId()
-    {
-        string serverId = _lobbyService.GetServerId();
-        Logger.Lobby($"Retrieved server ID: {serverId}");
-        return serverId;
     }
 }

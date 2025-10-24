@@ -1,7 +1,7 @@
 using GodotPeer2PeerSteamCSharp.Modules.Lobby;
-using Steamworks;
+using GodotSteam;
 
-namespace GodotPeer2PeerSteamCSharp.Services.Steam.Lobby;
+namespace GodotPeer2PeerSteamCSharp.Modules.Lobby.Services;
 
 public partial class LobbyService 
 {
@@ -11,8 +11,8 @@ public partial class LobbyService
     }
 
     private static void RegisterChatCallbacks()
-    {
-        SteamMatchmaking.OnChatMessage += OnLobbyChatMessage;
+    { 
+        OnChatMessage += OnLobbyChatMessage;
     }
 
     private static void OnLobbyChatMessage(Steamworks.Data.Lobby lobby, Friend friend, string message)

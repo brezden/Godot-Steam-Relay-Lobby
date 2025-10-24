@@ -1,9 +1,5 @@
-﻿using System.Diagnostics;
-using Godot;
-using Godot.NativeInterop;
-using GodotPeer2PeerSteamCSharp.Games;
+﻿using Godot;
 using GodotPeer2PeerSteamCSharp.Modules.Input;
-using Steamworks.Data;
 
 namespace GodotPeer2PeerSteamCSharp.Autoload;
 
@@ -27,11 +23,6 @@ public partial class InputManager : Node
      _inputReceiver = new InputReceiver();
      AddChild(_inputReceiver);
    }
-   
-    public override void _Process(double delta)
-    {
-        _inputReceiver.BuildPacket(delta);
-    }
    
    public void SetInputHandler(IInputHandler handler)
    {
