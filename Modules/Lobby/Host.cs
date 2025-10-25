@@ -18,7 +18,6 @@ public partial class LobbyManager
                 "Creating lobby",
                 InformationModalType.Loading);
             await _lobbyService.StartHost();
-            _lobbyService.EnterLobbyScene();
         }
         catch (Exception ex)
         {

@@ -37,7 +37,19 @@ public partial class LobbyService
         
         return lobbyMembersData;
     }
-
+    
+    public PlayerInfo GetLobbyMember(ulong steamId)
+    {
+        var memberName = Steam.GetFriendPersonaName(steamId);
+        Steam.GetPlayerAvatar(AvatarSize.Large, steamId);
+        
+        return new PlayerInfo
+        {
+            PlayerId = steamId,
+            Name = memberName,
+        };
+    }
+    
     private static void OnAvatarLoaded(ulong steamId, int width, byte[] data)
     {
         var newImage = Image.CreateFromData(
@@ -59,5 +71,10 @@ public partial class LobbyService
         };
         
         EventBus.Lobby.OnLobbyMembersRefreshed();
+    }
+
+    public void OpenInviteOverlay()
+    {
+        Steam.ActivateGameOverlayInviteDialog(_lobbyId);
     }
 }

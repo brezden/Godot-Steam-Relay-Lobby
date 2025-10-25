@@ -11,5 +11,7 @@ public interface ILobbyService
     void LeaveLobby();
     void InvitePlayer(ulong playerId);
     void SendLobbyMessage(string message);
+    PlayerInfo GetLobbyMember(ulong playerId);
     LobbyMembersData GatherLobbyMembersData();
+    void OpenInviteOverlay();
 }

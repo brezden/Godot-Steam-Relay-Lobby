@@ -26,12 +26,12 @@ public partial class LobbyMemberContainer : Node
             AddLobbyMember(playerId);
     }
 
-    private void AddLobbyMember(string playerId)
+    private void AddLobbyMember(ulong playerId)
     {
         var lobbyMemberInstance = _lobbyMemberScene.Instantiate();
         var args = LobbyManager.LobbyMembersData.Players[playerId];
 
-        lobbyMemberInstance.Name = args.PlayerId;
+        lobbyMemberInstance.Name = playerId.ToString();
         
         if (lobbyMemberInstance is LobbyMember lobbyMemberScript)
         {
@@ -42,9 +42,9 @@ public partial class LobbyMemberContainer : Node
         AddChild(lobbyMemberInstance);
     }
 
-    private void RemoveLobbyMember(string playerId)
+    private void RemoveLobbyMember(ulong playerId)
     {
-        var lobbyMemberInstance = GetNodeOrNull<LobbyMember>(playerId);
+        var lobbyMemberInstance = GetNodeOrNull<LobbyMember>(playerId.ToString());
         if (lobbyMemberInstance != null)
             lobbyMemberInstance.QueueFree();
         else

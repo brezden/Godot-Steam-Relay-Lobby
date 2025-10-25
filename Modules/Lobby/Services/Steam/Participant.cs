@@ -1,4 +1,3 @@
-using System;
 using GodotSteam;
 
 namespace GodotPeer2PeerSteamCSharp.Modules.Lobby.Services;
@@ -17,16 +16,14 @@ public partial class LobbyService
         Steam.LobbyChatUpdate += _onLobbyChatUpdateHandler;
     }
     
-    
     public void InvitePlayer(ulong playerId)
     {
-        try
+        bool userInvited = Steam.InviteUserToLobby(_lobbyId, playerId);
+        
+        // Not sure under what conditions this would fail, but logging it just in case.
+        if (!userInvited)
         {
-            Steam.InviteUserToLobby(_lobbyId, playerId);
-        }
-        catch (Exception ex)
-        {
-            Logger.Error($"Error inviting player: {ex.Message}");
+            Logger.Error($"Failed to invite player {playerId} to lobby {_lobbyId}");
         }
     }
 
@@ -71,6 +68,7 @@ public partial class LobbyService
         LobbyManager.PlayerReadyToJoinGame();
     }
 
+    // TODO: Hook up
     private void OnLobbyMemberJoinedCallback(ulong memberJoinedId)
     {
         LobbyManager.AddPlayer(memberJoinedId);
@@ -80,4 +78,5 @@ public partial class LobbyService
     {
         LobbyManager.RemovePlayer(memberLeftId);
     }
+
 }

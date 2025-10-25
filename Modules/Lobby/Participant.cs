@@ -29,7 +29,7 @@ public partial class LobbyManager
             return;
         }
 
-        var playerInfo = _lobbyService.GetPlayerInfo(playerId).Result;
+        var playerInfo = _lobbyService.GetLobbyMember(playerId);
         LobbyMembersData.Players.Add(playerId, playerInfo);
         Logger.Lobby($"Player added to lobby: {playerId}");
         EventBus.Lobby.OnLobbyMemberJoined(playerId);
@@ -54,7 +54,5 @@ public partial class LobbyManager
         _isHost = false;
         LobbyMembersData.Players.Clear();
         Logger.Lobby("Disconnected from lobby");
-        
-        TransportManager.Instance.Disconnect();
     }
 }

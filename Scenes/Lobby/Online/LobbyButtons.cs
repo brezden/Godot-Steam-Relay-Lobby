@@ -25,7 +25,7 @@ public partial class LobbyButtons : Node
 
     private void InviteLobby()
     {
-        LobbyManager.OpenedInviteOverlay();
+        LobbyManager.OpenInviteOverlay();
         UIManager.Instance.ModalManager.RenderModal(ModalType.InvitePlayer);
     }
 

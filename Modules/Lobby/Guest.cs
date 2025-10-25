@@ -10,13 +10,14 @@ public partial class LobbyManager
         EventBus.Lobby.StartGuest += (_, lobbyId) => StartGuest(lobbyId);
     }
     
-    private static async void StartGuest(string lobbyId)
+    // TODO: Hook up
+    private static void StartGuest(ulong lobbyId)
     {
         try {
             UIManager.Instance.ModalManager.RenderInformationModal(
                 "Joining lobby",
                 InformationModalType.Loading);
-            await _lobbyService.StartGuest(lobbyId);
+            _lobbyService.JoinLobby(lobbyId);
         } catch (Exception ex)
         {
             ErrorGuest(ex);
@@ -32,10 +33,5 @@ public partial class LobbyManager
             "An unexpected error occurred while joining the lobby. Please try again",
             002);
         LeaveLobbyAndTransport();
-    }
-
-    public static void FinishGuest()
-    {
-        _lobbyService.EnterLobbyScene();
     }
 }
