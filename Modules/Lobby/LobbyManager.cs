@@ -1,5 +1,4 @@
 using Godot;
-using GodotPeer2PeerSteamCSharp.Modules.Lobby;
 using GodotPeer2PeerSteamCSharp.Modules.Lobby.Services;
 using GodotPeer2PeerSteamCSharp.Types.Lobby;
 

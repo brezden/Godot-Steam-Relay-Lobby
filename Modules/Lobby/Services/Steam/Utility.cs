@@ -1,80 +1,63 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 using Godot;
 using GodotPeer2PeerSteamCSharp.Types.Lobby;
 using GodotSteam;
-using Steamworks;
 
 namespace GodotPeer2PeerSteamCSharp.Modules.Lobby.Services;
 
 public partial class LobbyService
 {
-    public async Task<LobbyMembersData> GatherLobbyMembersData()
+    private Steam.AvatarLoadedEventHandler _onAvatarLoadedHandler;
+    
+    private void RegisterUtilityCallbacks()
+    {
+        _onAvatarLoadedHandler += OnAvatarLoaded;
+        Steam.AvatarLoaded += _onAvatarLoadedHandler;
+    }
+    
+    public LobbyMembersData GatherLobbyMembersData()
     {
         var lobbyMembersData = new LobbyMembersData();
-        var members = _lobby.Members;
 
-        foreach (var member in members)
+        int memberCount = Steam.GetNumLobbyMembers(_lobbyId);
+
+        // For each index in the lobby members list
+        // get the member index and add to members list
+        foreach (int memberIndex in Enumerable.Range(0, memberCount))
         {
-            var playerInfo = GetPlayerInfo(member.Id.ToString()).Result;
-            lobbyMembersData.Players.Add(member.Id.ToString(), playerInfo);
+            ulong memberId = Steam.GetLobbyMemberByIndex(_lobbyId, memberIndex);
+            var memberName = Steam.GetFriendPersonaName(memberId);
+            Steam.GetPlayerAvatar(AvatarSize.Large, memberId);
+            lobbyMembersData.Players.Add(memberId, new PlayerInfo
+            {
+                PlayerId = memberId,
+                Name = memberName,
+            });
         }
-
+        
         return lobbyMembersData;
     }
 
-    public async Task<PlayerInfo> GetPlayerInfo(ulong playerId)
+    private static void OnAvatarLoaded(ulong steamId, int width, byte[] data)
     {
-        var friend = new Friend(ConvertStringToSteamId(playerId));
-        var profilePicture = GetProfilePictureAsync(friend.Id).Result;
-        return new PlayerInfo
-        {
-            PlayerId = playerId,
-            Name = friend.Name,
-            ProfilePicture = profilePicture,
-            IsReady = false
-        };
-    }
-
-    public async Task<List<PlayerInvite>> GetInGameFriends()
-    {
-        var inGameFriends = new List<PlayerInvite>();
-        var friends = SteamFriends.GetFriends();
-
-        foreach (var friend in friends)
-            if (friend.IsPlayingThisGame)
-            {
-                var profilePicture = await GetProfilePictureAsync(friend.Id);
-                inGameFriends.Add(new PlayerInvite
-                {
-                    PlayerId = friend.Id.ToString(),
-                    PlayerName = friend.Name,
-                    PlayerStatus = friend.State.ToString(),
-                    PlayerPicture = profilePicture
-                });
-            }
-
-        return inGameFriends;
-    }
-
-    private static async Task<ImageTexture?> GetProfilePictureAsync(ulong steamId)
-    {
-        var steamImage = await SteamFriends.GetLargeAvatarAsync(steamId);
-        if (steamImage == null)
-            return null;
-
         var newImage = Image.CreateFromData(
-            (int) steamImage.Value.Width,
-            (int) steamImage.Value.Height,
+            (int) width,
+            (int) width, // Height is same as width for avatars
             false,
             Image.Format.Rgba8,
-            steamImage.Value.Data
+            data
         );
 
         var texture = new ImageTexture();
         texture.SetImage(newImage);
-
-        return texture;
+        
+        LobbyManager.LobbyMembersData.Players[steamId] = new PlayerInfo
+        {
+            PlayerId = steamId,
+            Name = LobbyManager.LobbyMembersData.Players[steamId].Name,
+            ProfilePicture = texture
+        };
+        
+        EventBus.Lobby.OnLobbyMembersRefreshed();
     }
 }

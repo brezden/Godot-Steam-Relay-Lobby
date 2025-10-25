@@ -6,9 +6,9 @@ namespace GodotPeer2PeerSteamCSharp.Types.Lobby;
 
 public enum LobbyType
 {
-    Public,
-    FriendsOnly,
-    Private
+Public,
+FriendsOnly,
+Private
 }
 
 public enum ConnectionType
@@ -23,7 +23,6 @@ public struct PlayerInfo
     public ulong PlayerId;
     public string Name;
     public ImageTexture? ProfilePicture;
-    public bool IsReady;
 }
 
 public struct PlayerInvite
@@ -36,11 +35,11 @@ public struct PlayerInvite
 
 public struct LobbyMembersData
 {
-    public Dictionary<string, PlayerInfo> Players;
+    public Dictionary<ulong, PlayerInfo> Players;
 
     public LobbyMembersData()
     {
-        Players = new Dictionary<string, PlayerInfo>();
+        Players = new Dictionary<ulong, PlayerInfo>();
     }
 }
 

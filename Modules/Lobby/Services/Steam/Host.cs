@@ -1,11 +1,6 @@
-using System;
 using System.Threading.Tasks;
-using Godot;
-using GodotPeer2PeerSteamCSharp.Modules;
-using GodotPeer2PeerSteamCSharp.Modules.Lobby;
 using GodotPeer2PeerSteamCSharp.Types.Lobby;
 using GodotSteam;
-using Steamworks;
 
 namespace GodotPeer2PeerSteamCSharp.Modules.Lobby.Services;
 
@@ -16,7 +11,7 @@ public partial class LobbyService
     public async Task StartHost()
     {
         CreateLobby();
-        await LobbyManager.GatherLobbyMembers();
+        LobbyManager.GatherLobbyMembers();
     }
     
     private void CreateLobby(LobbyType lobbyType = LobbyType.Private, int maxMembers = 4)

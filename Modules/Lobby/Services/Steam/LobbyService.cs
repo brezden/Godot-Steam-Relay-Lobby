@@ -13,8 +13,8 @@ public partial class LobbyService : ILobbyService
     {
         InitializeSteam();
         RegisterChatCallbacks();
-        RegisterGuestCallbacks();
         RegisterParticipantCallbacks();
+        RegisterUtilityCallbacks();
     }
 
     public void Update()

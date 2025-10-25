@@ -7,7 +7,7 @@ public partial class LobbyManager
     public static void PlayerReadyToJoinGame()
     {
         Logger.Lobby("Player is ready to join game");
-        _lobbyService.EnterLobbyScene();
+        SceneManager.Instance.GotoScene(SceneRegistry.Lobby.OnlineLobby);
     }
 
     public static void ErrorJoiningLobby()
@@ -35,7 +35,7 @@ public partial class LobbyManager
         EventBus.Lobby.OnLobbyMemberJoined(playerId);
     }
 
-    public static void RemovePlayer(string playerId)
+    public static void RemovePlayer(ulong playerId)
     {
         LobbyMembersData.Players.Remove(playerId);
         Logger.Lobby($"Player removed from lobby: {playerId}");

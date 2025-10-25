@@ -8,9 +8,9 @@ namespace GodotPeer2PeerSteamCSharp.Modules.Lobby;
 
 public partial class LobbyManager 
 {
-    public static async Task GatherLobbyMembers()
+    public static void GatherLobbyMembers()
     {
-        LobbyMembersData = _lobbyService.GatherLobbyMembersData().Result;
+        LobbyMembersData = _lobbyService.GatherLobbyMembersData();
         Logger.Lobby($"Lobby members gathered: {LobbyMembersData.Players.Count}");
     }
     
