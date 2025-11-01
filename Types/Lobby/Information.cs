@@ -27,10 +27,10 @@ public struct PlayerInfo
 
 public struct PlayerInvite
 {
-    public string PlayerId;
+    public ulong PlayerId;
     public string PlayerName;
     public string PlayerStatus;
-    public ImageTexture PlayerPicture;
+    public ImageTexture? PlayerPicture;
 }
 
 public struct LobbyMembersData

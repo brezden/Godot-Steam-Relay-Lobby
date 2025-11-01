@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using GodotPeer2PeerSteamCSharp.Types.Lobby;
+using GodotPeer2PeerSteamCSharp.Types.Scene;
 using GodotSteam;
 
 namespace GodotPeer2PeerSteamCSharp.Modules.Lobby.Services;
@@ -36,6 +38,34 @@ public partial class LobbyService
         }
         
         return lobbyMembersData;
+    }
+    
+    public List<PlayerInvite> GetInGameFriends()
+    {
+        var list = new List<PlayerInvite>();
+        uint myAppId = Steam.GetAppID();
+        int count = Steam.GetFriendCount();
+        for (int i = 0; i < count; i++)
+        {
+            ulong friendId = Steam.GetFriendByIndex(i, FriendFlag.Immediate);
+
+            FriendGame? hasGameInfo = Steam.GetFriendGamePlayed(friendId);
+
+            if (hasGameInfo == null) continue;
+            if (hasGameInfo.Value.Id != myAppId) continue;
+
+            string name = Steam.GetFriendPersonaName(friendId);
+            PersonaState state  = Steam.GetFriendPersonaState(friendId);
+
+            list.Add(new PlayerInvite
+            {
+                PlayerId      = friendId,
+                PlayerName    = name,
+                PlayerStatus  = state.ToString(),
+            });
+        }
+        
+        return list;
     }
     
     public PlayerInfo GetLobbyMember(ulong steamId)
@@ -75,13 +105,12 @@ public partial class LobbyService
 
     public void OpenInviteOverlay()
     {
+        Steam.ActivateGameOverlayInviteDialog(_lobbyId);
+        
         if (!Steam.IsOverlayEnabled())
         {
-            Logger.Lobby("Steam Overlay is not available.");
-            Steam.ActivateGameOverlay(GameOverlayType.Friends);
-            return;
+            Logger.Error("Steam overlay is not enabled. Opening custom friends list invite instead");
+            UIManager.Instance.ModalManager.RenderModal(ModalType.InvitePlayer);
         }
-        
-        Steam.ActivateGameOverlayInviteDialog(_lobbyId);
     }
 }

@@ -9,6 +9,7 @@ public partial class LobbyService : ILobbyService
     public void Initialize()
     {
         RegisterChatCallbacks();
+        RegisterGuestCallbacks();
         RegisterParticipantCallbacks();
         RegisterUtilityCallbacks();
     }
