@@ -75,6 +75,13 @@ public partial class LobbyService
 
     public void OpenInviteOverlay()
     {
+        if (!Steam.IsOverlayEnabled())
+        {
+            Logger.Lobby("Steam Overlay is not available.");
+            Steam.ActivateGameOverlay(GameOverlayType.Friends);
+            return;
+        }
+        
         Steam.ActivateGameOverlayInviteDialog(_lobbyId);
     }
 }
