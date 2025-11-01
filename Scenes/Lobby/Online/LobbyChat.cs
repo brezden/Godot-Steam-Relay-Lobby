@@ -9,12 +9,12 @@ public partial class LobbyChat : Node
 
     public override void _Ready()
     {
-        chatBox = GetNode<TextEdit>("ChatBox");
-        chatInput = GetNode<LineEdit>("ChatInput");
+        chatBox = GetNode<TextEdit>("%ChatBox");
+        chatInput = GetNode<LineEdit>("%ChatInput");
 
         EventBus.Lobby.LobbyMessageReceived += OnLobbyMessageReceived;
 
-        var sendLobbyMessageButton = GetNode<Button>("SendLobbyMessage");
+        var sendLobbyMessageButton = GetNode<Button>("%SendLobbyMessage");
         sendLobbyMessageButton.Pressed += OnSendLobbyMessage;
     }
 

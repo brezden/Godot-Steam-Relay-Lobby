@@ -5,11 +5,12 @@ namespace GodotPeer2PeerSteamCSharp.Modules.Lobby.Services;
 
 public partial class LobbyService 
 {
-    private Steam.LobbyMessageEventHandler OnChatMessageHandler;
+    private Steam.LobbyMessageEventHandler _onChatMessageHandler;
     
     private void RegisterChatCallbacks()
     {
-        OnChatMessageHandler += OnLobbyChatMessage;
+        _onChatMessageHandler += OnLobbyChatMessage;
+        Steam.LobbyMessage += _onChatMessageHandler;
     }
     
     public void SendLobbyMessage(string message)

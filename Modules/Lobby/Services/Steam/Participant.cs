@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using GodotSteam;
 
 namespace GodotPeer2PeerSteamCSharp.Modules.Lobby.Services;
@@ -65,6 +66,7 @@ public partial class LobbyService
 
     private static void OnLobbyJoined(ulong lobby, long permissions, bool locked, long response)
     {
+        _lobbyId = lobby; 
         int result = Steam.GetNumLobbyMembers(lobby);
         Logger.Lobby($"Joined lobby {lobby} with {result} members");
         

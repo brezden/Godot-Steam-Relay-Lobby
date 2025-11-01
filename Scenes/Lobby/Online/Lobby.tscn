@@ -60,12 +60,14 @@ layout_mode = 2
 
 [node name="LobbyChat" type="VBoxContainer" parent="HBoxContainer/Left Side"]
 layout_mode = 2
+size_flags_vertical = 3
 script = ExtResource("1_7dbfh")
 
 [node name="ChatBox" type="TextEdit" parent="HBoxContainer/Left Side/LobbyChat"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/Left Side/LobbyChat"]
 layout_mode = 2
@@ -91,9 +93,12 @@ icon = ExtResource("3_rke0u")
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 60)
 layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 13
 theme_override_styles/normal = SubResource("StyleBoxFlat_e5ed2")
 
 [node name="ColorRect" type="ColorRect" parent="HBoxContainer/Left Side"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 color = Color(1, 1, 1, 0.0705882)
@@ -116,7 +121,6 @@ layout_mode = 2
 [node name="LobbyMemberContainer" type="VBoxContainer" parent="HBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-alignment = 1
 script = ExtResource("3_gklqx")
 _lobbyMemberScene = ExtResource("4_8mcj3")
 
