@@ -12,6 +12,7 @@ public partial class EventBus : Node
         public static event EventHandler<ulong> LobbyMemberJoined;
         public static event EventHandler<ulong> LobbyMemberLeft;
         public static event EventHandler LobbyMembersRefreshed;
+        public static event EventHandler<string> LobbyLog;
 
         public static void OnStartHost(ConnectionType connectionType)
         {
@@ -43,6 +44,11 @@ public partial class EventBus : Node
         public static void OnLobbyMembersRefreshed()
         {
             LobbyMembersRefreshed?.Invoke(null, null);
+        }
+        
+        public static void OnLobbyLog(string message)
+        {
+            LobbyLog?.Invoke(null, message);
         }
     }
 }

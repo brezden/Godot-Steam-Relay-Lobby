@@ -68,7 +68,7 @@ public partial class LobbyService
     {
         _lobbyId = lobby; 
         int result = Steam.GetNumLobbyMembers(lobby);
-        Logger.Lobby($"Joined lobby {lobby} with {result} members");
+        Logger.Lobby($"Joined lobby {lobby} with {result} members", result > 1);
         
         for (int i = 0; i < result; i++)
         {
@@ -79,10 +79,9 @@ public partial class LobbyService
         LobbyManager.PlayerReadyToJoinGame();
     }
 
-    // TODO: Hook up
     private void OnLobbyMemberJoinedCallback(ulong memberJoinedId)
     {
-        Logger.Lobby($"Player has joined the lobby: {memberJoinedId}");
+        Logger.Lobby($"Player has joined the lobby: {memberJoinedId}", true);
     }
 
     private static void OnLobbyMemberLeft(ulong memberLeftId)

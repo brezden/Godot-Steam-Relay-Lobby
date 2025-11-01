@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://qsoslr654lwv"]
+[gd_scene load_steps=11 format=3 uid="uid://qsoslr654lwv"]
 
 [ext_resource type="Script" path="res://Scenes/Lobby/Online/LobbyChat.cs" id="1_7dbfh"]
 [ext_resource type="Script" path="res://Scenes/Lobby/Online/Lobby.cs" id="1_pw7u0"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://Scenes/Lobby/Online/LobbyMemberContainer.cs" id="3_gklqx"]
 [ext_resource type="Texture2D" uid="uid://cau3ed8wha5tx" path="res://Assets/Icons/Send.png" id="3_rke0u"]
 [ext_resource type="PackedScene" uid="uid://s8d6qytpgyqq" path="res://Scenes/Lobby/Online/LobbyMember.tscn" id="4_8mcj3"]
+[ext_resource type="Script" path="res://Scenes/Lobby/Online/LobbyLogs.cs" id="4_imxdl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qsloa"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -57,10 +58,12 @@ theme_override_constants/separation = 6
 
 [node name="Left Side" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 16
 
 [node name="LobbyChat" type="VBoxContainer" parent="HBoxContainer/Left Side"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/separation = 5
 script = ExtResource("1_7dbfh")
 
 [node name="ChatBox" type="TextEdit" parent="HBoxContainer/Left Side/LobbyChat"]
@@ -68,6 +71,8 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
 size_flags_vertical = 3
+editable = false
+scroll_smooth = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/Left Side/LobbyChat"]
 layout_mode = 2
@@ -94,8 +99,11 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 60)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 8
 theme_override_styles/normal = SubResource("StyleBoxFlat_e5ed2")
+text = "dfsdfsdf"
+scroll_smooth = true
+script = ExtResource("4_imxdl")
 
 [node name="ColorRect" type="ColorRect" parent="HBoxContainer/Left Side"]
 visible = false

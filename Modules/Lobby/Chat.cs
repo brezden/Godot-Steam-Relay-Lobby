@@ -18,7 +18,7 @@ public partial class LobbyManager
             Message = message
         };
 
-        Logger.Lobby($"Lobby message received from {args.PlayerName}: {args.Message}");
+        Logger.Lobby($"Lobby message received from {args.PlayerName}: {args.Message}", true);
 
         EventBus.Lobby.OnLobbyMessageReceived(args);
     }

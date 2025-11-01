@@ -37,14 +37,14 @@ public partial class LobbyManager
     public static void RemovePlayer(ulong playerId)
     {
         LobbyMembersData.Players.Remove(playerId);
-        Logger.Lobby($"Player removed from lobby: {playerId}");
+        Logger.Lobby($"Player removed from lobby: {playerId}", true);
         EventBus.Lobby.OnLobbyMemberLeft(playerId);
     }
 
     public static void InvitePlayer(ulong playerId)
     {
         _lobbyService.InvitePlayer(playerId);
-        Logger.Lobby($"Player invited: {playerId}");
+        Logger.Lobby($"Player invited: {playerId}", true);
     }
 
     public static void LeaveLobbyAndTransport()

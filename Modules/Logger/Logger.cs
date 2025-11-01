@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 using Godot;
+using GodotPeer2PeerSteamCSharp.Modules.Lobby;
 
 public enum LogType
 {
@@ -102,9 +103,13 @@ public static class Logger
         LogInternal(LogType.Game, msg, file, line, member);
     }
     
-    public static void Lobby(string msg,
+    public static void Lobby(string msg, bool visualLog = false,
         [CallerFilePath] string file = "", [CallerLineNumber] int line = 0, [CallerMemberName] string member = "")
     {
+        if (visualLog)
+        {
+            EventBus.Lobby.OnLobbyLog(msg);
+        }
         LogInternal(LogType.Lobby, msg, file, line, member);
     }
 
