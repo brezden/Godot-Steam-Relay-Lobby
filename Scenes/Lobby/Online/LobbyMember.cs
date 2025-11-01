@@ -2,7 +2,7 @@ using Godot;
 
 public partial class LobbyMember : Control
 {
-    private Label _nameLabel;
+    private RichTextLabel _nameLabel;
     private TextureRect _profilePicture;
     
     [Export]
@@ -21,7 +21,7 @@ public partial class LobbyMember : Control
 
     public override void _Ready()
     {
-        _nameLabel = GetNodeOrNull<Label>("NameLabel");
+        _nameLabel = GetNodeOrNull<RichTextLabel>("%NameLabel");
         _profilePicture = GetNodeOrNull<TextureRect>("%ProfilePicture");
 
         if (_nameLabel == null)
@@ -36,7 +36,7 @@ public partial class LobbyMember : Control
             return;
         }
 
-        _nameLabel.Text = PlayerName;
+        _nameLabel.Text = $"[center]{PlayerName}[/center]";
         _profilePicture.Texture = ProfilePicture;
     }
 }

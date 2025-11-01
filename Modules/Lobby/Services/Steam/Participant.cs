@@ -65,13 +65,22 @@ public partial class LobbyService
 
     private static void OnLobbyJoined(ulong lobby, long permissions, bool locked, long response)
     {
+        int result = Steam.GetNumLobbyMembers(lobby);
+        Logger.Lobby($"Joined lobby {lobby} with {result} members");
+        
+        for (int i = 0; i < result; i++)
+        {
+            ulong memberId = Steam.GetLobbyMemberByIndex(lobby, i);
+            LobbyManager.AddPlayerData(memberId);
+        }
+        
         LobbyManager.PlayerReadyToJoinGame();
     }
 
     // TODO: Hook up
     private void OnLobbyMemberJoinedCallback(ulong memberJoinedId)
     {
-        LobbyManager.AddPlayer(memberJoinedId);
+        Logger.Lobby($"Player has joined the lobby: {memberJoinedId}");
     }
 
     private static void OnLobbyMemberLeft(ulong memberLeftId)

@@ -1,30 +1,65 @@
-[gd_scene load_steps=2 format=3 uid="uid://s8d6qytpgyqq"]
+[gd_scene load_steps=4 format=3 uid="uid://s8d6qytpgyqq"]
 
 [ext_resource type="Script" path="res://Scenes/Lobby/Online/LobbyMember.cs" id="1_mputd"]
+[ext_resource type="Texture2D" uid="uid://00qtqshkg50d" path="res://icon.svg" id="2_x1385"]
 
-[node name="LobbyMember" type="VBoxContainer"]
-custom_minimum_size = Vector2(96, 64)
-offset_right = 47.0
-offset_bottom = 59.0
-size_flags_horizontal = 3
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b7nx2"]
+border_width_left = 2
+border_width_right = 2
+border_width_bottom = 6
+border_color = Color(0.22, 0.22, 0.22, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="Panel" type="Panel"]
+custom_minimum_size = Vector2(300, 48)
+offset_right = 300.0
+offset_bottom = 48.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_b7nx2")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_right = -2.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LobbyMemberContainer" type="HBoxContainer" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 alignment = 1
 script = ExtResource("1_mputd")
 
-[node name="NameLabel" type="Label" parent="."]
-layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "Unknown"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="CenterContainer" type="CenterContainer" parent="."]
-custom_minimum_size = Vector2(64, 64)
-layout_mode = 2
-
-[node name="ProfilePicture" type="TextureRect" parent="CenterContainer"]
+[node name="ProfilePicture" type="TextureRect" parent="MarginContainer/LobbyMemberContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(64, 64)
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+texture = ExtResource("2_x1385")
 expand_mode = 2
+
+[node name="CenterContainer2" type="CenterContainer" parent="MarginContainer/LobbyMemberContainer"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/LobbyMemberContainer/CenterContainer2"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="NameLabel" type="RichTextLabel" parent="MarginContainer/LobbyMemberContainer/CenterContainer2/MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
+text = "[center]Player[/center]"
+scroll_active = false
+autowrap_mode = 1

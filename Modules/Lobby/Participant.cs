@@ -21,7 +21,7 @@ public partial class LobbyManager
         LeaveLobbyAndTransport();
     }
     
-    public static void AddPlayer(ulong playerId)
+    public static void AddPlayerData(ulong playerId)
     {
         if (LobbyMembersData.Players.ContainsKey(playerId))
         {
@@ -31,8 +31,7 @@ public partial class LobbyManager
 
         var playerInfo = _lobbyService.GetLobbyMember(playerId);
         LobbyMembersData.Players.Add(playerId, playerInfo);
-        Logger.Lobby($"Player added to lobby: {playerId}");
-        EventBus.Lobby.OnLobbyMemberJoined(playerId);
+        Logger.Lobby($"Player: {playerId} data added to lobby");
     }
 
     public static void RemovePlayer(ulong playerId)
