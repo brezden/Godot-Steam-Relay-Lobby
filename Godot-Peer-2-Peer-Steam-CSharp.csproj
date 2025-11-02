@@ -40,7 +40,7 @@
     <ItemGroup>
         <Folder Include="addons\" />
         <Folder Include="Assets\" />
-        <Folder Include="DLL\" />
+        <Folder Include="Modules\Lobby\MemberData.cs\" />
         <Folder Include="Scenes\Transitions\" />
         <Compile Remove="Tests\**\*.cs" />
     </ItemGroup>

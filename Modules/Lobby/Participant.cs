@@ -20,19 +20,6 @@ public partial class LobbyManager
             005);
         LeaveLobbyAndTransport();
     }
-    
-    public static void UpdatePlayerData(ulong playerId)
-    {
-        var playerInfo = _lobbyService.GetLobbyMember(playerId);
-        LobbyMembersData.Players[playerId] = playerInfo;
-        Logger.Lobby($"Player {playerInfo.Name} data updated");
-    }
-
-    public static void RemovePlayer(ulong playerId)
-    {
-        LobbyMembersData.Players.Remove(playerId);
-        Logger.Lobby($"Player removed from lobby: {playerId}", true);
-    }
 
     public static void InvitePlayer(ulong playerId)
     {
@@ -44,7 +31,7 @@ public partial class LobbyManager
     {
         _lobbyService.LeaveLobby();
         _isHost = false;
-        LobbyMembersData.Players.Clear();
+        MemberData = null;
         Logger.Lobby("Disconnected from lobby");
     }
 }

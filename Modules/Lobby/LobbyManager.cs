@@ -1,4 +1,5 @@
 using Godot;
+using GodotPeer2PeerSteamCSharp.Modules.Lobby.MemberData;
 using GodotPeer2PeerSteamCSharp.Modules.Lobby.Services;
 using GodotPeer2PeerSteamCSharp.Types.Lobby;
 
@@ -6,8 +7,7 @@ namespace GodotPeer2PeerSteamCSharp.Modules.Lobby;
 
 public partial class LobbyManager : Node
 {
-    public static LobbyMembersData LobbyMembersData = new();
-
+    public static MemberDataManager MemberData;
     private static ILobbyService _lobbyService;
     private static bool _isHost;
 

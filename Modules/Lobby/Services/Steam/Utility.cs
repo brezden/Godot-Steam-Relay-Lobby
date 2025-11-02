@@ -28,16 +28,23 @@ public partial class LobbyService
         foreach (int memberIndex in Enumerable.Range(0, memberCount))
         {
             ulong memberId = Steam.GetLobbyMemberByIndex(_lobbyId, memberIndex);
-            var memberName = Steam.GetFriendPersonaName(memberId);
-            Steam.GetPlayerAvatar(AvatarSize.Large, memberId);
-            lobbyMembersData.Players.Add(memberId, new PlayerInfo
-            {
-                PlayerId = memberId,
-                Name = memberName,
-            });
+            var memberData = GetMemberData(memberId);
+            lobbyMembersData.Players.Add(memberId, memberData);
         }
         
         return lobbyMembersData;
+    }
+
+    public PlayerInfo GetMemberData(ulong playerId)
+    {
+        var memberName = Steam.GetFriendPersonaName(playerId);
+        Steam.GetPlayerAvatar(AvatarSize.Large, playerId);
+
+        return new PlayerInfo
+        {
+            PlayerId = playerId,
+            Name = memberName,
+        };
     }
     
     public List<PlayerInvite> GetInGameFriends()
@@ -92,13 +99,15 @@ public partial class LobbyService
 
         var texture = new ImageTexture();
         texture.SetImage(newImage);
-        
-        LobbyManager.LobbyMembersData.Players[steamId] = new PlayerInfo
+
+        PlayerInfo newMemberData = new PlayerInfo
         {
             PlayerId = steamId,
-            Name = LobbyManager.LobbyMembersData.Players[steamId].Name,
+            Name = GetSteamNameById(steamId),
             ProfilePicture = texture
         };
+        
+        LobbyManager.MemberData.UpdateMember(newMemberData);
     }
 
     public void OpenInviteOverlay()
@@ -112,22 +121,8 @@ public partial class LobbyService
         }
     }
     
-    public string GetSteamNameById(ulong steamId)
+    public static string GetSteamNameById(ulong steamId)
     {
         return Steam.GetFriendPersonaName(steamId);
-    }
-    
-    public static void RefreshLobbyMemberData()
-    {
-        int result = Steam.GetNumLobbyMembers(_lobbyId);
-        
-        for (int i = 0; i < result; i++)
-        {
-            ulong memberId = Steam.GetLobbyMemberByIndex(_lobbyId, i);
-            LobbyManager.UpdatePlayerData(memberId);
-        }
-        
-        Logger.Lobby("Refreshing lobby member data...", true);
-        EventBus.Lobby.OnLobbyMembersRefreshed();
     }
 }

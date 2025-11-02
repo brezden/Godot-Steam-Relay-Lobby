@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using GodotPeer2PeerSteamCSharp.Types.Lobby;
 using GodotSteam;
 
 namespace GodotPeer2PeerSteamCSharp.Modules.Lobby.Services;
@@ -89,19 +90,20 @@ public partial class LobbyService
         
         _lobbyId = lobby;
         Logger.Lobby($"Joined lobby {_lobbyId}", true);
-        RefreshLobbyMemberData();
+        LobbyManager.InitializeLobbyData();
         LobbyManager.PlayerReadyToJoinGame();
     }
 
     private void OnLobbyMemberJoinedCallback(ulong memberJoinedId)
     {
         Logger.Lobby($"Player has joined the lobby: {memberJoinedId}", true);
-        RefreshLobbyMemberData();
+        PlayerInfo newMemberData = GetLobbyMember(memberJoinedId);
+        LobbyManager.MemberData.UpdateMember(newMemberData);
     }
 
     private static void OnLobbyMemberLeft(ulong memberLeftId)
     {
         Logger.Lobby($"Player has left the lobby: {memberLeftId}", true);
-        RefreshLobbyMemberData();
+        LobbyManager.MemberData.RemoveMember(memberLeftId);
     }
 }
