@@ -4,16 +4,12 @@ using GodotPeer2PeerSteamCSharp.Types.Scene;
 
 public partial class LobbyButtons : Node
 {
-    
     Button startGameButton;
     Button inviteLobbyButton;
     Button leaveLobbyButton;
     
     public override void _Ready()
     {
-        EventBus.Lobby.LobbyMemberJoined += (_, _) => CheckPlayGameState();
-        EventBus.Lobby.LobbyMemberLeft += (_, _) => CheckPlayGameState();
-        
         startGameButton = GetNode<Button>("%StartGame");
         inviteLobbyButton = GetNode<Button>("%InviteMembers");
         leaveLobbyButton = GetNode<Button>("%LeaveLobby");
@@ -37,17 +33,5 @@ public partial class LobbyButtons : Node
     private void StartGame()
     {
         Logger.Game("Game is starting...");   
-    }
-
-    private void CheckPlayGameState()
-    {
-        if (LobbyManager.LobbyMembersData.Players.Count >= 2)
-        {
-            startGameButton.Disabled = false;
-        }
-        else
-        {
-            startGameButton.Disabled = true;
-        }
     }
 }

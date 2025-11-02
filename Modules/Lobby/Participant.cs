@@ -21,30 +21,23 @@ public partial class LobbyManager
         LeaveLobbyAndTransport();
     }
     
-    public static void AddPlayerData(ulong playerId)
+    public static void UpdatePlayerData(ulong playerId)
     {
-        if (LobbyMembersData.Players.ContainsKey(playerId))
-        {
-            Logger.Error($"Player {playerId} is already in the lobby");
-            return;
-        }
-
         var playerInfo = _lobbyService.GetLobbyMember(playerId);
-        LobbyMembersData.Players.Add(playerId, playerInfo);
-        Logger.Lobby($"Player: {playerId} data added to lobby");
+        LobbyMembersData.Players[playerId] = playerInfo;
+        Logger.Lobby($"Player {playerInfo.Name} data updated");
     }
 
     public static void RemovePlayer(ulong playerId)
     {
         LobbyMembersData.Players.Remove(playerId);
         Logger.Lobby($"Player removed from lobby: {playerId}", true);
-        EventBus.Lobby.OnLobbyMemberLeft(playerId);
     }
 
     public static void InvitePlayer(ulong playerId)
     {
         _lobbyService.InvitePlayer(playerId);
-        Logger.Lobby($"Player invited: {playerId}", true);
+        Logger.Lobby($"Player invited: {playerId}");
     }
 
     public static void LeaveLobbyAndTransport()

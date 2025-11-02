@@ -99,8 +99,6 @@ public partial class LobbyService
             Name = LobbyManager.LobbyMembersData.Players[steamId].Name,
             ProfilePicture = texture
         };
-        
-        EventBus.Lobby.OnLobbyMembersRefreshed();
     }
 
     public void OpenInviteOverlay()
@@ -112,5 +110,24 @@ public partial class LobbyService
             Logger.Error("Steam overlay is not enabled. Opening custom friends list invite instead");
             UIManager.Instance.ModalManager.RenderModal(ModalType.InvitePlayer);
         }
+    }
+    
+    public string GetSteamNameById(ulong steamId)
+    {
+        return Steam.GetFriendPersonaName(steamId);
+    }
+    
+    public static void RefreshLobbyMemberData()
+    {
+        int result = Steam.GetNumLobbyMembers(_lobbyId);
+        
+        for (int i = 0; i < result; i++)
+        {
+            ulong memberId = Steam.GetLobbyMemberByIndex(_lobbyId, i);
+            LobbyManager.UpdatePlayerData(memberId);
+        }
+        
+        Logger.Lobby("Refreshing lobby member data...", true);
+        EventBus.Lobby.OnLobbyMembersRefreshed();
     }
 }

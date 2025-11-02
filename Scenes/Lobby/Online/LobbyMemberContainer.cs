@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 using GodotPeer2PeerSteamCSharp.Modules.Lobby;
 
@@ -8,9 +9,8 @@ public partial class LobbyMemberContainer : Node
 
     public override void _Ready()
     {
-        EventBus.Lobby.LobbyMemberJoined += (_, playerId) => AddLobbyMember(playerId);
-        EventBus.Lobby.LobbyMemberLeft += (_,playerId) => RemoveLobbyMember(playerId);
-
+        EventBus.Lobby.LobbyMembersRefreshed += (_, _) => RefreshLobbyData();
+        
         if (_lobbyMemberScene == null)
         {
             Logger.Error("LobbyMember scene is not assigned in the inspector");
@@ -27,8 +27,42 @@ public partial class LobbyMemberContainer : Node
             AddLobbyMember(playerId);
     }
 
+    private void RefreshLobbyData()
+    {
+        var currentPlayerIds = LobbyManager.LobbyMembersData.Players.Keys;
+        var existingPlayerIds = new HashSet<ulong>();
+
+        foreach (var child in GetChildren())
+        {
+            if (child is LobbyMember lobbyMember)
+            {
+                if (ulong.TryParse(lobbyMember.Name, out ulong playerId))
+                {
+                    existingPlayerIds.Add(playerId);
+                }
+            }
+        }
+
+        foreach (var playerId in currentPlayerIds)
+        {
+            if (!existingPlayerIds.Contains(playerId))
+            {
+                AddLobbyMember(playerId);
+            }
+        }
+
+        foreach (var playerId in existingPlayerIds)
+        {
+            if (existingPlayerIds.Contains(playerId))
+            {
+                RemoveLobbyMember(playerId);
+            }
+        }
+    }
+
     private void AddLobbyMember(ulong playerId)
     {
+        
         var lobbyMemberInstance = _lobbyMemberScene.Instantiate();
         var args = LobbyManager.LobbyMembersData.Players[playerId];
 

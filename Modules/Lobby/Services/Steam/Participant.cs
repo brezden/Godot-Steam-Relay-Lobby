@@ -35,14 +35,14 @@ public partial class LobbyService
     }
 
     // For some reason the lobby member joined and left events are not part of the C#
-    // bindings for GodotSteam. They are passed in through chat updates which is whats
-    // being used here.
+    // bindings for GodotSteam. They are passed in through chat updates.
     private void OnLobbyChatUpdate( 
         ulong lobbyId, 
         long changedId, 
         long makingChangeId, 
         long chatState)
     {
+        string name;
         const int CHAT_MEMBER_STATE_CHANGE_ENTERED = 0x0001;
         const int CHAT_MEMBER_STATE_CHANGE_LEFT = 0x0002;
         const int CHAT_MEMBER_STATE_CHANGE_DISCONNECTED = 0x0004;
@@ -54,11 +54,24 @@ public partial class LobbyService
             case CHAT_MEMBER_STATE_CHANGE_ENTERED:
                 OnLobbyMemberJoinedCallback((ulong) changedId);
                 break;
-            
             case CHAT_MEMBER_STATE_CHANGE_LEFT:
+                name = GetSteamNameById((ulong)changedId) ?? "Unknown";
+                Logger.Lobby($"Player has left the lobby: {name} ({changedId})", true);
+                OnLobbyMemberLeft((ulong) changedId);
+                break;
             case CHAT_MEMBER_STATE_CHANGE_DISCONNECTED:
+                name = GetSteamNameById((ulong)changedId) ?? "Unknown";
+                Logger.Lobby($"Player has disconnected from the lobby: {name} ({changedId})", true);
+                OnLobbyMemberLeft((ulong) changedId);
+                break;
             case CHAT_MEMBER_STATE_CHANGE_KICKED:
+                name = GetSteamNameById((ulong)changedId) ?? "Unknown";
+                Logger.Lobby($"Player has been kicked from the lobby: {name} ({changedId})", true);
+                OnLobbyMemberLeft((ulong) changedId);
+                break;
             case CHAT_MEMBER_STATE_CHANGE_BANNED:
+                name = GetSteamNameById((ulong)changedId) ?? "Unknown";
+                Logger.Lobby($"Player has been banned from the lobby: {name} ({changedId})", true);
                 OnLobbyMemberLeft((ulong) changedId);
                 break;
         }
@@ -66,27 +79,29 @@ public partial class LobbyService
 
     private static void OnLobbyJoined(ulong lobby, long permissions, bool locked, long response)
     {
-        _lobbyId = lobby; 
-        int result = Steam.GetNumLobbyMembers(lobby);
-        Logger.Lobby($"Joined lobby {lobby} with {result} members", result > 1);
+        long CHAT_ROOM_ENTER_RESPONSE_SUCCESS = 1;
         
-        for (int i = 0; i < result; i++)
+        if (response != CHAT_ROOM_ENTER_RESPONSE_SUCCESS)
         {
-            ulong memberId = Steam.GetLobbyMemberByIndex(lobby, i);
-            LobbyManager.AddPlayerData(memberId);
+            Logger.Error($"Failed to join lobby {lobby}. Response code: {response}");
+            return;
         }
         
+        _lobbyId = lobby;
+        Logger.Lobby($"Joined lobby {_lobbyId}", true);
+        RefreshLobbyMemberData();
         LobbyManager.PlayerReadyToJoinGame();
     }
 
     private void OnLobbyMemberJoinedCallback(ulong memberJoinedId)
     {
         Logger.Lobby($"Player has joined the lobby: {memberJoinedId}", true);
+        RefreshLobbyMemberData();
     }
 
     private static void OnLobbyMemberLeft(ulong memberLeftId)
     {
-        LobbyManager.RemovePlayer(memberLeftId);
+        Logger.Lobby($"Player has left the lobby: {memberLeftId}", true);
+        RefreshLobbyMemberData();
     }
-
 }

@@ -9,8 +9,6 @@ public partial class EventBus : Node
         public static event EventHandler<ConnectionType> StartHost;
         public static event EventHandler<ulong> StartGuest;
         public static event EventHandler<LobbyMessageArgs> LobbyMessageReceived;
-        public static event EventHandler<ulong> LobbyMemberJoined;
-        public static event EventHandler<ulong> LobbyMemberLeft;
         public static event EventHandler LobbyMembersRefreshed;
         public static event EventHandler<string> LobbyLog;
 
@@ -24,26 +22,15 @@ public partial class EventBus : Node
             StartGuest?.Invoke(null, lobbyId);
         }
 
-        public static void OnLobbyMemberJoined(ulong playerId)
-        {
-            LobbyMemberJoined?.Invoke(null, playerId);
-        }
-
-        public static void OnLobbyMemberLeft(ulong playerId)
-        {
-            LobbyMemberLeft?.Invoke(null, playerId);
-        }
-
         public static void OnLobbyMessageReceived(LobbyMessageArgs args)
         {
             LobbyMessageReceived?.Invoke(null,
                 new LobbyMessageArgs { PlayerName = args.PlayerName, Message = args.Message });
         }
         
-        // TODO: Hook this up
         public static void OnLobbyMembersRefreshed()
         {
-            LobbyMembersRefreshed?.Invoke(null, null);
+            LobbyMembersRefreshed?.Invoke(null, EventArgs.Empty);
         }
         
         public static void OnLobbyLog(string message)
