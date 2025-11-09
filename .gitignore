@@ -22,6 +22,8 @@ Tests/bin/
 
 *.DotSettings.user
 
+*.uid
+
 /bin/
 /obj/
 
