@@ -4,19 +4,30 @@ public partial class LobbyMember : Control
 {
     private RichTextLabel _nameLabel;
     private TextureRect _profilePicture;
-    
+
+    private string _playerName = "Unknown";
+    private Texture2D _profileTexture;
+
     [Export]
     public string PlayerName
     {
-        get;
-        set;
-    } = "Unknown";
+        get => _playerName;
+        set
+        {
+            _playerName = value ?? "Unknown";
+            UpdateNameLabel();
+        }
+    }
 
     [Export]
     public Texture2D ProfilePicture
     {
-        get;
-        set;
+        get => _profileTexture;
+        set
+        {
+            _profileTexture = value;
+            UpdateProfilePicture();
+        }
     }
 
     public override void _Ready()
@@ -25,18 +36,25 @@ public partial class LobbyMember : Control
         _profilePicture = GetNodeOrNull<TextureRect>("%ProfilePicture");
 
         if (_nameLabel == null)
-        {
             Logger.Error("NameLabel node not found in LobbyMember scene!");
-            return;
-        }
-
         if (_profilePicture == null)
-        {
             Logger.Error("ProfilePicture node not found in LobbyMember scene!");
-            return;
-        }
 
-        _nameLabel.Text = $"[center]{PlayerName}[/center]";
-        _profilePicture.Texture = ProfilePicture;
+        UpdateNameLabel();
+        UpdateProfilePicture();
+    }
+
+    private void UpdateNameLabel()
+    {
+        if (!IsInsideTree() || _nameLabel == null) return;
+
+        _nameLabel.Text = $"[center]{_playerName}[/center]";
+    }
+
+    private void UpdateProfilePicture()
+    {
+        if (!IsInsideTree() || _profilePicture == null) return;
+
+        _profilePicture.Texture = _profileTexture;
     }
 }
