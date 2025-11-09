@@ -38,7 +38,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="addons\" />
         <Folder Include="Assets\" />
         <Folder Include="Modules\Lobby\MemberData.cs\" />
         <Folder Include="Scenes\Transitions\" />

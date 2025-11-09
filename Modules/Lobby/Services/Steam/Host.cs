@@ -6,6 +6,11 @@ namespace GodotPeer2PeerSteamCSharp.Modules.Lobby.Services;
 
 public partial class LobbyService
 {
+    private void RegisterHostCallbacks()
+    {
+        Steam.LobbyCreated += (_,_) => OnLobbyCreated();
+    }
+    
     public async Task StartHost()
     {
         CreateLobby();
@@ -21,5 +26,10 @@ public partial class LobbyService
             _                     => Steam.LobbyType.Private
         };
         Steam.CreateLobby(steamType, maxMembers);
+    }
+
+    private void OnLobbyCreated()
+    {
+        _peer = new SteamM
     }
 }
