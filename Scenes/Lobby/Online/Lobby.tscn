@@ -140,6 +140,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 11
 theme_override_styles/normal = SubResource("StyleBoxFlat_h7gqm")
+disabled = true
 text = "Start Game"
 
 [node name="InviteMembers" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer/ButtonContainer"]

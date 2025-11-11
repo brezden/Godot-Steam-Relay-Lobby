@@ -74,7 +74,21 @@ public partial class SceneManager : Node
             child.QueueFree();
         }
     }
+    
+    public void GotoSceneForAll(int sceneId, SceneRegistry.SceneAnimation anim = SceneRegistry.SceneAnimation.FadeInOut)
+    {
+        if (!Multiplayer.IsServer()) return;
+        Rpc(nameof(RpcLoadSceneOnAll), sceneId, (int)anim);
+    }
 
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+    private void RpcLoadSceneOnAll(int sceneId, SceneRegistry.SceneAnimation anim)
+    {
+        GotoScene(sceneId, anim);
+        Logger.Lobby($"Switching to scene {sceneId} with {anim}");
+    }
+    
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer)]
     public async void GotoScene(int sceneId,
         SceneRegistry.SceneAnimation animationName = SceneRegistry.SceneAnimation.FadeInOut)
     {

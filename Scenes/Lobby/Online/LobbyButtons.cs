@@ -17,6 +17,11 @@ public partial class LobbyButtons : Node
         inviteLobbyButton.Pressed += InviteLobby;
         leaveLobbyButton.Pressed += LeaveLobby;
         startGameButton.Pressed += StartGame;
+
+        if (Multiplayer.IsServer())
+        {
+            startGameButton.Disabled = false;
+        }
     }
 
     private void InviteLobby()
@@ -32,46 +37,6 @@ public partial class LobbyButtons : Node
 
     private void StartGame()
     {
-        var active = Multiplayer.MultiplayerPeer;
-        var activeType = active?.GetClass();
-        var isOffline = active is OfflineMultiplayerPeer;
-        var status = active?.GetConnectionStatus();
-
-        Logger.Lobby($"HasPeer={Multiplayer.HasMultiplayerPeer()}");
-        Logger.Lobby($"ActivePeerType={activeType}");
-        Logger.Lobby($"IsOfflinePeer={isOffline}");
-        Logger.Lobby($"Status={status}");
-        Logger.Lobby($"IsServer={Multiplayer.IsServer()}");
-        Logger.Lobby($"UniqueId={Multiplayer.GetUniqueId()}");
-        
-        const string msg = "I'm connected";
-
-        if (Multiplayer.IsServer())
-        {
-            // Host can directly broadcast to all peers (and self via CallLocal)
-            Rpc(nameof(BroadcastLog), msg);
-        }
-        else
-        {
-            // Client tells server to relay
-            RpcId(1, nameof(ServerReceiveAndRelay), msg);
-        }
-    }
-
-    // Clients call this on the server; server then relays to everyone
-    [Rpc(MultiplayerApi.RpcMode.AnyPeer)]
-    private void ServerReceiveAndRelay(string msg)
-    {
-        if (!Multiplayer.IsServer()) return;
-        Rpc(nameof(BroadcastLog), msg);
-    }
-
-    // Runs on everyone; CallLocal=true ensures the caller also logs immediately
-    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
-    private void BroadcastLog(string msg)
-    {
-        var sender = Multiplayer.GetRemoteSenderId();
-        if (sender == 0) sender = Multiplayer.GetUniqueId(); // local call case
-        Logger.Lobby($"RPC ping from {sender}: {msg}");
+        SceneManager.Instance.GotoSceneForAll(SceneRegistry.TankBattle.Game);
     }
 }
