@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://s8d6qytpgyqq"]
 
-[ext_resource type="Script" path="res://Scenes/Lobby/Online/LobbyMember.cs" id="1_mputd"]
+[ext_resource type="Script" uid="uid://bmeg76a3ro5re" path="res://Scenes/Lobby/Online/LobbyMember.cs" id="1_mputd"]
 [ext_resource type="Texture2D" uid="uid://00qtqshkg50d" path="res://icon.svg" id="2_x1385"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b7nx2"]

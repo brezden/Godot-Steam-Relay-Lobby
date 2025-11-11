@@ -9,8 +9,7 @@ public partial class EventBus : Node
         public static event EventHandler<ConnectionType> StartHost;
         public static event EventHandler<ulong> StartGuest;
         public static event EventHandler<LobbyMessageArgs> LobbyMessageReceived;
-        public static event EventHandler<ulong> LobbyMemberJoined;
-        public static event EventHandler<ulong> LobbyMemberLeft;
+        public static event EventHandler LobbyCreated;
         public static event EventHandler LobbyDataUpdated; 
         public static event EventHandler<string> LobbyLog;
 
@@ -30,16 +29,6 @@ public partial class EventBus : Node
                 new LobbyMessageArgs { PlayerName = args.PlayerName, Message = args.Message });
         }
         
-        public static void OnLobbyMemberJoined(ulong playerId)
-        {
-            LobbyMemberJoined?.Invoke(null, playerId);
-        }
-        
-        public static void OnLobbyMemberLeft(ulong playerId)
-        {
-            LobbyMemberLeft?.Invoke(null, playerId);
-        }
-        
         public static void OnLobbyDataUpdated()
         {
             LobbyDataUpdated?.Invoke(null, EventArgs.Empty);
@@ -48,6 +37,11 @@ public partial class EventBus : Node
         public static void OnLobbyLog(string message)
         {
             LobbyLog?.Invoke(null, message);
+        }
+        
+        public static void OnLobbyCreated()
+        {
+            LobbyCreated?.Invoke(null, EventArgs.Empty);
         }
     }
 }

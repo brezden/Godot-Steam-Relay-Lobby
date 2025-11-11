@@ -37,7 +37,6 @@
 
     <ItemGroup>
         <Folder Include="Assets\" />
-        <Folder Include="Modules\Lobby\MemberData.cs\" />
         <Folder Include="Scenes\Transitions\" />
         <Compile Remove="Tests\**\*.cs" />
     </ItemGroup>

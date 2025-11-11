@@ -8,7 +8,7 @@ public partial class LobbyService
 {
     private void RegisterHostCallbacks()
     {
-        Steam.LobbyCreated += (_,_) => OnLobbyCreated();
+        Steam.LobbyCreated += (_,_) => EventBus.Lobby.OnLobbyCreated();
     }
     
     public async Task StartHost()
@@ -26,10 +26,5 @@ public partial class LobbyService
             _                     => Steam.LobbyType.Private
         };
         Steam.CreateLobby(steamType, maxMembers);
-    }
-
-    private void OnLobbyCreated()
-    {
-        _peer = new SteamM
     }
 }
