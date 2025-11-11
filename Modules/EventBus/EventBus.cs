@@ -10,6 +10,7 @@ public partial class EventBus : Node
         public static event EventHandler<ulong> StartGuest;
         public static event EventHandler<LobbyMessageArgs> LobbyMessageReceived;
         public static event EventHandler LobbyCreated;
+        public static event EventHandler LobbyJoined;
         public static event EventHandler LobbyDataUpdated; 
         public static event EventHandler<string> LobbyLog;
 
@@ -42,6 +43,11 @@ public partial class EventBus : Node
         public static void OnLobbyCreated()
         {
             LobbyCreated?.Invoke(null, EventArgs.Empty);
+        }
+
+        public static void OnLobbyJoined()
+        {
+            LobbyJoined?.Invoke(null, EventArgs.Empty);
         }
     }
 }

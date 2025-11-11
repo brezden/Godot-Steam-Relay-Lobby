@@ -27,4 +27,14 @@ public partial class LobbyService
         };
         Steam.CreateLobby(steamType, maxMembers);
     }
+
+    public bool IsHosting()
+    {
+        return Steam.GetLobbyOwner(_lobbyId) == Steam.GetSteamID();
+    }
+    
+    public ulong GetHostId()
+    {
+        return Steam.GetLobbyOwner(_lobbyId);
+    }
 }

@@ -92,6 +92,7 @@ public partial class LobbyService
         Logger.Lobby($"Joined lobby {_lobbyId}", true);
         LobbyManager.InitializeLobbyData();
         LobbyManager.PlayerReadyToJoinGame();
+        EventBus.Lobby.OnLobbyJoined();
     }
 
     private void OnLobbyMemberJoinedCallback(ulong memberJoinedId)

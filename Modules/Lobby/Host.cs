@@ -30,4 +30,9 @@ public partial class LobbyManager
             LeaveLobbyAndTransport();
         }
     }
+    
+    public bool IsHosting()
+    {
+        return _lobbyService.IsHosting();
+    }
 }

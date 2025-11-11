@@ -30,7 +30,6 @@ public partial class LobbyManager
     public static void LeaveLobbyAndTransport()
     {
         _lobbyService.LeaveLobby();
-        _isHost = false;
         MemberData = null;
         Logger.Lobby("Disconnected from lobby");
     }

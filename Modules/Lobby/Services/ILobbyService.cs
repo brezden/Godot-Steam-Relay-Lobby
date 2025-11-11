@@ -7,6 +7,8 @@ public interface ILobbyService
     void Initialize();
     void Update();
     Task StartHost();
+    bool IsHosting();
+    ulong GetHostId();
     void JoinLobby(ulong lobbyId);
     void LeaveLobby();
     void InvitePlayer(ulong playerId);

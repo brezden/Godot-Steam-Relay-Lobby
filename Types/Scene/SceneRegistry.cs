@@ -55,6 +55,6 @@ public static class SceneRegistry
 
     public static class TankBattle
     {
-        public const int Game = 100;
+        public const int Game = 2;
     }
 }

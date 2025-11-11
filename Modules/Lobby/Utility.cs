@@ -31,4 +31,9 @@ public partial class LobbyManager
         _lobbyService.OpenInviteOverlay();
         Logger.Lobby("Opened invite overlay");
     }
+    
+    public ulong GetHostId()
+    {
+        return _lobbyService.GetHostId();
+    }
 }

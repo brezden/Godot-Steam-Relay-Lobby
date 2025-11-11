@@ -9,7 +9,6 @@ public partial class LobbyManager : Node
 {
     public static MemberDataManager MemberData;
     private static ILobbyService _lobbyService;
-    private static bool _isHost;
 
     public static LobbyManager Instance
     {

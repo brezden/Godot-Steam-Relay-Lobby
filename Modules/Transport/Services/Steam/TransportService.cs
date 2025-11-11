@@ -15,12 +15,12 @@ public partial class TransportService : Node, ITransportService
         }
 
         var bridge = GetNode("/root/SteamPeerBridge");
-        var peerObj = bridge.Call("create_host", 0);
+        bridge.Call("create_host", 0);
 
         var active = Multiplayer.MultiplayerPeer;
         var activeType = active?.GetClass();
         var isOffline = active is OfflineMultiplayerPeer;
-        var status = active?.GetConnectionStatus(); // Disconnected / Connecting / Connected
+        var status = active?.GetConnectionStatus();
 
         Logger.Lobby($"HasPeer={Multiplayer.HasMultiplayerPeer()}");
         Logger.Lobby($"ActivePeerType={activeType}");
@@ -39,12 +39,12 @@ public partial class TransportService : Node, ITransportService
         }
         
         var bridge = GetNode("/root/SteamPeerBridge");
-        var peerObj = bridge.Call("create_client", hostId, 0);
+        bridge.Call("create_client", hostId, 0);
         
         var active = Multiplayer.MultiplayerPeer;
         var activeType = active?.GetClass();
         var isOffline = active is OfflineMultiplayerPeer;
-        var status = active?.GetConnectionStatus(); // Disconnected / Connecting / Connected
+        var status = active?.GetConnectionStatus();
 
         Logger.Lobby($"HasPeer={Multiplayer.HasMultiplayerPeer()}");
         Logger.Lobby($"ActivePeerType={activeType}");
