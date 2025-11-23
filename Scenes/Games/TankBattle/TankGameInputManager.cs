@@ -17,6 +17,5 @@ public partial class TankGameInputManager : Node, IInputHandler
     public void ProcessPositionalInput(byte playerIndex, Vector2 input, double delta)
     {
         Logger.Game($"Processing input for player {playerIndex}: {input} with delta {delta}");
-        currentGame.PlayerProcessedInput(playerIndex, input, delta);
     }
 }

@@ -28,22 +28,11 @@ public partial class Game : Node, IGame
     public override void _Process(double delta)
     {
         Vector2 inputVector = Input.GetVector("move_left_0","move_right_0","move_up_0","move_down_0");
+        _playerOneTank.ProcessInput(inputVector, delta);
 
         long myPeerId = Multiplayer.GetUniqueId();
-        if (!_peerToPlayerIndex.TryGetValue(myPeerId, out var myPlayerIndex))
-            return;
-
-        Rpc(nameof(AllApplyInput), myPlayerIndex, inputVector);
     }
-
-    [Rpc(MultiplayerApi.RpcMode.AnyPeer,
-        TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable,
-        CallLocal = true)]
-    private void AllApplyInput(byte playerIndex, Vector2 input)
-    {
-        PlayerProcessedInput(playerIndex, input, GetProcessDeltaTime());
-    }
-
+    
     public override void _ExitTree()
     {
         InputManager.Instance.StopReceivingInput();
@@ -53,21 +42,5 @@ public partial class Game : Node, IGame
     {
         Logger.Game("Starting Tank Battle Game...");
         InputManager.Instance.StartReceivingInput();
-    }
-
-    public void PlayerProcessedInput(byte playerIndex, Vector2 input, double delta)
-    {
-        switch (playerIndex)
-        {
-            case 0:
-                _playerOneTank?.ProcessInput(input, delta);
-                break;
-            case 1:
-                _playerTwoTank?.ProcessInput(input, delta);
-                break;
-            default:
-                Logger.Error($"Unhandled player index: {playerIndex}");
-                break;
-        }
     }
 }

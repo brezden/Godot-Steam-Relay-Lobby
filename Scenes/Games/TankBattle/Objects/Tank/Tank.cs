@@ -9,7 +9,8 @@ public partial class Tank : CharacterBody2D
 
     [Export] public FacingDir Facing = FacingDir.Down;
     [Export] public float AimDeadzone = 0.12f;
-
+    [Export] public float test = 0f;
+   
     private Sprite2D _tankBottom;
     private CollisionShape2D _tankCollision;
 
