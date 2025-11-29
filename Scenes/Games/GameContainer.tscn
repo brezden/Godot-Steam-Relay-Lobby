@@ -7,19 +7,21 @@
 viewport_path = NodePath("SubViewport")
 
 [node name="GameContainer" type="Control" node_paths=PackedStringArray("SubVp", "Output")]
-custom_minimum_size = Vector2(320, 180)
 layout_mode = 3
-anchors_preset = 0
-offset_right = 320.0
-offset_bottom = 180.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_sfmge")
 SubVp = NodePath("SubViewport")
 Output = NodePath("TextureRect")
+BaseSize = Vector2i(256, 144)
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 0
-offset_right = 320.0
-offset_bottom = 180.0
+offset_right = 256.0
+offset_bottom = 144.0
 texture = SubResource("ViewportTexture_7gg57")
 stretch_mode = 3
 
@@ -27,7 +29,7 @@ stretch_mode = 3
 disable_3d = true
 handle_input_locally = false
 canvas_item_default_texture_filter = 0
-size = Vector2i(512, 288)
+size = Vector2i(256, 144)
 render_target_update_mode = 4
 
 [node name="TankGame" parent="SubViewport" instance=ExtResource("1_0jvrx")]

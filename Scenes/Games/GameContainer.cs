@@ -24,7 +24,6 @@ public partial class GameContainer : Control
         ResizeOutput();
     }
 
-
     public override void _Notification(int what)
     {
         if (what == NotificationResized) ResizeOutput();
@@ -32,20 +31,17 @@ public partial class GameContainer : Control
 
     private void ResizeOutput()
     {
-        // integer window size
-        Vector2 winF = GetViewportRect().Size;
-        Vector2I win = new(Mathf.FloorToInt(winF.X), Mathf.FloorToInt(winF.Y));
+        Vector2 win = GetViewportRect().Size;
 
-        // biggest integer scale that fits
-        int sx = win.X / BaseSize.X;
-        int sy = win.Y / BaseSize.Y;
-        int k = Mathf.Max(1, Mathf.Min(sx, sy));
+        float sx = win.X / BaseSize.X;
+        float sy = win.Y / BaseSize.Y;
+        float k = Mathf.Min(sx, sy); // float now
 
-        Vector2I outSize = new(BaseSize.X * k, BaseSize.Y * k);
-        Vector2I outPos = (win - outSize) / 2; // integer center
+        Vector2 outSize = (Vector2)BaseSize * k;
+        Vector2 outPos = (win - outSize) / 2.0f;
 
-        Output.CustomMinimumSize = (Vector2)outSize;
-        Output.Size = (Vector2)outSize;
-        Output.Position = (Vector2)outPos; // whole pixels
+        Output.Size = outSize;
+        Output.Position = outPos;
     }
+
 }

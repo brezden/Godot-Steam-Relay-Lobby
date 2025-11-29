@@ -69,7 +69,19 @@ public partial class Tank : CharacterBody2D
         if (_aimSprite == null)
             return;
 
+        // First try right stick
         Vector2 stick = Input.GetVector("aim_left_0", "aim_right_0", "aim_up_0", "aim_down_0");
+
+        // If the stick is neutral, fall back to digital second_move_*_0
+        if (stick.Length() <= StickDeadzone)
+        {
+            stick = Input.GetVector(
+                "second_move_left_0",
+                "second_move_right_0",
+                "second_move_up_0",
+                "second_move_down_0"
+            );
+        }
 
         if (stick.Length() > StickDeadzone)
             _lastAim = stick.Normalized();
@@ -77,7 +89,6 @@ public partial class Tank : CharacterBody2D
         if (_lastAim == Vector2.Zero)
             return;
 
-        // Snap aim angle to 4 directions
         float baseAngle = _lastAim.Angle();
         float snappedAngle = SnapAngle4(baseAngle);
 
