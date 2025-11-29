@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://clj86wal5eo6v"]
 
-[ext_resource type="Script" path="res://Scenes/MainMenu/MainMenu.cs" id="1_xght1"]
-[ext_resource type="Script" path="res://Scenes/MainMenu/MainMenuButtons.cs" id="2_hq0sl"]
-[ext_resource type="Script" path="res://Scenes/MainMenu/VersionLabel.cs" id="3_pt7dm"]
+[ext_resource type="Script" uid="uid://cymeefo5nsod4" path="res://Scenes/MainMenu/MainMenu.cs" id="1_xght1"]
+[ext_resource type="Script" uid="uid://iolwobwqp3y2" path="res://Scenes/MainMenu/MainMenuButtons.cs" id="2_hq0sl"]
+[ext_resource type="Script" uid="uid://b3k0fhakkf33b" path="res://Scenes/MainMenu/VersionLabel.cs" id="3_pt7dm"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3

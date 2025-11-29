@@ -8,22 +8,22 @@ public partial class GameContainer : Control
 
     public override void _Ready()
     {
-        // SubViewport
         SubVp.Size = BaseSize;
         SubVp.RenderTargetUpdateMode = SubViewport.UpdateMode.Always;
         SubVp.RenderTargetClearMode = SubViewport.ClearMode.Always;
+
         SubVp.CanvasItemDefaultTextureFilter = Viewport.DefaultCanvasItemTextureFilter.Nearest;
         SubVp.CanvasItemDefaultTextureRepeat = Viewport.DefaultCanvasItemTextureRepeat.Disabled;
         SubVp.Snap2DTransformsToPixel = true;
         SubVp.Snap2DVerticesToPixel = true;
 
-        // TextureRect
         Output.Texture = SubVp.GetTexture();
         Output.StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered;
         Output.TextureFilter = CanvasItem.TextureFilterEnum.Nearest;
 
         ResizeOutput();
     }
+
 
     public override void _Notification(int what)
     {

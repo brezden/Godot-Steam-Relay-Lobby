@@ -1,46 +1,84 @@
 using Godot;
 using System.Collections.Generic;
-using GodotPeer2PeerSteamCSharp.Autoload;
-using GodotPeer2PeerSteamCSharp.Games;
-using GodotPeer2PeerSteamCSharp.Games.TankBattle;
 using GodotPeer2PeerSteamCSharp.Types.Games;
 
 namespace GodotPeer2PeerSteamCSharp.Scenes.Games.TankBattle;
 
-public partial class Game : Node, IGame
+public partial class Game : Node
 {
     public string GameName => "Tank Battle";
     public GameType GameType => GameType.FreeForAll;
 
-    private Tank _playerOneTank;
-    private Tank _playerTwoTank;
+    [Export] private PackedScene _tankScene;
+    [Export] private Node2D[] _spawnPoints;
+
+    private readonly Dictionary<long, Tank> _peerToTank = new();
 
     public override void _Ready()
     {
-        InputManager.Instance.SetInputHandler(new TankGameInputManager(this));
-        _playerOneTank = GetNode<Tank>("%PlayerOne");
-        _peerToPlayerIndex[1] = 0;
-        StartGame();
+        if (Multiplayer.IsServer())
+        {
+            Logger.Game("Server: Setting up game...");
+            SetupGame();
+        }
+        else
+        {
+            Logger.Game("Client: Waiting for server to spawn tanks...");
+        }
     }
 
-    private readonly Dictionary<long, byte> _peerToPlayerIndex = new();
-
-    public override void _Process(double delta)
+    private void SetupGame()
     {
-        Vector2 inputVector = Input.GetVector("move_left_0","move_right_0","move_up_0","move_down_0");
-        _playerOneTank.ProcessInput(inputVector, delta);
+        int[] multiplayerIds = Multiplayer.GetPeers();
+        int serverId = Multiplayer.GetUniqueId();
 
-        long myPeerId = Multiplayer.GetUniqueId();
+        var ids = new List<int> { serverId };
+        ids.AddRange(multiplayerIds);
+
+        for (int i = 0; i < ids.Count; i++)
+        {
+            long peerId = ids[i];
+            byte playerIndex = (byte)i;
+
+            Logger.Game($"Assigned Peer ID {peerId} to Player Index {playerIndex}");
+
+            Vector2 spawnPosition = GetSpawnPositionForIndex(playerIndex);
+
+            Rpc(nameof(SpawnTank), peerId, playerIndex, spawnPosition);
+        }
     }
-    
-    public override void _ExitTree()
+
+    private Vector2 GetSpawnPositionForIndex(byte playerIndex)
     {
-        InputManager.Instance.StopReceivingInput();
+        if (_spawnPoints != null && _spawnPoints.Length > 0)
+        {
+            var idx = playerIndex % _spawnPoints.Length;
+            return _spawnPoints[idx].GlobalPosition;
+        }
+
+        return new Vector2(100 + 100 * playerIndex, 100);
     }
 
-    public void StartGame()
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+    private void SpawnTank(int peerId, byte playerIndex, Vector2 position)
     {
-        Logger.Game("Starting Tank Battle Game...");
-        InputManager.Instance.StartReceivingInput();
+        if (_tankScene == null)
+        {
+            GD.PushError("Tank scene not assigned on Game node.");
+            return;
+        }
+
+        var tank = _tankScene.Instantiate<Tank>();
+        tank.Position = position;
+
+        tank.SetMultiplayerAuthority(peerId);
+
+        tank.Name = $"Tank_{peerId}_P{playerIndex}";
+
+        AddChild(tank);
+
+        _peerToTank[peerId] = tank;
+
+        GD.Print($"Spawned tank for peer {peerId} at {position} (player {playerIndex})");
     }
 }

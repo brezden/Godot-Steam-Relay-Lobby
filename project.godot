@@ -28,7 +28,6 @@ ConfigManager="*res://Modules/Config/ConfigManager.cs"
 UIManager="*res://Modules/UI/UIManager.cs"
 BackgroundManager="*res://Modules/Background/BackgroundManager.cs"
 SteamPeerBridge="*res://Scripts/SteamPeerBridge.gd"
-InputManager="*res://Modules/Input/InputManager.cs"
 
 [debug]
 
@@ -38,9 +37,9 @@ file_logging/enable_file_logging=true
 
 window/size/viewport_width=640
 window/size/viewport_height=360
-window/size/window_width_override=1280
-window/size/window_height_override=720
-window/stretch/mode="canvas_items"
+window/size/window_width_override=1920
+window/size/window_height_override=1080
+window/stretch/mode="viewport"
 
 [dotnet]
 
@@ -97,6 +96,10 @@ aim_down_0={
 "events": [Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":3,"axis_value":1.0,"script":null)
 ]
 }
+
+[physics]
+
+common/physics_ticks_per_second=200
 
 [rendering]
 
