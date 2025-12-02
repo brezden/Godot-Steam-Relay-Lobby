@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cy3y50juk7kh8"]
+[gd_scene load_steps=6 format=3 uid="uid://cy3y50juk7kh8"]
 
 [ext_resource type="Script" uid="uid://ba6gqjvapfi6g" path="res://Scenes/Games/TankBattle/Tank.cs" id="1_ud1op"]
 [ext_resource type="Texture2D" uid="uid://bcwoa5k8xfw34" path="res://Assets/Sprites/Tank.png" id="2_cp7ph"]
+[ext_resource type="PackedScene" uid="uid://di56c7vdocqhy" path="res://Scenes/Games/TankBattle/Bullet.tscn" id="2_mkq5m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c1h0b"]
 size = Vector2(16, 16)
@@ -29,6 +30,7 @@ properties/5/replication_mode = 1
 [node name="Tank" type="CharacterBody2D"]
 texture_filter = 1
 script = ExtResource("1_ud1op")
+BulletScene = ExtResource("2_mkq5m")
 
 [node name="Bottom" type="Sprite2D" parent="."]
 unique_name_in_owner = true
